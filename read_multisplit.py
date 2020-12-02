@@ -5,7 +5,7 @@ import itertools as itr
 
 map_name = 'co6_map_good_splittest.h5'
 field = 'co6'
-mappath = '/mn/stornext/d16/cmbco/comap/nils/COMAP_general/data/maps/successive_split_test/' + mapname
+mappath = '/mn/stornext/d16/cmbco/comap/nils/COMAP_general/data/maps/successive_split_test/' + map_name
 
 
 
