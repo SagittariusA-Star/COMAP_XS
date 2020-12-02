@@ -103,7 +103,7 @@ def read_map(mappath, control_variables, test_variables, feed_feed_variables, al
          name += '.h5'
          maps_created.append(name)
          print ('Creating HDF5 file for the map ' + name + '.')
-         f = h5py.File(new_mapname, 'w')
+         f = h5py.File(name, 'w')
          f.create_dataset('x', data=x)
          f.create_dataset('y', data=y)
          f.create_dataset('/jackknives/map_' + split_names[0], data=my_map)
