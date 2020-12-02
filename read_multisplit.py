@@ -91,7 +91,8 @@ def read_map(mappath, control_variables, test_variables, feed_feed_variables, al
          for_naming = []
          for j in range(how_many_to_combine):
             slc[j+1] = all_different_possibilities[i][j]
-            for_naming.append(split_names[j+1], all_different_possibilities[i][j])
+            for_naming.append(split_names[j+1])
+            for_naming.append(all_different_possibilities[i][j])
             print (split_names[j+1], all_different_possibilities[i][j])
          my_map = map_split[slc] 
          my_rms = rms_split[slc]
