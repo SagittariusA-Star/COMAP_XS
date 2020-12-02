@@ -89,7 +89,7 @@ def read_map(mappath, control_variables, test_variables, feed_feed_variables, al
       maps_created = []
       for i in range(len(all_different_possibilities)): #this many maps will be created
          for_naming = []
-         for j in range(len(how_many_to_combine)):
+         for j in range(how_many_to_combine):
             slc[j+1] = all_different_possibilities[i][j]
             for_naming.append(split_names[j+1], all_different_possibilities[i][j])
             print (split_names[j+1], all_different_possibilities[i][j])
