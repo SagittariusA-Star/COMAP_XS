@@ -1,6 +1,7 @@
 import h5py
 import numpy as np
 import itertools as itr
+import tools
 
 
 map_name = 'co6_map_good_splittest.h5'
@@ -106,7 +107,9 @@ def read_map(mappath, control_variables, test_variables, feed_feed_variables, al
          name += '.h5'
          maps_created.append(name)
          print ('Creating HDF5 file for the map ' + name + '.')
-         f = h5py.File('split_maps/' + name, 'w')
+         tools.ensure_dir_exists('split_maps')
+         outname = 'split_maps/' + name
+         f = h5py.File(outname, 'w')
          f.create_dataset('x', data=x)
          f.create_dataset('y', data=y)
          f.create_dataset('/jackknives/map_' + split_names[0], data=my_map)
