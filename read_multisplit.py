@@ -64,7 +64,7 @@ def read_map(mappath, control_variables, test_variables, feed_feed_variables, al
    multisplits = input_map['multisplits']
    for test_variable in test_variables:
       map_split = np.array(multisplits['map_' + test_variable][:])
-      rms_split = np.array(jackknives['rms_' + test_variable][:])
+      rms_split = np.array(multisplits['rms_' + test_variable][:])
       shp = map_split.shape
       how_many_twos = len(all_variables) - len(test_variables) + 1
       new_shape = []
