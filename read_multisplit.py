@@ -62,6 +62,7 @@ def read_map(mappath, control_variables, test_variables, feed_feed_variables, al
    x = np.array(input_map['x'][:])
    y = np.array(input_map['y'][:])
    multisplits = input_map['multisplits']
+   maps_created = []
    for test_variable in test_variables:
       map_split = np.array(multisplits['map_' + test_variable][:])
       rms_split = np.array(multisplits['rms_' + test_variable][:])
@@ -86,7 +87,7 @@ def read_map(mappath, control_variables, test_variables, feed_feed_variables, al
       how_many_to_combine = len(split_names) - 1
       all_different_possibilities = list(itr.product(range(2), repeat=how_many_to_combine))
       slc = [slice(None)]*len(new_shape)
-      maps_created = []
+      
       for i in range(len(all_different_possibilities)): #this many maps will be created
          for_naming = []
          for j in range(how_many_to_combine):
@@ -94,16 +95,18 @@ def read_map(mappath, control_variables, test_variables, feed_feed_variables, al
             for_naming.append(split_names[j+1])
             for_naming.append(all_different_possibilities[i][j])
             print (split_names[j+1], all_different_possibilities[i][j])
-         my_map = map_split[slc] 
-         my_rms = rms_split[slc]
-         name = field + '_' + 'map' + split_names[0] 
+         print (tuple(slc))
+         print (slc)
+         my_map = map_split[tuple(slc)] 
+         my_rms = rms_split[tuple(slc)]
+         name = field + '_' + 'map' + '_' + split_names[0] 
          for k in range(len(for_naming)):
             name += '_'
             name += str(for_naming[k])
          name += '.h5'
          maps_created.append(name)
          print ('Creating HDF5 file for the map ' + name + '.')
-         f = h5py.File(name, 'w')
+         f = h5py.File('split_maps/' + name, 'w')
          f.create_dataset('x', data=x)
          f.create_dataset('y', data=y)
          f.create_dataset('/jackknives/map_' + split_names[0], data=my_map)
