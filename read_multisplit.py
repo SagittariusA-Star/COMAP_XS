@@ -123,7 +123,7 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
 
 print (read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables))
 '''
-['co6_map_elev_cesc_0_snup_0.h5', 'co6_map_elev_cesc_0_snup_1.h5', 'co6_map_elev_cesc_1_snup_0.h5', 'co6_map_elev_cesc_1_snup_1.h5', 'co6_map_ambt_cesc_0_snup_0.h5', 'co6_map_ambt_cesc_0_snup_1.h5', 'co6_map_ambt_cesc_1_snup_0.h5', 'co6_map_ambt_cesc_1_snup_1.h5', 'co6_map_half_cesc_0_snup_0.h5', 'co6_map_half_cesc_0_snup_1.h5', 'co6_map_half_cesc_1_snup_0.h5', 'co6_map_half_cesc_1_snup_1.h5']
+(['co6_map_elev_cesc_0_snup_0.h5', 'co6_map_elev_cesc_0_snup_1.h5', 'co6_map_elev_cesc_1_snup_0.h5', 'co6_map_elev_cesc_1_snup_1.h5', 'co6_map_ambt_cesc_0_snup_0.h5', 'co6_map_ambt_cesc_0_snup_1.h5', 'co6_map_ambt_cesc_1_snup_0.h5', 'co6_map_ambt_cesc_1_snup_1.h5', 'co6_map_half_cesc_0_snup_0.h5', 'co6_map_half_cesc_0_snup_1.h5', 'co6_map_half_cesc_1_snup_0.h5', 'co6_map_half_cesc_1_snup_1.h5'], ['elev', 'ambt', 'half'])
 '''
 
 
