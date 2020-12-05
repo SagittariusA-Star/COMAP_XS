@@ -3,16 +3,6 @@ import numpy as np
 import itertools as itr
 import tools
 
-'''
-map_name = 'co6_map_good_splittest.h5'
-field = 'co6'
-mappath = '/mn/stornext/d16/cmbco/comap/nils/COMAP_general/data/maps/successive_split_test/' + map_name
-
-'''
-
-#jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_splittest.txt'
-#jk_list = 'jk_list_splittest.txt'
-
 
 # --- READ jk_list ---
 
@@ -88,21 +78,19 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
    
             all_axes_to_combine = list(range(0,how_many_to_combine+1))
             
-            all_axes_to_combine.remove(index_of_ff_variable)
+            all_axes_to_combine.remove(index_of_ff_variable) #all axes for different combinations of splits
       
             slc = [slice(None)]*len(new_shape) #includes all elements
       
             for i in range(len(all_different_possibilities)): #this many maps will be created
                for_naming = [] #identify which combination of splits the current map is using
                 
-              
                for j in range(how_many_to_combine):
                   axis_index = all_axes_to_combine[j]
                   slc[axis_index] = all_different_possibilities[i][j] #choose 0 or 1 for this split
                   for_naming.append(split_names[axis_index])
                   for_naming.append(all_different_possibilities[i][j])
                  
-               print (tuple(slc))
                my_map = map_split[tuple(slc)] #slice the map for the current combination of splits
                my_rms = rms_split[tuple(slc)] #slice the rms-map for the current combination of splits
                name = field + '_' + 'map' + '_' + ff_variable
@@ -121,11 +109,11 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
                f.create_dataset('/jackknives/map_' + ff_variable, data=my_map)
                f.create_dataset('/jackknives/rms_' + ff_variable, data=my_rms)
                f.close()
-  
+   
    return maps_created
 
 '''
-['co6_map_snup_elev_0_cesc_0.h5', 'co6_map_snup_elev_0_cesc_0.h5', 'co6_map_snup_elev_0_cesc_1.h5', 'co6_map_snup_elev_0_cesc_1.h5', 'co6_map_snup_elev_1_cesc_0.h5', 'co6_map_snup_elev_1_cesc_0.h5', 'co6_map_snup_elev_1_cesc_1.h5', 'co6_map_snup_elev_1_cesc_1.h5', 'co6_map_snup_ambt_0_cesc_0.h5', 'co6_map_snup_ambt_0_cesc_0.h5', 'co6_map_snup_ambt_0_cesc_1.h5', 'co6_map_snup_ambt_0_cesc_1.h5', 'co6_map_snup_ambt_1_cesc_0.h5', 'co6_map_snup_ambt_1_cesc_0.h5', 'co6_map_snup_ambt_1_cesc_1.h5', 'co6_map_snup_ambt_1_cesc_1.h5', 'co6_map_snup_half_0_cesc_0.h5', 'co6_map_snup_half_0_cesc_0.h5', 'co6_map_snup_half_0_cesc_1.h5', 'co6_map_snup_half_0_cesc_1.h5', 'co6_map_snup_half_1_cesc_0.h5', 'co6_map_snup_half_1_cesc_0.h5', 'co6_map_snup_half_1_cesc_1.h5', 'co6_map_snup_half_1_cesc_1.h5']
+['co6_map_snup_elev_0_cesc_0.h5', 'co6_map_snup_elev_0_cesc_1.h5', 'co6_map_snup_elev_1_cesc_0.h5', 'co6_map_snup_elev_1_cesc_1.h5', 'co6_map_snup_ambt_0_cesc_0.h5', 'co6_map_snup_ambt_0_cesc_1.h5', 'co6_map_snup_ambt_1_cesc_0.h5', 'co6_map_snup_ambt_1_cesc_1.h5', 'co6_map_snup_half_0_cesc_0.h5', 'co6_map_snup_half_0_cesc_1.h5', 'co6_map_snup_half_1_cesc_0.h5', 'co6_map_snup_half_1_cesc_1.h5']
 '''
 
 
