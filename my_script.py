@@ -45,19 +45,20 @@ mappath = '/mn/stornext/d16/cmbco/comap/nils/COMAP_general/data/maps/successive_
 jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_splittest.txt'
 
 control_variables, test_variables, feed_feed_variables, all_variables = read_multisplit.read_jk(jk_list)
-map_files, jk_collection = read_multisplit.read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables)
+map_files = read_multisplit.read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables)
  
 number_of_maps = len(map_files)
-number_of_test_variables = len(jk_collection)
-maps_per_jk = int(number_of_maps/number_of_test_variables)
+number_of_ff_variables = len(feed_feed_variables)
+maps_per_jk = int(number_of_maps/number_of_ff_variables)
 feed_combos = list(range(19*19)) #number of combinations between feeds
 
-for g in range(number_of_test_variables):
+print ('STAGE 3: Calculating cross-spectra for all feed-feed combinations.')
+for g in range(number_of_ff_variables):
    for h in range(maps_per_jk):
-      jk = jk_collection[g]
+      jk = feed_feed_variables[g]
       map_name = map_files[g*maps_per_jk+h]
+      print ('Split for FPXS: ' + jk + '. Map: ' + map_name + '.')
       map_name = 'split_maps/' + map_name
-      print (jk, map_name)
       #make xs for all feed-combinations
       #pool = multiprocessing.Pool(8) #here number of cores
       #np.array(pool.map(all_feed_combo_xs, feed_combos))
