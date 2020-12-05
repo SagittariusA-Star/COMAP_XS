@@ -45,6 +45,7 @@ mappath = '/mn/stornext/d16/cmbco/comap/nils/COMAP_general/data/maps/successive_
 jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_splittest.txt'
 
 control_variables, test_variables, feed_feed_variables, all_variables = read_multisplit.read_jk(jk_list)
+print (read_multisplit.read_jk(jk_list))
 map_files = read_multisplit.read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables)
  
 number_of_maps = len(map_files)
