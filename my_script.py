@@ -47,9 +47,9 @@ jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_splittest.txt
 control_variables, test_variables, feed_feed_variables, all_variables = read_multisplit.read_jk(jk_list)
 
 map_files = read_multisplit.read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables)
-print (map_files) 
 
 number_of_maps = len(map_files)
+feed_feed_variables = ['snup','trup']
 number_of_ff_variables = len(feed_feed_variables)
 maps_per_jk = int(number_of_maps/number_of_ff_variables)
 feed_combos = list(range(19*19)) #number of combinations between feeds
