@@ -79,9 +79,9 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
             rms_split = rms_split.reshape(new_shape)
             split_names = [] #collect the names of the spits in the correct order for the new shape
             split_names.append(test_variable)
-            for i in range(len(test_variables),how_many_twos):
-               split_names.append(all_variables[-1-i])
-               print (all_variables[-1-i])
+            for i in range(how_many_twos):
+               split_names.append(all_variables[-len(test_variables)-1-i])
+               print (all_variables[-len(test_variables)-1-i])
             how_many_to_combine = len(split_names)  #test variable + all control variables
             
             all_different_possibilities = list(itr.product(range(2), repeat=how_many_to_combine)) #find all the combinations of 'how_many_to_combine' 0s and 1s  
@@ -98,7 +98,7 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
                   slc[j] = all_different_possibilities[i][j] #choose 0 or 1 for this split
                   for_naming.append(split_names[j])
                   for_naming.append(all_different_possibilities[i][j])
-                 
+               print (tuple(slc))  
                my_map = map_split[tuple(slc)] #slice the map for the current combination of splits
                my_rms = rms_split[tuple(slc)] #slice the rms-map for the current combination of splits
                name = field + '_' + 'map' + '_' + ff_variable
