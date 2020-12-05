@@ -1,20 +1,14 @@
-#Developing a class, which takes in a list of n maps (n map names, since we call map_cosmo inside this class)
-
-#Comments:-------------------------------------------------------------------------------------------------
-# we probably want to call the map_cosmo class from within the new cross spectrum class, since we do not neccesarily want to store all the maps in memory at once - DONE
-# maybe try to return the index of a given xs, so that we always know which maps were taken and can use it in plot - DONE
-# then download a third map and check if everything works fine - DONE
-# remember that these error bars come from random simulations, so they will be a bit different each time 
-# add names of maps in plotting method and the "save" option - DONE
-# check h5 creating method (the current version is not tested and changed very much from Havard's one) - DONE
+#remember that error bars come from random simulations, so they will be a bit different each time 
 
 import numpy as np
 import h5py
 import tools
 import map_cosmo
 import matplotlib.pyplot as plt
+plt.ioff() #turn of the interactive plotting
 import PS_function #P(k) = k**-3
-#import create_map_h5_new.PS_function as PS_f #<-- this didn't work, wanted the same command arguments as create_map_h5_new.py
+import warnings
+warnings.filterwarnings("ignore", category=RuntimeWarning) #ignore warnings caused by weights cut-off
 
 class CrossSpectrum_nmaps():
     def __init__(self, list_of_n_map_names, jk=False, feed=None, feed1=None, feed2=None, n_of_splits=2):
@@ -128,11 +122,7 @@ class CrossSpectrum_nmaps():
                  wh_j = np.where(np.log10(wj) < -0.5)
                  wi[wh_i] = 0.0
                  wj[wh_j] = 0.0
-                 '''
-                 my_xs, my_k, my_nmodes = tools.compute_cross_spec3d(
-                 (self.maps[i].map * np.sqrt(self.maps[i].w*self.maps[j].w), self.maps[j].map * np.sqrt(self.maps[i].w*self.maps[j].w)),
-                 self.k_bin_edges, dx=self.maps[i].dx, dy=self.maps[i].dy, dz=self.maps[i].dz)
-                 '''
+              
                  my_xs, my_k, my_nmodes = tools.compute_cross_spec3d(
                  (self.maps[i].map * np.sqrt(wi*wj), self.maps[j].map * np.sqrt(wi*wj)),
                  self.k_bin_edges, dx=self.maps[i].dx, dy=self.maps[i].dy, dz=self.maps[i].dz)
@@ -219,15 +209,13 @@ class CrossSpectrum_nmaps():
                  
                  f1.close()
 
-    #PLOT XS (previously in the script code)
+    #PLOT XS
     def plot_xs(self, k_array, xs_array, rms_sig_array, rms_mean_array, index, save=False):
        
        k = k_array[index]
        xs = xs_array[index]
        rms_sig = rms_sig_array[index]
        rms_mean = rms_mean_array[index]
-       
-       
        
        #lim = 200.
        fig = plt.figure()
@@ -260,7 +248,7 @@ class CrossSpectrum_nmaps():
           name_for_figure = 'figures/xs_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.png'
           plt.savefig(name_for_figure, bbox_inches='tight')
           print ('Figure saved as', name_for_figure)
-
+       plt.close(fig)
        #plt.show()
 
 
