@@ -87,9 +87,9 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
             all_different_possibilities = list(itr.product(range(2), repeat=how_many_to_combine)) #find all the combinations of 'how_many_to_combine' 0s and 1s  
             index_of_ff_variable = split_names.index(ff_variable)
             print (index_of_ff_variable)
-            all_axes= list(range(0,how_many_to_combine))
-            print (all_axes)
-            all_axes_to_combine = all_axes.remove(index_of_ff_variable)
+            all_axes_to_combine = list(range(0,how_many_to_combine))
+            print (all_axes_to_combine)
+            all_axes_to_combine.remove(index_of_ff_variable)
             print (all_axes_to_combine)
             slc = [slice(None)]*len(new_shape) #includes all elements
       
