@@ -55,7 +55,7 @@ feed_combos = list(range(19*19)) #number of combinations between feeds
 for g in range(number_of_test_variables):
    for h in range(maps_per_jk):
       jk = jk_collection[g]
-      map_name = maps_files[g*maps_per_jk+h]
+      map_name = map_files[g*maps_per_jk+h]
       map_name = 'split_maps/' + map_name
       print (jk, map_name)
       #make xs for all feed-combinations
