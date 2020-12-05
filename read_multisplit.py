@@ -81,6 +81,7 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
             split_names.append(test_variable)
             for i in range(how_many_twos):
                split_names.append(all_variables[-1-i])
+               print (all_variables[-1-i])
             how_many_to_combine = len(split_names)  #test variable + all control variables
             
             all_different_possibilities = list(itr.product(range(2), repeat=how_many_to_combine)) #find all the combinations of 'how_many_to_combine' 0s and 1s  
