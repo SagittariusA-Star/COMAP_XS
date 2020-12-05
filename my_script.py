@@ -44,7 +44,7 @@ field = 'co6'
 mappath = '/mn/stornext/d16/cmbco/comap/nils/COMAP_general/data/maps/successive_split_test/' + map_name
 jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_splittest.txt'
 
-control_variables, cv_index, test_variables, tv_index, feed_feed_variables, ffv_index, all_variables = read_multisplit.read_jk(jk_list)
+control_variables, test_variables, feed_feed_variables, all_variables = read_multisplit.read_jk(jk_list)
 map_files, jk_collection = read_multisplit.read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables)
  
 number_of_maps = len(map_files)
@@ -55,7 +55,7 @@ feed_combos = list(range(19*19)) #number of combinations between feeds
 for g in range(number_of_test_variables):
    for h in range(maps_per_jk):
       jk = jk_collection[g]
-      map_name = maps_per_jk[g*maps_per_jk+h]
+      map_name = maps_files[g*maps_per_jk+h]
       map_name = 'split_maps/' + map_name
       print (jk, map_name)
       #make xs for all feed-combinations

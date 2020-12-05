@@ -3,14 +3,14 @@ import numpy as np
 import itertools as itr
 import tools
 
-
+'''
 map_name = 'co6_map_good_splittest.h5'
 field = 'co6'
 mappath = '/mn/stornext/d16/cmbco/comap/nils/COMAP_general/data/maps/successive_split_test/' + map_name
 
+'''
 
-
-jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_splittest.txt'
+#jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_splittest.txt'
 #jk_list = 'jk_list_splittest.txt'
 
 
@@ -22,16 +22,14 @@ jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_splittest.txt
 # marked with extra 1 - the variable used for feed-feed cross spectra
 
 def read_jk(filename):
+   print ('STAGE 1: Reading the list of variables associated with the map.')
    jk_file = open(filename, 'r')
    all_lines = jk_file.readlines()
    jk_file.close()
    all_lines = all_lines[2:] #skip the first two lines (number of different jk and accr)
    control_variables = [] #marked with 3
-   cv_index = []
    test_variables = [] #marked with 2
-   tv_index = []
    feed_feed_variables = [] #extra 1
-   ffv_index = []
    all_variables = []
    index = -1
    for line in all_lines:
@@ -41,25 +39,21 @@ def read_jk(filename):
       number = split_line[1]
       extra = split_line[2]
       all_variables.append(variable)
+
       if number == '3' and extra != '1':
          control_variables.append(variable)
-         cv_index.append(index)
+        
       if number == '2' and extra != '1':
          test_variables.append(variable)
-         tv_index.append(index)
+         
       if extra == '1':
          feed_feed_variables.append(variable) 
-         ffv_index.append(index)
-  # print control_variables, cv_index
-  # print test_variables, tv_index
-  # print feed_feed_variables, ffv_index
-  # print all_variables
-   return control_variables, cv_index, test_variables, tv_index, feed_feed_variables, ffv_index, all_variables
-
-control_variables, cv_index, test_variables, tv_index, feed_feed_variables, ffv_index, all_variables = read_jk(jk_list)
+         
+   return control_variables, test_variables, feed_feed_variables, all_variables
 
 
 def read_map(mappath,field, control_variables, test_variables, feed_feed_variables, all_variables):
+   print ('STAGE 2: Splitting the map into subsets with different split combinations.')
    input_map = h5py.File(mappath, 'r')
 
    x = np.array(input_map['x'][:]) #common part for all maps
@@ -121,7 +115,6 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
          f.close()
    return maps_created, for_feed_feed
 
-print (read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables))
 '''
 (['co6_map_elev_cesc_0_snup_0.h5', 'co6_map_elev_cesc_0_snup_1.h5', 'co6_map_elev_cesc_1_snup_0.h5', 'co6_map_elev_cesc_1_snup_1.h5', 'co6_map_ambt_cesc_0_snup_0.h5', 'co6_map_ambt_cesc_0_snup_1.h5', 'co6_map_ambt_cesc_1_snup_0.h5', 'co6_map_ambt_cesc_1_snup_1.h5', 'co6_map_half_cesc_0_snup_0.h5', 'co6_map_half_cesc_0_snup_1.h5', 'co6_map_half_cesc_1_snup_0.h5', 'co6_map_half_cesc_1_snup_1.h5'], ['elev', 'ambt', 'half'])
 '''
