@@ -79,7 +79,7 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
             rms_split = rms_split.reshape(new_shape)
             split_names = [] #collect the names of the spits in the correct order for the new shape
             split_names.append(test_variable)
-            for i in range(how_many_twos):
+            for i in range(len(test_variables),how_many_twos):
                split_names.append(all_variables[-1-i])
                print (all_variables[-1-i])
             how_many_to_combine = len(split_names)  #test variable + all control variables
