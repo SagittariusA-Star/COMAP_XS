@@ -81,27 +81,28 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
             split_names.append(test_variable)
             for i in range(how_many_twos-1):
                split_names.append(all_variables[-len(test_variables)-1-i])
-               print (all_variables[-len(test_variables)-1-i])
-            how_many_to_combine = len(split_names)  #test variable + all control variables
-            
+             
+            how_many_to_combine = len(split_names) -1 #test variable + all control variables, except for the ff_variable
             all_different_possibilities = list(itr.product(range(2), repeat=how_many_to_combine)) #find all the combinations of 'how_many_to_combine' 0s and 1s  
             index_of_ff_variable = split_names.index(ff_variable)
-            print (index_of_ff_variable)
-            all_axes_to_combine = list(range(0,how_many_to_combine))
-            print (all_axes_to_combine)
+   
+            all_axes_to_combine = list(range(0,how_many_to_combine+1))
+            
             all_axes_to_combine.remove(index_of_ff_variable)
-            print (all_axes_to_combine)
+      
             slc = [slice(None)]*len(new_shape) #includes all elements
       
             for i in range(len(all_different_possibilities)): #this many maps will be created
                for_naming = [] #identify which combination of splits the current map is using
                 
               
-               for j in all_axes_to_combine:
-                  slc[j] = all_different_possibilities[i][j] #choose 0 or 1 for this split
-                  for_naming.append(split_names[j])
+               for j in range(how_many_to_combine):
+                  axis_index = all_axes_to_combine[j]
+                  slc[axis_index] = all_different_possibilities[i][j] #choose 0 or 1 for this split
+                  for_naming.append(split_names[axis_index])
                   for_naming.append(all_different_possibilities[i][j])
-               print (tuple(slc))  
+                 
+               print (tuple(slc))
                my_map = map_split[tuple(slc)] #slice the map for the current combination of splits
                my_rms = rms_split[tuple(slc)] #slice the rms-map for the current combination of splits
                name = field + '_' + 'map' + '_' + ff_variable
@@ -120,8 +121,11 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
                f.create_dataset('/jackknives/map_' + ff_variable, data=my_map)
                f.create_dataset('/jackknives/rms_' + ff_variable, data=my_rms)
                f.close()
-   print (maps_created)
+  
    return maps_created
 
+'''
+['co6_map_snup_elev_0_cesc_0.h5', 'co6_map_snup_elev_0_cesc_0.h5', 'co6_map_snup_elev_0_cesc_1.h5', 'co6_map_snup_elev_0_cesc_1.h5', 'co6_map_snup_elev_1_cesc_0.h5', 'co6_map_snup_elev_1_cesc_0.h5', 'co6_map_snup_elev_1_cesc_1.h5', 'co6_map_snup_elev_1_cesc_1.h5', 'co6_map_snup_ambt_0_cesc_0.h5', 'co6_map_snup_ambt_0_cesc_0.h5', 'co6_map_snup_ambt_0_cesc_1.h5', 'co6_map_snup_ambt_0_cesc_1.h5', 'co6_map_snup_ambt_1_cesc_0.h5', 'co6_map_snup_ambt_1_cesc_0.h5', 'co6_map_snup_ambt_1_cesc_1.h5', 'co6_map_snup_ambt_1_cesc_1.h5', 'co6_map_snup_half_0_cesc_0.h5', 'co6_map_snup_half_0_cesc_0.h5', 'co6_map_snup_half_0_cesc_1.h5', 'co6_map_snup_half_0_cesc_1.h5', 'co6_map_snup_half_1_cesc_0.h5', 'co6_map_snup_half_1_cesc_0.h5', 'co6_map_snup_half_1_cesc_1.h5', 'co6_map_snup_half_1_cesc_1.h5']
+'''
 
 
