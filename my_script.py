@@ -44,25 +44,29 @@ def read_number_of_splits(map_name, jk):
        my_map = np.array(my_file['/jackknives/map_' + jk])
        sh = my_map.shape   
        number_of_splits = sh[0]   
-       print ('n of splits', number_of_splits)
    return number_of_splits
 
 def read_field(mappath):
    map_name = mappath.rpartition('/')[-1] #get rid of the path, leave only the name of the map
    map_name = map_name.rpartition('.')[0] #get rid of the ".h5" part
    field_name = map_name.split('_')[0]
-   print ('field:', field_name)
+   print ('Field:', field_name)
    return field_name
 
-#read two things from the command:
-#sys.argv[-2] = mappath
-#sys.argv[-1] = two_dimensions
+#read from the command:
+#sys.argv[-1] = mappath
 
-map_name = 'co6_map_good_splittest.h5'
+#set up a convention of naming jk list the same as the last part map!!!-------------------------------------------------------------------------
 
-mappath = '/mn/stornext/d16/cmbco/comap/nils/COMAP_general/data/maps/successive_split_test/' + map_name
+
+mappath = '/mn/stornext/d16/cmbco/comap/nils/COMAP_general/data/maps/successive_split_test/' + 'co6_map_good_splittest.h5'
 jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_splittest.txt'
-two_dimensions = False
+xs_2D = input("Cross-spectra in two dimensions? (yes/no)")
+if xs_2D == 'yes':
+   two_dimensions = True
+if xs_2D == 'no':
+   two_dimensions = False
+print (two_dimensions)
 field = read_field(mappath)
 
 control_variables, test_variables, feed_feed_variables, all_variables = read_multisplit.read_jk(jk_list)
