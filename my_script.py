@@ -84,6 +84,7 @@ for g in range(number_of_ff_variables):
       map_name = map_files[g*maps_per_jk+h]
       print ('Split for FPXS: ' + jk + '. Map: ' + map_name + '.')
       map_name = 'split_maps/' + map_name
+      print (map_name)
       n_of_splits = read_number_of_splits(map_name, jk)
       #make xs for all feed-combinations
       pool = multiprocessing.Pool(8) #here number of cores
