@@ -15,6 +15,7 @@ class CrossSpectrum_nmaps():
     def __init__(self, list_of_n_map_names, jk=False, feed1=None, feed2=None, n_of_splits=2):
         self.feed_name1 = '_feed' + str(feed1)
         self.feed_name2 = '_feed' + str(feed2)
+        print ('list names', list_of_n_map_names)
         self.names_of_maps = list_of_n_map_names #the names schould indicate which map and feed we take
         self.names = []
         self.maps = []        
@@ -25,6 +26,7 @@ class CrossSpectrum_nmaps():
         for name in self.names_of_maps:
            name = name.rpartition('/')[-1] #get rid of the path, leave only the name of the map
            name = name.rpartition('.')[0] #get rid of the ".h5" part
+           print ('name', name)
            for u in range(how_many_combinations):
               current_combo = all_different_possibilities[u] #there are two splits from mapmaker so far, can be more from simulations
               name1 = name + '_' +  str(current_combo[0]) + '_split_' + jk + self.feed_name1
