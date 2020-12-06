@@ -25,6 +25,7 @@ def run_all_methods(feed1,feed2, n_of_splits, two_dimensions=False):
       my_xs.plot_xs(k, xs, rms_sig, rms_mean, 0, save=True)
       my_xs.make_h5(0)
    if two_dimenstions == True:
+      print ('Not implemented yet!')
       #write all of these functions in 2D as well
 
 def all_feed_combo_xs(p):
