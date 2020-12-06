@@ -23,6 +23,7 @@ class CrossSpectrum_nmaps():
         all_different_possibilities = list(itr.combinations(n_list, 2)) #for n_of_splits = 3, it gives [(0, 1), (0, 2), (1, 2)]
         how_many_combinations = len(all_different_possibilities)
         for name in self.names_of_maps:
+           print ('name0', name)
            name = name.split('/')[-1] #get rid of the path, leave only the name of the map
            print ('name1', name)
            name = name.split('.')[0] #get rid of the ".h5" part
