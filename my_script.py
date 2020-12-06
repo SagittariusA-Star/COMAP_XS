@@ -36,7 +36,7 @@ def all_feed_combo_xs(p):
        return p
    if j == 4 or j == 6 or j == 7: #avoid these feeds (were turned off for most of the mission)
        return p
-   run_all_methods(feed1=i,feed2=j, n_of_splits, two_dimensions)
+   run_all_methods(i,j, n_of_splits, two_dimensions)
    return p
 
 def read_number_of_splits(map_name, jk):
