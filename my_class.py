@@ -27,8 +27,8 @@ class CrossSpectrum_nmaps():
            name = name.rpartition('.')[0] #get rid of the ".h5" part
            for u in range(how_many_combinations):
               current_combo = all_different_possibilities[u] #there are two splits from mapmaker so far, can be more from simulations
-              name1 = name + '_' +  current_combo[0] +'_split_' + jk + self.feed_name1
-              name2 = name + '_' +  current_combo[1] +'_split_' + jk + self.feed_name2
+              name1 = name + '_' +  str(current_combo[0]) + '_split_' + jk + self.feed_name1
+              name2 = name + '_' +  str(current_combo[1]) +'_split_' + jk + self.feed_name2
               self.names.append(name1)  
               self.names.append(name2)
 
