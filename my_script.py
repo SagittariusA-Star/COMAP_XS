@@ -28,15 +28,15 @@ def run_all_methods(feed1,feed2, n_of_splits, two_dimensions=False):
       #write all of these functions in 2D as well
 
 def all_feed_combo_xs(p):
-    i = p // 19 + 1 #floor division, divides and returns the integer value of the quotient (it dumps the digits after the decimal)
-    j = p % 19 + 1 #modulus, divides and returns the value of the remainder
+   i = p // 19 + 1 #floor division, divides and returns the integer value of the quotient (it dumps the digits after the decimal)
+   j = p % 19 + 1 #modulus, divides and returns the value of the remainder
     
-    if i == 4 or i == 6 or i == 7: #avoid these feeds (were turned off for most of the mission)
-        return p
-    if j == 4 or j == 6 or j == 7: #avoid these feeds (were turned off for most of the mission)
-        return p
-    run_all_methods(feed1=i,feed2=j, n_of_splits, two_dimensions)
-    return p
+   if i == 4 or i == 6 or i == 7: #avoid these feeds (were turned off for most of the mission)
+       return p
+   if j == 4 or j == 6 or j == 7: #avoid these feeds (were turned off for most of the mission)
+       return p
+   run_all_methods(feed1=i,feed2=j, n_of_splits, two_dimensions)
+   return p
 
 def read_number_of_splits(map_name, jk):
    with h5py.File(map_name, mode="r") as my_file:
