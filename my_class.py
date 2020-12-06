@@ -25,19 +25,16 @@ class CrossSpectrum_nmaps():
         how_many_combinations = len(all_different_possibilities)
         
         self.name_of_map = self.name_of_map.split('/')[-1] #get rid of the path, leave only the name of the map
-        print ('name1', self.name_of_map)
         self.name_of_map = self.name_of_map.split('.')[0] #get rid of the ".h5" part
-        print ('name2', self.name_of_map)
         for u in range(how_many_combinations):
            current_combo = all_different_possibilities[u] #there are two splits from mapmaker so far, can be more from simulations
-           name1 = self.name_of_map + '_' +  str(current_combo[0]) + '_split_' + jk + self.feed_name1
-           name2 = self.name_of_map + '_' +  str(current_combo[1]) +'_split_' + jk + self.feed_name2
+           name1 = self.name_of_map + '_' + '_split' + str(current_combo[0]) + jk + self.feed_name1
+           name2 = self.name_of_map + '_' + '_split' + str(current_combo[1]) + jk + self.feed_name2
            self.names.append(name1)  
            self.names.append(name2)
 
         for u in range(how_many_combinations):
            current_combo = all_different_possibilities[u] #there are two splits from mapmaker so far, can be more from simulations
-           print ('mn3', name_of_my_map)
            my_map_split_1 = map_cosmo.MapCosmo(name_of_my_map, feed1, jk, current_combo[0])
            my_map_split_2 = map_cosmo.MapCosmo(name_of_my_map, feed2, jk, current_combo[1])
            self.maps.append(my_map_split_1)
