@@ -24,8 +24,8 @@ class CrossSpectrum_nmaps():
         all_different_possibilities = list(itr.combinations(n_list, 2)) #for n_of_splits = 3, it gives [(0, 1), (0, 2), (1, 2)]
         how_many_combinations = len(all_different_possibilities)
         for name in self.names_of_maps:
-           name = name.rpartition('/')[-1] #get rid of the path, leave only the name of the map
-           name = name.rpartition('.')[0] #get rid of the ".h5" part
+           name = name.split('/')[-1] #get rid of the path, leave only the name of the map
+           name = name.split('.')[0] #get rid of the ".h5" part
            print ('name', name)
            for u in range(how_many_combinations):
               current_combo = all_different_possibilities[u] #there are two splits from mapmaker so far, can be more from simulations
