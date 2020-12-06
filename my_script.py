@@ -38,8 +38,8 @@ def all_feed_combo_xs(p):
    run_all_methods(i,j, n_of_splits, two_dimensions)
    return p
 
-def read_number_of_splits(map_name, jk):
-   with h5py.File(map_name, mode="r") as my_file:
+def read_number_of_splits(mapfile, jk):
+   with h5py.File(mapfile, mode="r") as my_file:
        my_map = np.array(my_file['/jackknives/map_' + jk])
        sh = my_map.shape   
        number_of_splits = sh[0]   
@@ -83,7 +83,7 @@ for g in range(number_of_ff_variables):
       mapname = map_files[g*maps_per_jk+h]
       print ('Split for FPXS: ' + jk + '. Map: ' + mapname + '.')
       mapfile = 'split_maps/' + mapname
-      n_of_splits = read_number_of_splits(mapname, jk)
+      n_of_splits = read_number_of_splits(mapfile, jk)
       #make xs for all feed-combinations
       pool = multiprocessing.Pool(8) #here number of cores
       np.array(pool.map(all_feed_combo_xs, feed_combos))
