@@ -28,7 +28,9 @@ class CrossSpectrum_nmaps():
         self.name_of_map = self.name_of_map.split('.')[0] #get rid of the ".h5" part
         for u in range(how_many_combinations):
            current_combo = all_different_possibilities[u] #there are two splits from mapmaker so far, can be more from simulations
-           name1 = self.name_of_map + '_split' + str(current_combo[0]) + self.feed_name1
+           name1 = self.name_of_map + '_split' + str(current_combo[0]) + self.feed_name1    
+           #xs_co6_map_snup_elev_0_cesc_0_split0_feed11_and_co6_map_snup_elev_0_cesc_0_split1_feed8.h5
+
            name2 = self.name_of_map + '_split' + str(current_combo[1]) + self.feed_name2
            self.names.append(name1)  
            self.names.append(name2)
@@ -205,7 +207,7 @@ class CrossSpectrum_nmaps():
           tools.ensure_dir_exists('figures')
           name_for_figure = 'figures/xs_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.pdf'
           plt.savefig(name_for_figure, bbox_inches='tight')
-          print ('Figure saved as', name_for_figure)
+          #print ('Figure saved as', name_for_figure)
        plt.close(fig)
        #plt.show()
 

@@ -15,7 +15,7 @@ def run_all_methods(feed1,feed2, n_of_splits, two_dimensions=False):
    my_xs = my_class.CrossSpectrum_nmaps(mapfile,jk,feed1, feed2, n_of_splits)
 
    calculated_xs = my_xs.get_information() #gives the xs, k, rms_sig, rms_mean index with corresponding map-pair
-   print ('Created xs between ' + calculated_xs[0][1] + ' and ' + calculated_xs[0][2] + '.')
+   print ('Computing xs between ' + calculated_xs[0][1] + ' and ' + calculated_xs[0][2] + '.')
    if two_dimensions == False:
       xs, k, nmodes = my_xs.calculate_xs()
       rms_mean, rms_sig = my_xs.run_noise_sims(10) #these rms's are arrays of 14 elements, that give error bars (number of bin edges minus 1)
