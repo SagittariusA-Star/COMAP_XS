@@ -22,11 +22,11 @@ class CrossSpectrum_nmaps():
 
         n_list = list(range(n_of_splits))
         all_different_possibilities = list(itr.combinations(n_list, 2)) #for n_of_splits = 3, it gives [(0, 1), (0, 2), (1, 2)]
-        how_many_combinations = len(all_different_possibilities)
+        self.how_many_combinations = len(all_different_possibilities)
         
         self.name_of_map = self.name_of_map.split('/')[-1] #get rid of the path, leave only the name of the map
         self.name_of_map = self.name_of_map.split('.')[0] #get rid of the ".h5" part
-        for u in range(how_many_combinations):
+        for u in range(self.how_many_combinations):
            current_combo = all_different_possibilities[u] #there are two splits from mapmaker so far, can be more from simulations
            name1 = self.name_of_map + '_split' + str(current_combo[0]) + self.feed_name1    
            #xs_co6_map_snup_elev_0_cesc_0_split0_feed11_and_co6_map_snup_elev_0_cesc_0_split1_feed8.h5
@@ -35,7 +35,7 @@ class CrossSpectrum_nmaps():
            self.names.append(name1)  
            self.names.append(name2)
 
-        for u in range(how_many_combinations):
+        for u in range(self.how_many_combinations):
            current_combo = all_different_possibilities[u] #there are two splits from mapmaker so far, can be more from simulations
            my_map_split_1 = map_cosmo.MapCosmo(name_of_my_map, feed1, jk, current_combo[0])
            my_map_split_2 = map_cosmo.MapCosmo(name_of_my_map, feed2, jk, current_combo[1])
@@ -78,6 +78,8 @@ class CrossSpectrum_nmaps():
         index = 0
         for i in range(0,len(self.maps)-1, 2):
            j = i + 1
+           index = i/2
+           print ('Computing xs between ' + calculated_xs[index][1] + ' and ' + calculated_xs[index][2] + '.')
            self.normalize_weights(i,j) #normalize weights for given xs pair of maps
 
            wi = self.maps[i].w
@@ -141,9 +143,10 @@ class CrossSpectrum_nmaps():
         return self.rms_xs_mean, self.rms_xs_std
     
     #MAKE SEPARATE H5 FILE FOR EACH XS
-    def make_h5(self,index=0, outname=None):
+    def make_h5(self, outname=None):
        
-        for i in range(0,len(self.maps)-1, 2):
+        for index in range(self.how_many_combinations):
+           i = index*2
            j = i+1
 
            if outname is None:
@@ -170,45 +173,45 @@ class CrossSpectrum_nmaps():
            f1.close()
 
     #PLOT XS
-    def plot_xs(self, k_array, xs_array, rms_sig_array, rms_mean_array, index, save=False):
+    def plot_xs(self, k_array, xs_array, rms_sig_array, rms_mean_array, save=False):
+       for index in range(self.how_many_combinations):
+          k = k_array[index]
+          xs = xs_array[index]
+          rms_sig = rms_sig_array[index]
+          rms_mean = rms_mean_array[index]
        
-       k = k_array[index]
-       xs = xs_array[index]
-       rms_sig = rms_sig_array[index]
-       rms_mean = rms_mean_array[index]
+          #lim = 200.
+          fig = plt.figure()
+          fig.suptitle('xs of ' + self.get_information()[index][1] + ' and ' + self.get_information()[index][2])
+          ax1 = fig.add_subplot(211)
+          ax1.errorbar(k, k*xs, k*rms_sig, fmt='o', label=r'$k\tilde{C}_{data}(k)$') #added k*
+          ax1.plot(k, 0 * rms_mean, 'k', label=r'$\tilde{C}_{noise}(k)$', alpha=0.4)
+          ax1.plot(k, k*PS_function.PS_f(k), label='k*PS of the input signal')
+          ax1.set_ylabel(r'$\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^3$]')
        
-       #lim = 200.
-       fig = plt.figure()
-       fig.suptitle('xs of ' + self.get_information()[index][1] + ' and ' + self.get_information()[index][2])
-       ax1 = fig.add_subplot(211)
-       ax1.errorbar(k, k*xs, k*rms_sig, fmt='o', label=r'$k\tilde{C}_{data}(k)$') #added k*
-       ax1.plot(k, 0 * rms_mean, 'k', label=r'$\tilde{C}_{noise}(k)$', alpha=0.4)
-       ax1.plot(k, k*PS_function.PS_f(k), label='k*PS of the input signal')
-       ax1.set_ylabel(r'$\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^3$]')
-       
-       lim = np.mean(np.abs(xs[4:])) * 4
-       if not np.isnan(lim):
-          ax1.set_ylim(-lim, lim)            
+          lim = np.mean(np.abs(xs[4:])) * 4
+          if not np.isnan(lim):
+             ax1.set_ylim(-lim, lim)            
 
-       ax1.set_xscale('log')
-       ax1.grid()
-       plt.legend()
+          ax1.set_xscale('log')
+          ax1.grid()
+          plt.legend()
 
-       ax2 = fig.add_subplot(212)
-       ax2.errorbar(k, xs / rms_sig, rms_sig / rms_sig, fmt='o', label=r'$\tilde{C}_{data}(k)$')
-       ax2.plot(k, 0 * rms_mean, 'k', alpha=0.4)
-       ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$')
-       ax2.set_xlabel(r'$k$ [Mpc${}^{-1}$]')
-       ax2.set_ylim(-12, 12)
-       ax2.set_xscale('log')
-       ax2.grid()
-       plt.legend()
-       if save==True:
-          tools.ensure_dir_exists('figures')
-          name_for_figure = 'figures/xs_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.pdf'
-          plt.savefig(name_for_figure, bbox_inches='tight')
-          #print ('Figure saved as', name_for_figure)
-       plt.close(fig)
-       #plt.show()
+          ax2 = fig.add_subplot(212)
+          ax2.errorbar(k, xs / rms_sig, rms_sig / rms_sig, fmt='o', label=r'$\tilde{C}_{data}(k)$')
+          ax2.plot(k, 0 * rms_mean, 'k', alpha=0.4)
+          ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$')
+          ax2.set_xlabel(r'$k$ [Mpc${}^{-1}$]')
+          ax2.set_ylim(-12, 12)
+          ax2.set_xscale('log')
+          ax2.grid()
+          plt.legend()
+          if save==True:
+             tools.ensure_dir_exists('figures')
+             name_for_figure = 'figures/xs_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.pdf'
+             plt.savefig(name_for_figure, bbox_inches='tight')
+             #print ('Figure saved as', name_for_figure)
+          plt.close(fig)
+          #plt.show()
 
 

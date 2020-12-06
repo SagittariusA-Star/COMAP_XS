@@ -15,14 +15,14 @@ def run_all_methods(feed1,feed2, n_of_splits, two_dimensions=False):
    my_xs = my_class.CrossSpectrum_nmaps(mapfile,jk,feed1, feed2, n_of_splits)
 
    calculated_xs = my_xs.get_information() #gives the xs, k, rms_sig, rms_mean index with corresponding map-pair
-   print ('Computing xs between ' + calculated_xs[0][1] + ' and ' + calculated_xs[0][2] + '.')
+
    if two_dimensions == False:
       xs, k, nmodes = my_xs.calculate_xs()
       rms_mean, rms_sig = my_xs.run_noise_sims(10) #these rms's are arrays of 14 elements, that give error bars (number of bin edges minus 1)
 
       #plot all cross-spectra that have been calculated
-      my_xs.plot_xs(k, xs, rms_sig, rms_mean, 0, save=True)
-      my_xs.make_h5(0)
+      my_xs.plot_xs(k, xs, rms_sig, rms_mean, save=True)
+      my_xs.make_h5()
    if two_dimensions == True:
       print ('Not implemented yet!')
       #write all of these functions in 2D as well
