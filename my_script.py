@@ -52,18 +52,14 @@ def read_field_jklist(mappath):
    field_name = map_name.split('_')[0]
    last_part = map_name.split('_')[-1]
    jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_' + last_part + '.txt'
-   print ('Field: ', field_name)
-   print ('jk list found as: ', jk_list)
+   print ('Field:', field_name)
+   print ('List of split-variables:', jk_list)
    return field_name, jk_list
 
 #read from the command:
 #sys.argv[-1] = mappath
-
-#set up a convention of naming jk list the same as the last part map!!!-------------------------------------------------------------------------
-
-
 mappath = '/mn/stornext/d16/cmbco/comap/nils/COMAP_general/data/maps/successive_split_test/co6_map_good_splittest.h5'
-#jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_splittest.txt'
+
 xs_2D = input("Cross-spectra in two dimensions? (yes/no) ")
 if xs_2D == 'yes':
    two_dimensions = True
@@ -90,6 +86,6 @@ for g in range(number_of_ff_variables):
       map_name = 'split_maps/' + map_name
       n_of_splits = read_number_of_splits(map_name, jk)
       #make xs for all feed-combinations
-      #pool = multiprocessing.Pool(8) #here number of cores
-      #np.array(pool.map(all_feed_combo_xs, feed_combos))
+      pool = multiprocessing.Pool(8) #here number of cores
+      np.array(pool.map(all_feed_combo_xs, feed_combos))
 
