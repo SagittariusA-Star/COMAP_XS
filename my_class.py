@@ -75,10 +75,10 @@ class CrossSpectrum_nmaps():
         self.xs = []
         self.k = []
         self.nmodes = []
-        index = 0
+        index = -1
         for i in range(0,len(self.maps)-1, 2):
            j = i + 1
-           index = i/2
+           index += 1
            print ('Computing xs between ' + calculated_xs[index][1] + ' and ' + calculated_xs[index][2] + '.')
            self.normalize_weights(i,j) #normalize weights for given xs pair of maps
 
