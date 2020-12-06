@@ -12,7 +12,7 @@ import multiprocessing
 import read_multisplit
 
 def run_all_methods(feed1,feed2, n_of_splits, two_dimensions=False):
-   my_xs = my_class.CrossSpectrum_nmaps(map_name,jk,feed1, feed2, n_of_splits)
+   my_xs = my_class.CrossSpectrum_nmaps(mapfile,jk,feed1, feed2, n_of_splits)
 
    calculated_xs = my_xs.get_information() #gives the xs, k, rms_sig, rms_mean index with corresponding map-pair
    print ('Created xs between ' + calculated_xs[0][1] + ' and ' + calculated_xs[0][2] + '.')
@@ -80,10 +80,10 @@ print ('STAGE 3: Calculating cross-spectra for all feed-feed combinations.')
 for g in range(number_of_ff_variables):
    for h in range(maps_per_jk):
       jk = feed_feed_variables[g]
-      map_name = map_files[g*maps_per_jk+h]
-      print ('Split for FPXS: ' + jk + '. Map: ' + map_name + '.')
-      map_name = 'split_maps/' + map_name
-      n_of_splits = read_number_of_splits(map_name, jk)
+      mapname = map_files[g*maps_per_jk+h]
+      print ('Split for FPXS: ' + jk + '. Map: ' + mapname + '.')
+      mapfile = 'split_maps/' + mapname
+      n_of_splits = read_number_of_splits(mapname, jk)
       #make xs for all feed-combinations
       pool = multiprocessing.Pool(8) #here number of cores
       np.array(pool.map(all_feed_combo_xs, feed_combos))
