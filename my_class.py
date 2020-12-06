@@ -17,6 +17,7 @@ class CrossSpectrum_nmaps():
         self.feed_name2 = '_feed' + str(feed2)
         print ('list names', list_of_n_map_names)
         self.names_of_maps = list_of_n_map_names #the names schould indicate which map and feed we take
+        print ('list names 2', list_of_n_map_names)
         self.names = []
         self.maps = []        
 
