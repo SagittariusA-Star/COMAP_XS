@@ -35,6 +35,7 @@ class CrossSpectrum_nmaps():
         for map_name in list_of_n_map_names:
            for u in range(how_many_combinations):
               current_combo = all_different_possibilities[u] #there are two splits from mapmaker so far, can be more from simulations
+              print ('mn3', map_name)
               my_map_split_1 = map_cosmo.MapCosmo(map_name, feed1, jk, current_combo[0])
               my_map_split_2 = map_cosmo.MapCosmo(map_name, feed2, jk, current_combo[1])
               self.maps.append(my_map_split_1)
