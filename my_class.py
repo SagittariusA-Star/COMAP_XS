@@ -26,7 +26,7 @@ class CrossSpectrum_nmaps():
            name = name.rpartition('/')[-1] #get rid of the path, leave only the name of the map
            name = name.rpartition('.')[0] #get rid of the ".h5" part
            for u in range(how_many_combinations):
-              current_combo = all_different_possibilites[u] #there are two splits from mapmaker so far, can be more from simulations
+              current_combo = all_different_possibilities[u] #there are two splits from mapmaker so far, can be more from simulations
               name1 = name + '_' +  current_combo[0] +'_split_' + jk + self.feed_name1
               name2 = name + '_' +  current_combo[1] +'_split_' + jk + self.feed_name2
               self.names.append(name1)  
@@ -34,7 +34,7 @@ class CrossSpectrum_nmaps():
 
         for map_name in list_of_n_map_names:
            for u in range(how_many_combinations):
-              current_combo = all_different_possibilites[u] #there are two splits from mapmaker so far, can be more from simulations
+              current_combo = all_different_possibilities[u] #there are two splits from mapmaker so far, can be more from simulations
               my_map_split_1 = map_cosmo.MapCosmo(map_name, feed1, jk, current_combo[0])
               my_map_split_2 = map_cosmo.MapCosmo(map_name, feed2, jk, current_combo[1])
               self.maps.append(my_map_split_1)
