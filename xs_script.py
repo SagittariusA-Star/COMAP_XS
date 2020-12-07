@@ -68,11 +68,11 @@ if xs_2D == 'no':
    two_dimensions = False
 
 print ('The following directories will be created:')
-print ('split_maps - the HDF5 map-files split according to all combinations of variables')
-print ('spectra - the HDF5 files with cross-spectra for all split-split and feed-feed combinations')
-print ('xs_figures - figures of cross-spectra for all split-split and feed-feed combinations')
-print ('chi2_grids - chi2 grids for all split-split combinations')
-print ('xs_mean_figures - figures of mean cross-spectra for each combination of variables')
+print ('- split_maps - the HDF5 map-files split according to all combinations of variables')
+print ('- spectra - the HDF5 files with cross-spectra for all split-split and feed-feed combinations')
+print ('- xs_figures - figures of cross-spectra for all split-split and feed-feed combinations')
+print ('- chi2_grids - chi2 grids for all split-split combinations')
+print ('- xs_mean_figures - figures of mean cross-spectra for each combination of variables')
 
 field, jk_list = read_field_jklist(mappath)
 
@@ -147,5 +147,5 @@ for mn in range(number_of_maps):
       print ('Saving the figure ' + figure_name) #Saving the figure xs_mean_co6_map_snup_elev0_cesc0.pdf
       mean_multisplit.xs_with_model(figure_name, k_arr[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title, scan_strategy)
 
-
+#maybe write arrays to a hdf5 file, to be able to coadd them later, do PS_amplitude fits, etc.
 
