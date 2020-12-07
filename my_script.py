@@ -99,7 +99,10 @@ ff_jk_arr = []
 split_names_arr = []
 split_numbers_arr = []
 for mn in range(number_of_maps):
-   k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_grid(map_files[mn]) #saves the chi2 grid for each split-combo
+   if two_dimensions == True:
+      print ('Not implemented yet!')
+   if two_dimensions == False:
+      k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_grid(map_files[mn]) #saves the chi2 grid for each split-combo
    
    k_arr.append(k)
    xs_mean_arr.append(xs_mean)
@@ -128,7 +131,8 @@ for mn in range(number_of_maps):
       scan_strategy = 'liss'
    if split_numbers_arr[mn, index_cesc] == 1: #cesc=0
       scan_strategy = 'ces'
-   mean_multisplit.xs_with_model(figure_name, k_arr[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title, scan_strategy)
+   if two_dimensions == False:
+      mean_multisplit.xs_with_model(figure_name, k_arr[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title, scan_strategy)
 
 
     
