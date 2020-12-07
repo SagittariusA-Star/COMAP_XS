@@ -56,7 +56,7 @@ def xs_feed_feed_grid(map_file):
    xs_sum = np.zeros(n_k)
    #rms_xs_sum = np.zeros((n_k, n_sim))
    xs_div = np.zeros(n_k)
- 
+   map_file = 'split_maps/' + map_file
    name_of_map = map_file.split('/')[-1] #get rid of the path, leave only the name of the map
    name_of_map = name_of_map.split('.')[0] #get rid of the ".h5" part
    name_of_map_list = name_of_map.split('_') #co6_map_snup_elev_0_cesc_0'
