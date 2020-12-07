@@ -113,7 +113,7 @@ for mn in range(number_of_maps):
    split_numbers_arr.append(split_numbers)
 how_many_different_splits = len(split_names)
 
-
+print ('hi0', split_numbers_arr)
 #group maps with respect to scanning strategy
 index_cesc = split_names_arr[0].index('cesc')
 
@@ -128,6 +128,7 @@ for mn in range(number_of_maps):
       other += other_part
    figure_name = 'xs_mean_' + field_arr[mn] + '_map_' + ff_jk_arr[mn] + last_name_part + '.pdf'
    figure_title = 'Field: ' + field_arr[mn] + '; Feed-feed variable: ' + ff_jk_arr[mn] + '; Other splits:' + other
+   print ('hi',split_numbers_arr[mn][index_cesc] )
    if split_numbers_arr[mn][index_cesc] == 0: #cesc=0
       scan_strategy = 'liss'
    if split_numbers_arr[mn][index_cesc] == 1: #cesc=0
