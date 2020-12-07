@@ -122,7 +122,7 @@ for mn in range(number_of_maps):
    other = ' '
    for ds in range(how_many_different_splits):
       last_part = split_names_arr[mn][ds] + split_numbers_arr[mn][ds] + '_'
-      other_part = split_names_arr[mn][ds] + ' ' + split_numbers_arr[mn][ds] + ', '
+      other_part = split_names_arr[mn][ds] + '-' + split_numbers_arr[mn][ds] + ', '
       last_name_part += last_part
       other += other_part
    figure_name = 'xs_mean_' + field_arr[mn] + '_map_' + ff_jk_arr[mn] + last_name_part + '.pdf'
@@ -133,7 +133,7 @@ for mn in range(number_of_maps):
    if split_numbers_arr[mn][index_cesc] == '1': #cesc=0
       scan_strategy = 'ces'
    if two_dimensions == False:
-      print ('Saving the figure ' + figure_title)
+      print ('Saving the figure ' + figure_name)
       mean_multisplit.xs_with_model(figure_name, k_arr[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title, scan_strategy)
 
 
