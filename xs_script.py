@@ -85,7 +85,7 @@ number_of_ff_variables = len(feed_feed_variables)
 maps_per_jk = int(number_of_maps/number_of_ff_variables)
 feed_combos = list(range(19*19)) #number of combinations between feeds
 '''
-print ('STAGE 3: Calculating cross-spectra for all feed-feed combinations.')
+print ('STAGE 3/4: Calculating cross-spectra for all split-split feed-feed combinations.')
 for g in range(number_of_ff_variables):
    for h in range(maps_per_jk):
       jk = feed_feed_variables[g]
@@ -97,7 +97,7 @@ for g in range(number_of_ff_variables):
       pool = multiprocessing.Pool(8) #here number of cores
       np.array(pool.map(all_feed_combo_xs, feed_combos))
 '''
-print ('STAGE 4: Calculating the mean of cross-spectra from all feed-feed combinations.')
+print ('STAGE 4/4: Calculating the mean of cross-spectra from all combinations.')
 k_arr = []
 xs_mean_arr = []
 xs_sigma_arr = []

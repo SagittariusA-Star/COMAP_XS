@@ -9,10 +9,10 @@ import tools
 # (important with jk_list - keep 1s first, then 2s, then 3s, and two first lines irrelevant)
 # marked with 3 - control variables - produce all the different combinations of these 
 # marked with 2 - test variables - look at only one of these, while the rest is co-added - can be found in the map file
-# marked with extra 1 - the variable used for feed-feed cross spectra
+# marked with extra 1 - the variable used for feed-feed cross spectra, always behind a control variable
 
 def read_jk(filename):
-   print ('STAGE 1: Reading the list of variables associated with the map.')
+   print ('STAGE 1/4: Reading the list of variables associated with the map.')
    jk_file = open(filename, 'r')
    all_lines = jk_file.readlines()
    jk_file.close()
@@ -43,7 +43,7 @@ def read_jk(filename):
 
 
 def read_map(mappath,field, control_variables, test_variables, feed_feed_variables, all_variables):
-   print ('STAGE 2: Splitting the map into subsets with different split combinations.')
+   print ('STAGE 2/4: Splitting the map into subsets with different split combinations.')
    input_map = h5py.File(mappath, 'r')
 
    x = np.array(input_map['x'][:]) #common part for all maps
@@ -52,7 +52,7 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
    maps_created = []
    for ff_variable in feed_feed_variables:
       for test_variable in test_variables:
-         if test_variable != ff_variable: #which, I assume, is always true
+         if test_variable != ff_variable: #which, I assume, is always true for now
             map_split = np.array(multisplits['map_' + test_variable][:])
             rms_split = np.array(multisplits['rms_' + test_variable][:])
             shp = map_split.shape
@@ -78,7 +78,7 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
    
             all_axes_to_combine = list(range(0,how_many_to_combine+1))
             
-            all_axes_to_combine.remove(index_of_ff_variable) #all axes for different combinations of splits
+            all_axes_to_combine.remove(index_of_ff_variable) #all axes for different combinations of splits, include both splits for the feed-feed variable
       
             slc = [slice(None)]*len(new_shape) #includes all elements
       
