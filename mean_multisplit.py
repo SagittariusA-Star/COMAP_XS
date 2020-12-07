@@ -125,7 +125,7 @@ def xs_feed_feed_grid(map_file):
       cbar = plt.colorbar()
       cbar.set_label(r'$|\chi^2| \times$ sign($\chi^3$)')
       plt.savefig(figure_name, bbox_inches='tight')
-      plt.close(fig)
+      
       #plt.show()
       #print ("xs_div:", xs_div)
    return k, xs_sum / xs_div, 1. / np.sqrt(xs_div), field, ff_jk, split_names, split_numbers
@@ -191,6 +191,7 @@ def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy):
    #plt.legend()
    tools.ensure_dir_exists('xs_mean_figures')
    plt.savefig('xs_mean_figures/' + figure_name, bbox_inches='tight')
+   plt.close(fig)
    #plt.show()
 
 
