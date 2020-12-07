@@ -207,8 +207,8 @@ class CrossSpectrum_nmaps():
           ax2.grid()
           plt.legend()
           if save==True:
-             tools.ensure_dir_exists('figures')
-             name_for_figure = 'figures/xs_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.pdf'
+             tools.ensure_dir_exists('xs_figures')
+             name_for_figure = 'xs_figures/xs_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.pdf'
              plt.savefig(name_for_figure, bbox_inches='tight')
              #print ('Figure saved as', name_for_figure)
           plt.close(fig)

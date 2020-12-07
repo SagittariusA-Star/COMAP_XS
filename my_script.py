@@ -10,6 +10,7 @@ import map_cosmo
 import my_class
 import multiprocessing
 import read_multisplit
+import mean_multisplit
 
 def run_all_methods(feed1,feed2, n_of_splits, two_dimensions=False):
    my_xs = my_class.CrossSpectrum_nmaps(mapfile,jk,feed1, feed2, n_of_splits)
@@ -55,6 +56,7 @@ def read_field_jklist(mappath):
    print ('List of split-variables:', jk_list)
    return field_name, jk_list
 
+
 #read from the command:
 #sys.argv[-1] = mappath
 mappath = '/mn/stornext/d16/cmbco/comap/nils/COMAP_general/data/maps/successive_split_test/co6_map_good_splittest.h5'
@@ -87,4 +89,52 @@ for g in range(number_of_ff_variables):
       #make xs for all feed-combinations
       pool = multiprocessing.Pool(8) #here number of cores
       np.array(pool.map(all_feed_combo_xs, feed_combos))
+
+print ('STAGE 4: Calculating the mean of cross-spectra from all feed-feed combinations.')
+k_arr = []
+xs_mean_arr = []
+xs_sigma_arr = []
+field_arr = []
+ff_jk_arr = []
+split_names_arr = []
+split_numbers_arr = []
+for mn in range(number_of_maps):
+   k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_grid(map_files[mn]) #saves the chi2 grid for each split-combo
+   
+   k_arr.append(k)
+   xs_mean_arr.append(xs_mean)
+   xs_sigma_arr.append(xs_sigma)
+   field_arr.append(field)
+   ff_jk_arr.append(ff_jk)
+   split_names_arr.append(split_names)
+   split_numbers_arr.append(split_numbers)
+how_many_different_splits = len(split_names)
+
+#group maps with respect to scanning strategy
+index_cesc = split_names[0].index('cesc')
+
+# plot xs mean
+for mn in range(number_of_maps):
+   last_name_part = '_'
+   other = ' '
+   for ds in range(how_many_different_splits):
+      last_part = split_names_arr[mn,ds] + split_numbers_arr[mn,ds] + '_'
+      other_part = split_names_arr[mn,ds] + ' ' + split_numbers_arr[mn,ds] + ', '
+      last_name_part += last_part
+      other += other_part
+   figure_name = 'xs_mean_' + field_arr[mn] + '_map_' + ff_jk_arr[mn] + last_name_part + '.pdf'
+   figure_title = 'Field: ' + field_arr[mn] + '; Feed-feed variable: ' + ff_jk_arr[mn] + '; Other splits:' + other
+   if split_numbers_arr[mn, index_cesc] == 0: #cesc=0
+      scan_strategy = 'liss'
+   if split_numbers_arr[mn, index_cesc] == 1: #cesc=0
+      scan_strategy = 'ces'
+   mean_multisplit.xs_with_model(figure_name, k_arr[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title, scan_strategy)
+
+
+    
+
+
+   
+
+
 
