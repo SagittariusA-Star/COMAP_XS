@@ -10,7 +10,7 @@ import scipy.interpolate
 
 import tools
 import map_cosmo
-import my_class
+import xs_class
 import PS_function
 import itertools as itr
 from scipy.optimize import curve_fit
