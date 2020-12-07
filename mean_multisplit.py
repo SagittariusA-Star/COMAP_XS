@@ -89,7 +89,7 @@ def xs_feed_feed_grid(map_file):
               try:
                   filepath = path_to_xs %(i+1, j+1)
                   with h5py.File(filepath, mode="r") as my_file:
-                      print ("finds file", i, j)
+                      #print ("finds file", i, j)
                       xs[i, j] = np.array(my_file['xs'][:])
                       #print (xs[i,j])
                       rms_xs_std[i, j] = np.array(my_file['rms_xs_std'][:])
@@ -108,7 +108,7 @@ def xs_feed_feed_grid(map_file):
               
               if abs(chi2[i,j]) < 5. and not np.isnan(chi2[i,j]) and i != j:  #if excess power is smaller than 5 sigma, chi2 is not nan, not on diagonal
                   xs_sum += xs[i,j] / rms_xs_std[i,j] ** 2
-                  print ("if test worked")
+                  #print ("if test worked")
                   xs_div += 1 / rms_xs_std[i,j] ** 2
                   n_sum += 1
 
@@ -155,10 +155,11 @@ def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy):
    #ax1.plot(k_th, k_th * ps_th_nobeam * 10, '--', label=r'$10 \times kP_{Theory}(k)$', color='dodgerblue')
    #ax1.plot(k_th, k_th * ps_copps_nobeam * 5, 'g--', label=r'$5 \times kP_{COPPS}$ (shot)')
    ax1.set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=14)
-   if scan_strategy == 'ces':
-      ax1.set_ylim(-lim*3, lim*3)              # ax1.set_ylim(0, 0.1)
-   if scan_strategy == 'liss':
-      ax1.set_ylim(-lim*2, lim*2)              # ax1.set_ylim(0, 0.1)
+   if not np.isnan(lim):
+      if scan_strategy == 'ces':
+         ax1.set_ylim(-lim*3, lim*3)              # ax1.set_ylim(0, 0.1)
+      if scan_strategy == 'liss':
+         ax1.set_ylim(-lim*2, lim*2)              # ax1.set_ylim(0, 0.1)
    ax1.set_xlim(0.04,1.)
    ax1.set_xscale('log')
    ax1.set_title(titlename)
