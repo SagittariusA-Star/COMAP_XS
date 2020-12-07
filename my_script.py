@@ -113,25 +113,24 @@ for mn in range(number_of_maps):
    split_numbers_arr.append(split_numbers)
 how_many_different_splits = len(split_names)
 
-print ('split array', split_names_arr)
+
 #group maps with respect to scanning strategy
 index_cesc = split_names_arr[0].index('cesc')
-print ('ind cesc', index_cesc)
 
 # plot xs mean
 for mn in range(number_of_maps):
    last_name_part = '_'
    other = ' '
    for ds in range(how_many_different_splits):
-      last_part = split_names_arr[mn,ds] + split_numbers_arr[mn,ds] + '_'
-      other_part = split_names_arr[mn,ds] + ' ' + split_numbers_arr[mn,ds] + ', '
+      last_part = split_names_arr[mn][ds] + split_numbers_arr[mn][ds] + '_'
+      other_part = split_names_arr[mn][ds] + ' ' + split_numbers_arr[mn][ds] + ', '
       last_name_part += last_part
       other += other_part
    figure_name = 'xs_mean_' + field_arr[mn] + '_map_' + ff_jk_arr[mn] + last_name_part + '.pdf'
    figure_title = 'Field: ' + field_arr[mn] + '; Feed-feed variable: ' + ff_jk_arr[mn] + '; Other splits:' + other
-   if split_numbers_arr[mn, index_cesc] == 0: #cesc=0
+   if split_numbers_arr[mn][index_cesc] == 0: #cesc=0
       scan_strategy = 'liss'
-   if split_numbers_arr[mn, index_cesc] == 1: #cesc=0
+   if split_numbers_arr[mn][index_cesc] == 1: #cesc=0
       scan_strategy = 'ces'
    if two_dimensions == False:
       mean_multisplit.xs_with_model(figure_name, k_arr[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title, scan_strategy)
