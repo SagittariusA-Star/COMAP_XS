@@ -113,8 +113,10 @@ for mn in range(number_of_maps):
    split_numbers_arr.append(split_numbers)
 how_many_different_splits = len(split_names)
 
+print ('split array', split_names_arr)
 #group maps with respect to scanning strategy
-index_cesc = split_names[0].index('cesc')
+index_cesc = split_names_arr[0].index('cesc')
+print ('ind cesc', index_cesc)
 
 # plot xs mean
 for mn in range(number_of_maps):
