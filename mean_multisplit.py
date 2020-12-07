@@ -52,7 +52,7 @@ def xs_feed_feed_grid(map_file):
    n_sim = 100
    n_k = 14
    n_feed = 19
-   #n_sum = 0
+   n_sum = 0
    xs_sum = np.zeros(n_k)
    #rms_xs_sum = np.zeros((n_k, n_sim))
    xs_div = np.zeros(n_k)
