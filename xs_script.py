@@ -12,7 +12,7 @@ import multiprocessing
 import read_multisplit
 import mean_multisplit
 
-def run_all_methods(feed1,feed2, n_of_splits, two_dimensions=False):
+def run_all_methods(feed1,feed2, n_of_splits, two_dimensions):
    my_xs = xs_class.CrossSpectrum_nmaps(mapfile,jk,feed1, feed2, n_of_splits)
 
    calculated_xs = my_xs.get_information() #gives the xs, k, rms_sig, rms_mean index with corresponding map-pair
@@ -24,9 +24,10 @@ def run_all_methods(feed1,feed2, n_of_splits, two_dimensions=False):
       #plot all cross-spectra that have been calculated
       my_xs.plot_xs(k, xs, rms_sig, rms_mean, save=True)
       my_xs.make_h5()
+
    if two_dimensions == True:
-      print ('Not implemented yet!')
-      #write all of these functions in 2D as well
+      xs, k, nmodes = my_xs.calculate_xs_2d()
+      my_xs.make_h5_2d()
 
 def all_feed_combo_xs(p):
    i = p // 19 + 1 #floor division, divides and returns the integer value of the quotient (it dumps the digits after the decimal)
@@ -84,7 +85,7 @@ number_of_maps = len(map_files)
 number_of_ff_variables = len(feed_feed_variables)
 maps_per_jk = int(number_of_maps/number_of_ff_variables)
 feed_combos = list(range(19*19)) #number of combinations between feeds
-'''
+
 print ('STAGE 3/4: Calculating cross-spectra for all split-split feed-feed combinations.')
 for g in range(number_of_ff_variables):
    for h in range(maps_per_jk):
@@ -146,6 +147,6 @@ for mn in range(number_of_maps):
    if two_dimensions == False:
       print ('Saving the figure ' + figure_name) #Saving the figure xs_mean_co6_map_snup_elev0_cesc0.pdf
       mean_multisplit.xs_with_model(figure_name, k_arr[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title, scan_strategy)
-
+'''
 #maybe write arrays to a hdf5 file, to be able to coadd them later, do PS_amplitude fits, etc.
 

@@ -65,7 +65,7 @@ class CrossSpectrum_nmaps():
           indexes_xs.append([index,self.names[i],self.names[j]])
         return indexes_xs
              
-    #COMPUTE ALL THE XS BETWEEN THE n FEED-AVERAGED MAPS
+    #COMPUTE ALL THE XS 
     def calculate_xs(self, no_of_k_bins=15): #here take the number of k-bins as an argument 
         n_k = no_of_k_bins
         self.k_bin_edges = np.logspace(-2.0, np.log10(1.5), n_k)
@@ -103,6 +103,47 @@ class CrossSpectrum_nmaps():
         self.nmodes = np.array(self.nmodes)
         return self.xs, self.k, self.nmodes
    
+          
+    #COMPUTE ALL THE XS IN 2D
+    def calculate_xs_2d(self, no_of_k_bins=15): #here take the number of k-bins as an argument 
+        n_k = no_of_k_bins
+        self.k_bin_edges_par = np.logspace(-2.0, np.log10(1.0), n_k)
+        self.k_bin_edges_perp = np.logspace(-2.0 + np.log10(2), np.log10(1.5), n_k)
+        calculated_xs = self.get_information()        
+
+        #store each cross-spectrum and corresponding k and nmodes by appending to these lists:
+        self.xs = []
+        self.k = []
+        self.nmodes = []
+        index = -1
+        for i in range(0,len(self.maps)-1, 2):
+           j = i + 1
+           index += 1
+           print ('Computing 2D xs between ' + calculated_xs[index][1] + ' and ' + calculated_xs[index][2] + '.')
+           self.normalize_weights(i,j) #normalize weights for given xs pair of maps
+
+           wi = self.maps[i].w
+           wj = self.maps[j].w
+           wh_i = np.where(np.log10(wi) < -0.5)
+           wh_j = np.where(np.log10(wj) < -0.5)
+           wi[wh_i] = 0.0
+           wj[wh_j] = 0.0
+              
+           my_xs, my_k, my_nmodes = tools.compute_cross_spec_perp_vs_par(
+           (self.maps[i].map * np.sqrt(wi*wj), self.maps[j].map * np.sqrt(wi*wj)),
+           (self.k_bin_edges_perp, self.k_bin_edges_par), dx=self.maps[i].dx, dy=self.maps[i].dy, dz=self.maps[i].dz)
+
+           self.reverse_normalization(i,j) #go back to the previous state to normalize again with a different map-pair
+
+           self.xs.append(my_xs)
+           self.k.append(my_k)
+           self.nmodes.append(my_nmodes)
+        self.xs = np.array(self.xs)
+        self.k = np.array(self.k)
+        self.nmodes = np.array(self.nmodes)
+        return self.xs, self.k, self.nmodes
+
+
     #RUN NOISE SIMULATIONS (for all combinations of n maps, to match xs)
     def run_noise_sims(self, n_sims, seed=None):
         self.rms_xs_mean = []
@@ -162,9 +203,40 @@ class CrossSpectrum_nmaps():
                f1.create_dataset('k_bin_edges', data=self.k_bin_edges)
                f1.create_dataset('nmodes', data=self.nmodes[index])
            except:
-               print('No power spectrum calculated.')
+               print('No cross-spectrum calculated.')
                return 
            try:
+               f1.create_dataset('rms_xs_mean', data=self.rms_xs_mean[index])
+               f1.create_dataset('rms_xs_std', data=self.rms_xs_std[index])
+           except:
+               pass
+                 
+           f1.close()
+
+  #MAKE SEPARATE H5 FILE FOR EACH 2D XS
+    def make_h5_2d(self, outname=None):
+       
+        for index in range(self.how_many_combinations):
+           i = index*2
+           j = i+1
+
+           if outname is None:
+               tools.ensure_dir_exists('spectra')
+               outname = 'spectra/xs_2D_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.h5'          
+
+           f1 = h5py.File(outname, 'w')
+           try:
+               f1.create_dataset('mappath1', data=self.maps[i].mappath)
+               f1.create_dataset('mappath2', data=self.maps[j].mappath)
+               f1.create_dataset('xs_2D', data=self.xs[index])
+               f1.create_dataset('k', data=self.k[index])
+               f1.create_dataset('k_bin_edges_perp', data=self.k_bin_edges_perp)
+               f1.create_dataset('k_bin_edges_par', data=self.k_bin_edges_par)
+               f1.create_dataset('nmodes', data=self.nmodes[index])
+           except:
+               print('No cross-spectrum calculated.')
+               return 
+           try: #but we don't run noise simulations for the 2D case (?)
                f1.create_dataset('rms_xs_mean', data=self.rms_xs_mean[index])
                f1.create_dataset('rms_xs_std', data=self.rms_xs_std[index])
            except:
