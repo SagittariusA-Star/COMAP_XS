@@ -156,6 +156,29 @@ def compute_cross_spec3d(x, k_bin_edges, dx=1, dy=1, dz=1):
     return Ck, k, nmodes
 
 
+def compute_cross_spec_perp_vs_par(x, k_bin_edges, dx=1, dy=1, dz=1): #for each k-vec get absolute value in parallel (redshift) and perp (angle) direction
+    n_x, n_y, n_z = x[0].shape
+    Ck_3D = np.real(fft.fftn(x[0]) * np.conj(fft.fftn(x[1]))) * dx * dy * dz / (n_x * n_y * n_z)
+
+    kx = np.fft.fftfreq(n_x, dx) * 2 * np.pi
+    ky = np.fft.fftfreq(n_y, dy) * 2 * np.pi
+    kz = np.fft.fftfreq(n_z, dz) * 2 * np.pi
+
+    kperp = np.sqrt(sum(ki ** 2 for ki in np.meshgrid(kx, ky, indexing='ij')))
+    kperp = kperp[:, :, None] + 0.0 * Ck_3D
+
+    kpar = np.abs(kz)
+    kpar = kpar[None, None, :] + 0.0 * Ck_3D
+
+    Ck_nmodes = np.histogram2d(kperp.flatten(), kpar.flatten(), bins=k_bin_edges, weights=Ck_3D.flatten())[0]
+    nmodes = np.histogram2d(kperp.flatten(), kpar.flatten(), bins=k_bin_edges)[0]
+
+    k = [(k_edges[1:] + k_edges[:-1]) / 2.0 for k_edges in k_bin_edges]
+    Ck = np.zeros((len(k[0]), len(k[1])))
+    Ck[np.where(nmodes > 0)] = Ck_nmodes[np.where(nmodes > 0)] / nmodes[np.where(nmodes > 0)]
+    return Ck, k, nmodes
+
+
 def distribute_indices(n_indices, n_processes, my_rank):
     divide = n_indices // n_processes
     leftovers = n_indices % n_processes
