@@ -221,8 +221,8 @@ class CrossSpectrum_nmaps():
            j = i+1
 
            if outname is None:
-               tools.ensure_dir_exists('spectra')
-               outname = 'spectra/xs_2D_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.h5'          
+               tools.ensure_dir_exists('spectra_2D')
+               outname = 'spectra_2D/xs_2D_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.h5'          
 
            f1 = h5py.File(outname, 'w')
            try:
