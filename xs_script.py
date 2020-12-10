@@ -27,6 +27,7 @@ def run_all_methods(feed1,feed2, n_of_splits, two_dimensions):
 
    if two_dimensions == True:
       xs, k, nmodes = my_xs.calculate_xs_2d()
+      rms_mean, rms_sig = my_xs.run_noise_sims_2d(10)
       my_xs.make_h5_2d()
 
 def all_feed_combo_xs(p):

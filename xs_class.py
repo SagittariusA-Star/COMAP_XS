@@ -182,6 +182,45 @@ class CrossSpectrum_nmaps():
            self.rms_xs_mean.append(np.mean(rms_xs, axis=1))
            self.rms_xs_std.append(np.std(rms_xs, axis=1))
         return self.rms_xs_mean, self.rms_xs_std
+
+    def run_noise_sims_2d(self, n_sims, seed=None):
+        self.rms_xs_mean_2D = []
+        self.rms_xs_std_2D = []
+        for i in range(0,len(self.maps)-1, 2):
+           j = i + 1
+              
+           self.normalize_weights(i,j)
+           wi = self.maps[i].w
+           wj = self.maps[j].w
+           wh_i = np.where(np.log10(wi) < -0.5)
+           wh_j = np.where(np.log10(wj) < -0.5)
+           wi[wh_i] = 0.0
+           wj[wh_j] = 0.0
+
+           if seed is not None:
+               if self.maps[i].feed is not None:
+                   feeds = np.array([self.maps[i].feed, self.maps[j].feed])
+               else:
+                   feeds = np.array([1, 1])
+            
+           rms_xs = np.zeros((len(self.k_bin_edges_perp) - 1, len(self.k_bin_edges_par) - 1, n_sims))
+           for g in range(n_sims):
+               randmap = [np.zeros(self.maps[i].rms.shape), np.zeros(self.maps[i].rms.shape)]
+               for l in range(2):
+                   if seed is not None:
+                       np.random.seed(seed * (g + 1) * (l + 1) * feeds[l])
+                   randmap[l] = np.random.randn(*self.maps[l].rms.shape) * self.maps[l].rms
+
+               rms_xs[:,:,g] = tools.compute_cross_spec_perp_vs_par(
+           (self.maps[i].map * np.sqrt(wi*wj), self.maps[j].map * np.sqrt(wi*wj)),
+           (self.k_bin_edges_perp, self.k_bin_edges_par), dx=self.maps[i].dx, dy=self.maps[i].dy, dz=self.maps[i].dz)[0]
+
+                 
+           self.reverse_normalization(i,j) #go back to the previous state to normalize again with a different map-pair
+
+           self.rms_xs_mean_2D.append(np.mean(rms_xs, axis=2))
+           self.rms_xs_std_2D.append(np.std(rms_xs, axis=2))
+        return self.rms_xs_mean_2D, self.rms_xs_std_2D
     
     #MAKE SEPARATE H5 FILE FOR EACH XS
     def make_h5(self, outname=None):
@@ -236,9 +275,9 @@ class CrossSpectrum_nmaps():
            except:
                print('No cross-spectrum calculated.')
                return 
-           try: #but we don't run noise simulations for the 2D case (?)
-               f1.create_dataset('rms_xs_mean', data=self.rms_xs_mean[index])
-               f1.create_dataset('rms_xs_std', data=self.rms_xs_std[index])
+           try: 
+               f1.create_dataset('rms_xs_mean_2D', data=self.rms_xs_mean_2D[index])
+               f1.create_dataset('rms_xs_std_2D', data=self.rms_xs_std_2D[index])
            except:
                pass
                  
