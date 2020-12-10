@@ -70,10 +70,13 @@ if xs_2D == 'no':
 
 print ('The following directories will be created:')
 print ('- split_maps - the HDF5 map-files split according to all combinations of variables')
-print ('- spectra/spectra_2D - the HDF5 files with cross-spectra for all split-split and feed-feed combinations')
-print ('- xs_figures - figures of cross-spectra for all split-split and feed-feed combinations')
-print ('- chi2_grids - chi2 grids for all split-split combinations')
-print ('- xs_mean_figures - figures of mean cross-spectra for each combination of variables')
+if two_dimensions == True:
+   print ('- spectra_2D - the HDF5 files with 2D cross-spectra for all split-split and feed-feed combinations')
+if two_dimensions == False:
+   print ('- spectra - the HDF5 files with cross-spectra for all split-split and feed-feed combinations')
+   print ('- xs_figures - figures of cross-spectra for all split-split and feed-feed combinations')
+   print ('- chi2_grids - chi2 grids for all split-split combinations')
+   print ('- xs_mean_figures - figures of mean cross-spectra for each combination of variables')
 
 field, jk_list = read_field_jklist(mappath)
 
