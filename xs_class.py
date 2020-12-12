@@ -212,7 +212,7 @@ class CrossSpectrum_nmaps():
                    randmap[l] = np.random.randn(*self.maps[l].rms.shape) * self.maps[l].rms
 
                rms_xs[:,:,g] = tools.compute_cross_spec_perp_vs_par(
-           (self.maps[i].map * np.sqrt(wi*wj), self.maps[j].map * np.sqrt(wi*wj)),
+           (randmap[0] * np.sqrt(wi*wj), randmap[1] * np.sqrt(wi*wj)),
            (self.k_bin_edges_perp, self.k_bin_edges_par), dx=self.maps[i].dx, dy=self.maps[i].dy, dz=self.maps[i].dz)[0]
 
                  
