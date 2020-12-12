@@ -24,22 +24,28 @@ ps_th_nobeam = np.load('psn.npy') #instrumental beam, less sensitive to small sc
 ps_copps = 8.746e3 * ps_th / ps_th_nobeam #shot noise level
 ps_copps_nobeam = 8.7e3
 
+transfer = scipy.interpolate.interp1d(k_th, ps_th / ps_th_nobeam) #transfer(k) always < 1, values at high k are even larger and std as well
+P_theory = scipy.interpolate.interp1d(k_th,ps_th_nobeam)
 
-def read_Nils_transfer(filename):
-   infile = open(filename, 'r')
-   k = np.zeros(14)
-   T = np.zeros(14)
-   i = 0
-   infile.readline()
-   for line in infile:
-      values = line.split()
-      k[i] = float(values[0])
-      T[i] = float(values[1])
-      i += 1
-   infile.close()
-   return k,T
+def filtering_TF_1D(filename):
+   with h5py.File(filename, mode="r") as my_file:
+      k = np.array(my_file['k'][:]) 
+      TF_1D = np.array(my_file['TF'][:]) 
+   return k, TF_1D
 
-k_Nils, T_Nils = read_Nils_transfer('TF.txt')
+k_filtering_1D, TF_filtering_1D = filtering_TF_1D('TF_1d.h5')
+transfer_filt = scipy.interpolate.interp1d(k_filtering_1D, TF_filtering_1D) 
+
+def filtering_TF_2D(filename):
+   with h5py.File(filename, mode="r") as my_file:
+      k_perp = np.array(my_file['k'][0]) 
+      k_par = np.array(my_file['k'][1]) 
+      TF_2D = np.array(my_file['TF'][:]) 
+   return k_perp, k_par, TF_2D
+
+k_perp_filt, k_par_filt, TF_filtering_2D = filtering_TF_2D('TF_2d.h5')
+transfer_filt_2D = scipy.interpolate.interp2d(k_perp_filt, k_par_filt, TF_filtering_2D)
+
 
 def read_number_of_splits(mapfile, jk):
    with h5py.File(mapfile, mode="r") as my_file:
@@ -134,9 +140,6 @@ def xs_feed_feed_grid(map_file):
 
 def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy):
   
-   transfer = scipy.interpolate.interp1d(k_th, ps_th / ps_th_nobeam) #transfer(k) always < 1, values at high k are even larger and std as well
-   transfer_Nils = scipy.interpolate.interp1d(k_Nils, T_Nils) 
-   P_theory = scipy.interpolate.interp1d(k_th,ps_th_nobeam)
    if scan_strategy == 'ces':
       plotcolor = 'indianred'
    if scan_strategy == 'liss':
@@ -147,10 +150,10 @@ def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy):
    #fig.set_figwidth(8)
    ax1 = fig.add_subplot(211)
   
-   ax1.errorbar(k, k * xs_mean / (transfer(k)*transfer_Nils(k)), k * xs_sigma / (transfer(k)*transfer_Nils(k)), fmt='o', color=plotcolor)
+   ax1.errorbar(k, k * xs_mean / (transfer(k)*transfer_filt(k)), k * xs_sigma / (transfer(k)*transfer_filt(k)), fmt='o', color=plotcolor)
    #ax1.errorbar(k, k * xs_mean, k * xs_sigma, fmt='o', label=r'$k\tilde{C}_{data}(k)$')
    ax1.plot(k, 0 * xs_mean, 'k', alpha=0.4)
-   #ax1.plot(k, k*PS_function.PS_f(k)/ transfer(k), label='k*PS of the input signal')
+   #ax1.plot(k, k*PS_function.PS_f(k)/ transfer(k), label='k*PS of the input signal') #for simulated map
    #ax1.plot(k, k*PS_function.PS_f(k), label='k*PS of the input signal')
    #ax1.plot(k_th, k_th * ps_th_nobeam * 10, '--', label=r'$10 \times kP_{Theory}(k)$', color='dodgerblue')
    #ax1.plot(k_th, k_th * ps_copps_nobeam * 5, 'g--', label=r'$5 \times kP_{COPPS}$ (shot)')
