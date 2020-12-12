@@ -266,18 +266,25 @@ def xs_feed_feed_2D(map_file):
 
               #chi2[i, j] = np.sign(chi3) * abs((np.sum((xs[i,j] / rms_xs_std[i,j]) ** 2) - n_k) / np.sqrt(2 * n_k)) #magnitude (how far from white noise)
             
-              
               #if abs(chi2[i,j]) < 5. and not np.isnan(chi2[i,j]) and i != j:  #if excess power is smaller than 5 sigma, chi2 is not nan, not on diagonal
-               if not np.isnan(xs[i,j]) and i != j:
-                  xs_sum += xs[i,j] / rms_xs_std[i,j] ** 2
+              if not np.isnan(xs[i,j,0,0]) and i != j:
+                  #xs_sum += xs[i,j] / rms_xs_std[i,j] ** 2
+                  xs_sum += xs[i,j]
+                  print rms_xs_std[i,j]
+                  #print xs[i,j] / rms_xs_std[i,j] ** 2
+                 # print 'xs', xs[i,j]
+                  #print 'rms', rms_xs_std[i,j]
                   #print ("if test worked")
                   xs_div += 1 / rms_xs_std[i,j] ** 2
                   n_sum += 1
 
-      xs_mean = xs_sum / xs_div
+      #xs_mean = xs_sum / xs_div
+      xs_mean = xs_sum/n_sum
+      #print xs_sum
       xs_sigma =  1. / np.sqrt(xs_div)
       fig, ax = plt.subplots(1,1)
-      img = ax.imshow(np.log10(xs_mean), interpolation='none', origin='lower', extent=[0,1,0,1])
+      #img = ax.imshow(np.log10(xs_mean), interpolation='none', origin='lower', extent=[0,1,0,1])
+      img = ax.imshow(xs_mean, interpolation='none', origin='lower')
       #plt.imshow(np.log10(nmodes), interpolation='none', origin='lower')
       cbar = fig.colorbar(img)
       cbar.set_label(r'$\log_{10}(\tilde{P}_{\parallel, \bot}(k))$ [$\mu$K${}^2$ (Mpc)${}^3$]')
@@ -302,7 +309,7 @@ def xs_feed_feed_2D(map_file):
 
       ticklist_y = log2lin(minorticks, ybins)
       majorlist_y = log2lin(majorticks, ybins)
-
+      '''
 
       ax.set_xticks(ticklist_x, minor=True)
       ax.set_xticks(majorlist_x, minor=False)
@@ -310,11 +317,11 @@ def xs_feed_feed_2D(map_file):
       ax.set_yticks(ticklist_y, minor=True)
       ax.set_yticks(majorlist_y, minor=False)
       ax.set_yticklabels(majorlabels, minor=False)
-
+      '''
       plt.xlabel(r'$k_{\parallel}$')
       plt.ylabel(r'$k_{\bot}$')
-      plt.xlim(0, 1)
-      plt.ylim(0, 1)
+      #plt.xlim(0, 1)
+      #plt.ylim(0, 1)
      #plt.savefig('ps_par_vs_perp_nmodes.png')
       plt.savefig('xs_par_vs_perp.png')
      # plt.show()
