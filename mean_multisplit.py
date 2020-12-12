@@ -27,23 +27,24 @@ ps_copps_nobeam = 8.7e3
 transfer = scipy.interpolate.interp1d(k_th, ps_th / ps_th_nobeam) #transfer(k) always < 1, values at high k are even larger and std as well
 P_theory = scipy.interpolate.interp1d(k_th,ps_th_nobeam)
 
-def filtering_TF_1D(filename):
-   with h5py.File(filename, mode="r") as my_file:
-      k = np.array(my_file['k'][:]) 
-      TF_1D = np.array(my_file['TF'][:]) 
-   return k, TF_1D
+#Read the transfer function associated with effects of filtering
+def filtering_TF(filename, dim):
+   if dim == 1:
+      with h5py.File(filename, mode="r") as my_file:
+         k = np.array(my_file['k'][:]) 
+         TF_1D = np.array(my_file['TF'][:]) 
+      return k, TF_1D
+   if dim == 2:
+      with h5py.File(filename, mode="r") as my_file:
+         k_perp = np.array(my_file['k'][0]) 
+         k_par = np.array(my_file['k'][1]) 
+         TF_2D = np.array(my_file['TF'][:]) 
+      return k_perp, k_par, TF_2D
 
-k_filtering_1D, TF_filtering_1D = filtering_TF_1D('TF_1d.h5')
+k_filtering_1D, TF_filtering_1D = filtering_TF('TF_1d.h5', 1)
 transfer_filt = scipy.interpolate.interp1d(k_filtering_1D, TF_filtering_1D) 
 
-def filtering_TF_2D(filename):
-   with h5py.File(filename, mode="r") as my_file:
-      k_perp = np.array(my_file['k'][0]) 
-      k_par = np.array(my_file['k'][1]) 
-      TF_2D = np.array(my_file['TF'][:]) 
-   return k_perp, k_par, TF_2D
-
-k_perp_filt, k_par_filt, TF_filtering_2D = filtering_TF_2D('TF_2d.h5')
+k_perp_filt, k_par_filt, TF_filtering_2D = filtering_TF('TF_2d.h5', 2)
 transfer_filt_2D = scipy.interpolate.interp2d(k_perp_filt, k_par_filt, TF_filtering_2D)
 
 
