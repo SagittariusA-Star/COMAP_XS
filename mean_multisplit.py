@@ -285,7 +285,7 @@ def xs_feed_feed_2D(map_file):
       #print xs_mean
       xs_sigma =  1. / np.sqrt(xs_div)
      
-   return k,k_bin_edges_par, k_bin_edges_perp, k_edges_ xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers
+   return k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers
 
 
 def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma, titlename):
