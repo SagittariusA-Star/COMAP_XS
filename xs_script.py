@@ -110,9 +110,11 @@ field_arr = []
 ff_jk_arr = []
 split_names_arr = []
 split_numbers_arr = []
+k_edges_perp = []
+k_edges_par = []
 for mn in range(number_of_maps):
    if two_dimensions == True:
-      k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_2D(map_files[mn])
+      k, k_bin_edges_par, k_bin_edges_perp,xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_2D(map_files[mn])
    if two_dimensions == False:
       k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_grid(map_files[mn]) #saves the chi2 grid for each split-combo
    
@@ -123,6 +125,8 @@ for mn in range(number_of_maps):
    ff_jk_arr.append(ff_jk)
    split_names_arr.append(split_names)
    split_numbers_arr.append(split_numbers)
+   k_edges_perp.append(k_bin_edges_perp)
+   k_edges_par.append(k_bin_edges_par)
 
 how_many_different_splits = len(split_names)
 
@@ -156,7 +160,7 @@ for mn in range(number_of_maps):
    if two_dimensions == True:
       figure_name = 'xs_mean_2D_' + field_arr[mn] + '_map_' + ff_jk_arr[mn] + last_name_part + '.pdf'
       print ('Saving the figure ' + figure_name)
-      mean_multisplit.xs_2D_plot(figure_name, k_arr[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title)
+      mean_multisplit.xs_2D_plot(figure_name, k_arr[mn],k_edges_par[mn], k_edges_perp[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title)
 
 #maybe write arrays to a hdf5 file, to be able to coadd them later, do PS_amplitude fits, etc.
 
