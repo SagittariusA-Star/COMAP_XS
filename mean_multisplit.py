@@ -330,6 +330,6 @@ def xs_feed_feed_2D(map_file):
 
   # return k, xs_sum / xs_div, 1. / np.sqrt(xs_div), field, ff_jk, split_names, split_numbers
 
-xs_feed_feed_2D('co6_map_snup_elev_0_cesc_0.h5')
+#xs_feed_feed_2D('co6_map_snup_elev_0_cesc_0.h5')
 
 
