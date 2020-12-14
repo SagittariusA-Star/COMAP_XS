@@ -270,7 +270,7 @@ def xs_feed_feed_2D(map_file):
               if not np.isnan(xs[i,j,0,0]) and i != j:
                   #xs_sum += xs[i,j] / rms_xs_std[i,j] ** 2
                   xs_sum += xs[i,j]
-                  print rms_xs_std[i,j]
+                  #print rms_xs_std[i,j]
                   #print xs[i,j] / rms_xs_std[i,j] ** 2
                  # print 'xs', xs[i,j]
                   #print 'rms', rms_xs_std[i,j]
