@@ -89,7 +89,7 @@ number_of_maps = len(map_files)
 number_of_ff_variables = len(feed_feed_variables)
 maps_per_jk = int(number_of_maps/number_of_ff_variables)
 feed_combos = list(range(19*19)) #number of combinations between feeds
-
+'''
 print ('STAGE 3/4: Calculating cross-spectra for all split-split feed-feed combinations.')
 for g in range(number_of_ff_variables):
    for h in range(maps_per_jk):
@@ -112,7 +112,7 @@ split_names_arr = []
 split_numbers_arr = []
 for mn in range(number_of_maps):
    if two_dimensions == True:
-      print ('Not implemented yet!')
+      k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_2D(map_files[mn])
    if two_dimensions == False:
       k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_grid(map_files[mn]) #saves the chi2 grid for each split-combo
    
@@ -123,6 +123,7 @@ for mn in range(number_of_maps):
    ff_jk_arr.append(ff_jk)
    split_names_arr.append(split_names)
    split_numbers_arr.append(split_numbers)
+
 how_many_different_splits = len(split_names)
 
 #group maps with respect to scanning strategy
@@ -141,7 +142,7 @@ for mn in range(number_of_maps):
          other_part = split_names_arr[mn][ds] + '-' + split_numbers_arr[mn][ds] 
       last_name_part += last_part
       other += other_part
-   figure_name = 'xs_mean_' + field_arr[mn] + '_map_' + ff_jk_arr[mn] + last_name_part + '.pdf'
+   
    figure_title = 'Field: ' + field_arr[mn] + '; Feed-feed variable: ' + ff_jk_arr[mn] + '; Other splits:' + other
    
    if split_numbers_arr[mn][index_cesc] == '0': #cesc=0
@@ -149,8 +150,13 @@ for mn in range(number_of_maps):
    if split_numbers_arr[mn][index_cesc] == '1': #cesc=0
       scan_strategy = 'ces'
    if two_dimensions == False:
+      figure_name = 'xs_mean_' + field_arr[mn] + '_map_' + ff_jk_arr[mn] + last_name_part + '.pdf'
       print ('Saving the figure ' + figure_name) #Saving the figure xs_mean_co6_map_snup_elev0_cesc0.pdf
       mean_multisplit.xs_with_model(figure_name, k_arr[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title, scan_strategy)
-'''
+   if two_dimensions == True:
+      figure_name = 'xs_mean_2D_' + field_arr[mn] + '_map_' + ff_jk_arr[mn] + last_name_part + '.pdf'
+      print ('Saving the figure ' + figure_name)
+      mean_multisplit.xs_2D_plot(figure_name, k_arr[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title)
+
 #maybe write arrays to a hdf5 file, to be able to coadd them later, do PS_amplitude fits, etc.
 

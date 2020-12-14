@@ -14,6 +14,7 @@ import xs_class
 import PS_function
 import itertools as itr
 from scipy.optimize import curve_fit
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 #theory spectrum
 k_th = np.load('k.npy')
@@ -262,14 +263,15 @@ def xs_feed_feed_2D(map_file):
             
               #w = np.sum(1 / rms_xs_std[i,j])
               #noise[i,j] = 1 / np.sqrt(w)
-              #chi3 = np.sum((xs[i,j] / rms_xs_std[i,j]) ** 3) #we need chi3 to take the sign into account - positive or negative correlation
+              chi3 = np.sum((xs[i,j] / rms_xs_std[i,j]) ** 3) #we need chi3 to take the sign into account - positive or negative correlation
 
-              #chi2[i, j] = np.sign(chi3) * abs((np.sum((xs[i,j] / rms_xs_std[i,j]) ** 2) - n_k) / np.sqrt(2 * n_k)) #magnitude (how far from white noise)
-            
-              #if abs(chi2[i,j]) < 5. and not np.isnan(chi2[i,j]) and i != j:  #if excess power is smaller than 5 sigma, chi2 is not nan, not on diagonal
-              if not np.isnan(xs[i,j,0,0]) and i != j:
-                  #xs_sum += xs[i,j] / rms_xs_std[i,j] ** 2
-                  xs_sum += xs[i,j]
+              chi2[i, j] = np.sign(chi3) * abs((np.sum((xs[i,j] / rms_xs_std[i,j]) ** 2) - n_k*n_k) / np.sqrt(2 * n_k*n_k)) #magnitude (how far from white noise)
+             
+              if abs(chi2[i,j]) < 5. and not np.isnan(chi2[i,j]) and i != j:  #if excess power is smaller than 5 sigma, chi2 is not nan, not on diagonal
+              
+              #if not np.isnan(xs[i,j,0,0]) and i != j:
+                  xs_sum += xs[i,j] / rms_xs_std[i,j] ** 2
+                  #xs_sum += xs[i,j]
                   #print rms_xs_std[i,j]
                   #print xs[i,j] / rms_xs_std[i,j] ** 2
                  # print 'xs', xs[i,j]
@@ -278,58 +280,81 @@ def xs_feed_feed_2D(map_file):
                   xs_div += 1 / rms_xs_std[i,j] ** 2
                   n_sum += 1
 
-      #xs_mean = xs_sum / xs_div
-      xs_mean = xs_sum/n_sum
-      #print xs_sum
+      xs_mean = xs_sum / xs_div
+      #xs_mean = xs_sum/n_sum
+      #print xs_mean
       xs_sigma =  1. / np.sqrt(xs_div)
-      fig, ax = plt.subplots(1,1)
-      #img = ax.imshow(np.log10(xs_mean), interpolation='none', origin='lower', extent=[0,1,0,1])
-      img = ax.imshow(xs_mean, interpolation='none', origin='lower')
-      #plt.imshow(np.log10(nmodes), interpolation='none', origin='lower')
-      cbar = fig.colorbar(img)
-      cbar.set_label(r'$\log_{10}(\tilde{P}_{\parallel, \bot}(k))$ [$\mu$K${}^2$ (Mpc)${}^3$]')
-      minorticks = [0.0002, 0.0003, 0.0004, 0.0005, 0.0006, 0.0007, 0.0008, 0.0009,
-              0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008, 0.009,
-              0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,
-              0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,
-              2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0,
-              20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0,
-              200.0, 300.0, 400.0, 500.0, 600.0, 700.0, 800.0, 900.0]
+     
+   return k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers
 
-      majorticks = [1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00, 1.e+01, 1.e+02]
-      majorlabels = ['$10^{-4}$', '$10^{-3}$', '$10^{-2}$', '$10^{-1}$', '$10^{0}$', '$10^{1}$', '$10^{2}$']
+
+def xs_2D_plot(figure_name, k, xs_mean, xs_sigma, titlename):
+      fig, (ax1, ax2) = plt.subplots(1, 2)
+      
+
+      img1 = ax1.imshow(xs_mean, interpolation='none', origin='lower',extent=[0,1,0,1])
+      cbar1 = fig.colorbar(img1, ax=ax1)
+      #cbar1.set_label(r'$\tilde{C}_{\parallel, \bot}(k)$ [$\mu$K${}^2$ (Mpc)${}^3$]')
+  
+      img2 = ax2.imshow(xs_mean/transfer_filt_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1])
+      
+      
+      cbar2 = fig.colorbar(img2, ax=ax2)
+      cbar2.set_label(r'$\tilde{C}_{\parallel, \bot}(k)$ [$\mu$K${}^2$ (Mpc)${}^3$]')
+      ticks = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,0.1,
+              0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,1., 1.1, 1.2, 1.3]
+
+      majorticks = [ 0.03,0.1, 0.3,1]
+      majorlabels = [ '0.03','0.1', '0.3','1']
 
       xbins = k_bin_edges_par
 
 
-      ticklist_x = log2lin(minorticks, xbins)
+      ticklist_x = log2lin(ticks[:-3], xbins)
       majorlist_x = log2lin(majorticks, xbins)
 
       ybins = k_bin_edges_perp
 
-      ticklist_y = log2lin(minorticks, ybins)
+      ticklist_y = log2lin(ticks, ybins)
       majorlist_y = log2lin(majorticks, ybins)
-      '''
+      
+      ax1.set_title(r'$\overline{xs}$')
+      ax1.set_xticks(ticklist_x, minor=True)
+      ax1.set_xticks(majorlist_x, minor=False)
+      ax1.set_xticklabels(majorlabels, minor=False)
+      ax1.set_yticks(ticklist_y, minor=True)
+      ax1.set_yticks(majorlist_y, minor=False)
+      ax1.set_yticklabels(majorlabels, minor=False)
+      
+      ax2.set_title(r'$\overline{xs}/TF$')
+      ax2.set_xticks(ticklist_x, minor=True)
+      ax2.set_xticks(majorlist_x, minor=False)
+      ax2.set_xticklabels(majorlabels, minor=False)
+      ax2.set_yticks(ticklist_y, minor=True)
+      ax2.set_yticks(majorlist_y, minor=False)
+      ax2.set_yticklabels(majorlabels, minor=False)
+      
+      ax1.set_xlabel(r'$k_{\parallel}$')
+      ax1.set_ylabel(r'$k_{\bot}$')
+    
+      ax2.set_xlabel(r'$k_{\parallel}$')
+      #ax2.set_ylabel(r'$k_{\bot}$')
+     
+ 
+      fig.suptitle(titlename)
+      tools.ensure_dir_exists('xs_2D_mean_figures')
+      plt.savefig('xs_2D_mean_figures/' + figure_name)
+    
 
-      ax.set_xticks(ticklist_x, minor=True)
-      ax.set_xticks(majorlist_x, minor=False)
-      ax.set_xticklabels(majorlabels, minor=False)
-      ax.set_yticks(ticklist_y, minor=True)
-      ax.set_yticks(majorlist_y, minor=False)
-      ax.set_yticklabels(majorlabels, minor=False)
-      '''
-      plt.xlabel(r'$k_{\parallel}$')
-      plt.ylabel(r'$k_{\bot}$')
-      #plt.xlim(0, 1)
-      #plt.ylim(0, 1)
-     #plt.savefig('ps_par_vs_perp_nmodes.png')
-      plt.savefig('xs_par_vs_perp.png')
-     # plt.show()
 
-
-
-  # return k, xs_sum / xs_div, 1. / np.sqrt(xs_div), field, ff_jk, split_names, split_numbers
-
-#xs_feed_feed_2D('co6_map_snup_elev_0_cesc_0.h5')
+#k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = xs_feed_feed_2D('co6_map_snup_elev_0_cesc_0.h5')
+#print k[0], k[1]
+'''
+[0.02361234 0.03214194 0.04375272 0.05955771 0.081072   0.11035801
+ 0.15022313 0.20448891 0.27835735 0.37890963 0.51578486 0.70210415
+ 0.95572839 1.30097046] [0.01194748 0.01660097 0.02306697 0.03205145 0.04453534 0.06188166
+ 0.08598428 0.11947477 0.16600966 0.23066968 0.32051448 0.44535342
+ 0.61881657 0.85984284]
+'''
 
 
