@@ -38,7 +38,7 @@ def read_jk(filename):
          
       if extra == '1':
          feed_feed_variables.append(variable) 
-      print (control_variables, test_variables, feed_feed_variables, all_variables) 
+   print (control_variables, test_variables, feed_feed_variables, all_variables) 
    return control_variables, test_variables, feed_feed_variables, all_variables
 
 
