@@ -105,6 +105,7 @@ for g in range(number_of_ff_variables):
       pool = multiprocessing.Pool(8) #here number of cores
       np.array(pool.map(all_feed_combo_xs, feed_combos))
 '''
+'''
 print ('STAGE 3/4: Calculating cross-spectra for all split-split feed-feed combinations.')
 for g in range(4):
    if g == 0 or g ==1:
@@ -118,7 +119,7 @@ for g in range(4):
    #make xs for all feed-combinations
    pool = multiprocessing.Pool(8) #here number of cores
    np.array(pool.map(all_feed_combo_xs, feed_combos))
-
+'''
 print ('STAGE 4/4: Calculating the mean of cross-spectra from all combinations.')
 k_arr = []
 xs_mean_arr = []
@@ -132,6 +133,8 @@ k_edges_par = []
 for mn in range(number_of_maps):
    if two_dimensions == True:
       k, k_bin_edges_par, k_bin_edges_perp,xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_2D(map_files[mn])
+      k_edges_perp.append(k_bin_edges_perp)
+      k_edges_par.append(k_bin_edges_par)
    if two_dimensions == False:
       k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_grid(map_files[mn]) #saves the chi2 grid for each split-combo
    
@@ -142,8 +145,7 @@ for mn in range(number_of_maps):
    ff_jk_arr.append(ff_jk)
    split_names_arr.append(split_names)
    split_numbers_arr.append(split_numbers)
-   k_edges_perp.append(k_bin_edges_perp)
-   k_edges_par.append(k_bin_edges_par)
+ 
 
 how_many_different_splits = len(split_names)
 
