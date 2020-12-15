@@ -10,6 +10,7 @@ import map_cosmo
 import xs_class
 import multiprocessing
 import read_multisplit
+import read_multisplit_temporary
 import mean_multisplit
 
 def run_all_methods(feed1,feed2, n_of_splits, two_dimensions):
@@ -83,7 +84,8 @@ field, jk_list = read_field_jklist(mappath)
 
 control_variables, test_variables, feed_feed_variables, all_variables = read_multisplit.read_jk(jk_list)
 
-map_files = read_multisplit.read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables)
+#map_files = read_multisplit.read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables)
+map_files = read_multisplit_temporary.read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables)
 
 number_of_maps = len(map_files)
 number_of_ff_variables = len(feed_feed_variables)
