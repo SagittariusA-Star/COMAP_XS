@@ -149,6 +149,7 @@ def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy):
 
    lim = np.mean(np.abs(xs_mean[4:-2] * k[4:-2])) * 8
    fig = plt.figure()
+   fig.tight_layout()
    #fig.set_figwidth(8)
    ax1 = fig.add_subplot(211)
   
@@ -289,6 +290,7 @@ def xs_feed_feed_2D(map_file):
 
 
 def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma, titlename):
+      #k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma =  k[3:],k_bin_edges_par[3:], k_bin_edges_perp[3:], xs_mean[3:], xs_sigma[3:]
       fig, (ax1, ax2) = plt.subplots(1, 2)
       fig.tight_layout()
       fig.suptitle(titlename)
@@ -335,10 +337,10 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sig
       ax2.set_yticks(majorlist_y, minor=False)
       ax2.set_yticklabels(majorlabels, minor=False)
       
-      ax1.set_xlabel(r'$k_{\parallel}$')
-      ax1.set_ylabel(r'$k_{\bot}$')
+      ax1.set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]')
+      ax1.set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]')
     
-      ax2.set_xlabel(r'$k_{\parallel}$')
+      ax2.set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]')
       #ax2.set_ylabel(r'$k_{\bot}$')
      
  
