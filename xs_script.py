@@ -86,12 +86,13 @@ control_variables, test_variables, feed_feed_variables, all_variables = read_mul
 
 #map_files = read_multisplit.read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables)
 map_files = read_multisplit_temporary.read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables)
+=
 
 number_of_maps = len(map_files)
 number_of_ff_variables = len(feed_feed_variables)
 maps_per_jk = int(number_of_maps/number_of_ff_variables)
 feed_combos = list(range(19*19)) #number of combinations between feeds
-
+'''
 print ('STAGE 3/4: Calculating cross-spectra for all split-split feed-feed combinations.')
 for g in range(number_of_ff_variables):
    for h in range(maps_per_jk):
@@ -103,6 +104,20 @@ for g in range(number_of_ff_variables):
       #make xs for all feed-combinations
       pool = multiprocessing.Pool(8) #here number of cores
       np.array(pool.map(all_feed_combo_xs, feed_combos))
+'''
+print ('STAGE 3/4: Calculating cross-spectra for all split-split feed-feed combinations.')
+for g in range(4):
+   if g == 0 or g ==1:
+      jk = 'dayn'
+   if g == 2 or g ==3: 
+      jk ='elev'
+   mapname = map_files[g]
+   print ('Split for FPXS: ' + jk + '. Map: ' + mapname + '.')
+   mapfile = 'split_maps/' + mapname
+   n_of_splits = read_number_of_splits(mapfile, jk)
+   #make xs for all feed-combinations
+   pool = multiprocessing.Pool(8) #here number of cores
+   np.array(pool.map(all_feed_combo_xs, feed_combos))
 
 print ('STAGE 4/4: Calculating the mean of cross-spectra from all combinations.')
 k_arr = []
