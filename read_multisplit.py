@@ -38,7 +38,7 @@ def read_jk(filename):
          
       if extra == '1':
          feed_feed_variables.append(variable) 
-         
+      print (control_variables, test_variables, feed_feed_variables, all_variables) 
    return control_variables, test_variables, feed_feed_variables, all_variables
 
 
@@ -52,7 +52,7 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
    maps_created = []
    for ff_variable in feed_feed_variables:
       for test_variable in test_variables:
-         if test_variable != ff_variable: #which, I assume, is always true for now
+         if test_variable != ff_variable: 
             map_split = np.array(multisplits['map_' + test_variable][:])
             rms_split = np.array(multisplits['rms_' + test_variable][:])
             shp = map_split.shape
@@ -113,6 +113,7 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
    return maps_created
 
 '''
+Example result:
 ['co6_map_snup_elev_0_cesc_0.h5', 'co6_map_snup_elev_0_cesc_1.h5', 'co6_map_snup_elev_1_cesc_0.h5', 'co6_map_snup_elev_1_cesc_1.h5', 'co6_map_snup_ambt_0_cesc_0.h5', 'co6_map_snup_ambt_0_cesc_1.h5', 'co6_map_snup_ambt_1_cesc_0.h5', 'co6_map_snup_ambt_1_cesc_1.h5', 'co6_map_snup_half_0_cesc_0.h5', 'co6_map_snup_half_0_cesc_1.h5', 'co6_map_snup_half_1_cesc_0.h5', 'co6_map_snup_half_1_cesc_1.h5']
 '''
 
