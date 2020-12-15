@@ -291,6 +291,7 @@ def xs_feed_feed_2D(map_file):
 def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma, titlename):
       fig, (ax1, ax2) = plt.subplots(1, 2)
       fig.tight_layout()
+      fig.suptitle(titlename)
 
       img1 = ax1.imshow(xs_mean, interpolation='none', origin='lower',extent=[0,1,0,1])
       cbar1 = fig.colorbar(img1, ax=ax1)
@@ -341,8 +342,8 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sig
       #ax2.set_ylabel(r'$k_{\bot}$')
      
  
-      fig.suptitle(titlename)
       tools.ensure_dir_exists('xs_2D_mean_figures')
+      plt.fig.tight_layout()
       plt.savefig('xs_2D_mean_figures/' + figure_name)
     
 
