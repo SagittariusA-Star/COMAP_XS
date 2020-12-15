@@ -86,7 +86,7 @@ control_variables, test_variables, feed_feed_variables, all_variables = read_mul
 
 #map_files = read_multisplit.read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables)
 map_files = read_multisplit_temporary.read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables)
-=
+
 
 number_of_maps = len(map_files)
 number_of_ff_variables = len(feed_feed_variables)
