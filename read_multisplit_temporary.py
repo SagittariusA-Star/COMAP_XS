@@ -1,6 +1,6 @@
 import h5py
 import numpy as np
-
+import tools
 
 def read_map(mappath,field, control_variables, test_variables, feed_feed_variables, all_variables):
    print ('STAGE 2/4: Splitting the map into subsets with different split combinations.')
