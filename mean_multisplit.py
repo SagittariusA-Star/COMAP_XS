@@ -343,7 +343,7 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sig
      
  
       tools.ensure_dir_exists('xs_2D_mean_figures')
-      plt.fig.tight_layout()
+      plt.tight_layout()
       plt.savefig('xs_2D_mean_figures/' + figure_name)
     
 
