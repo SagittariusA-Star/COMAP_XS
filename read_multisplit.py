@@ -38,7 +38,7 @@ def read_jk(filename):
          
       if extra == '1':
          feed_feed_variables.append(variable) 
-   print (control_variables, test_variables, feed_feed_variables, all_variables) 
+  
    return control_variables, test_variables, feed_feed_variables, all_variables
 
 
@@ -51,8 +51,11 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
    multisplits = input_map['multisplits']
    maps_created = []
    for ff_variable in feed_feed_variables:
+      print (ff_variable)
       for test_variable in test_variables:
+         print (test_variable)
          if test_variable != ff_variable: 
+            print (ff_variable, test_variable)
             map_split = np.array(multisplits['map_' + test_variable][:])
             rms_split = np.array(multisplits['rms_' + test_variable][:])
             shp = map_split.shape
