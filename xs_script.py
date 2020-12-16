@@ -62,7 +62,7 @@ def read_field_jklist(mappath):
 
 #read from the command:
 #sys.argv[-1] = mappath
-mappath = '/mn/stornext/d16/cmbco/comap/protodir/maps/co7_map_signal.h5'
+mappath = '/mn/stornext/d16/cmbco/comap/protodir/maps/co6_map_signal.h5'
 
 xs_2D = input("Cross-spectra in two dimensions? (yes/no) ")
 if xs_2D == 'yes':
@@ -105,7 +105,7 @@ for g in range(number_of_ff_variables):
       pool = multiprocessing.Pool(8) #here number of cores
       np.array(pool.map(all_feed_combo_xs, feed_combos))
 '''
-'''
+
 print ('STAGE 3/4: Calculating cross-spectra for all split-split feed-feed combinations.')
 for g in range(4):
    if g == 0 or g ==1:
@@ -119,7 +119,7 @@ for g in range(4):
    #make xs for all feed-combinations
    pool = multiprocessing.Pool(8) #here number of cores
    np.array(pool.map(all_feed_combo_xs, feed_combos))
-'''
+
 print ('STAGE 4/4: Calculating the mean of cross-spectra from all combinations.')
 k_arr = []
 xs_mean_arr = []
