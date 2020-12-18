@@ -292,24 +292,20 @@ def xs_feed_feed_2D(map_file):
 
 def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma, titlename):
       #k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma =  k[3:],k_bin_edges_par[3:], k_bin_edges_perp[3:], xs_mean[3:], xs_sigma[3:]
-      fig, ax = plt.subplots(1,2,figsize=(16,7))
+      fig, ax = plt.subplots(1,3,figsize=(16,5.6))
       fig.tight_layout()
       fig.suptitle(titlename, fontsize=16)
       norm = mpl.colors.Normalize(vmin=1.5*np.amin(xs_mean), vmax=1.5*np.amax(xs_mean))  
-       
-      #cmap = mpl.cm.cool
       
-     # cb1 = mpl.colorbar.ColorbarBase(ax, cmap=cmap,norm=norm)
       img1 = ax[0].imshow(xs_mean, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
       fig.colorbar(img1, ax=ax[0],fraction=0.046, pad=0.04)
-      #cbar1.set_label(r'$\tilde{C}_{\parallel, \bot}(k)$ [$\mu$K${}^2$ (Mpc)${}^3$]')
   
       img2 = ax[1].imshow(xs_mean/transfer_filt_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
-      #plt.clim(np.amin(xs_mean),np.amax(xs_mean)) 
-      
-      fig.colorbar(img2, ax=ax[1], fraction=0.046, pad=0.04,norm=norm).set_label(r'$\tilde{C}_{\parallel, \bot}(k)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=16)
-      #fig.colorbar(img2, ax=ax[1], fraction=0.046, pad=0.04).set_clim(vmin=np.amin(xs_mean), vmax=np.amax(xs_mean))
-      #cbar2.set_label(r'$\tilde{C}_{\parallel, \bot}(k)$ [$\mu$K${}^2$ (Mpc)${}^3$]')
+      fig.colorbar(img2, ax=ax[1], fraction=0.046, pad=0.04,norm=norm)
+      img3 = ax[2].imshow(xs_mean/transfer_filt_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      fig.colorbar(img2, ax=ax[2], fraction=0.046, pad=0.04,norm=norm).set_label(r'$\tilde{C}_{\parallel, \bot}(k)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=16)
+     
+     
       ticks = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,0.1,
               0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,1., 1.1, 1.2, 1.3]
 
@@ -326,28 +322,24 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sig
 
       ticklist_y = log2lin(ticks, ybins)
       majorlist_y = log2lin(majorticks, ybins)
-      
+
       ax[0].set_title(r'$\overline{xs}$', fontsize=16)
-      ax[0].set_xticks(ticklist_x, minor=True)
-      ax[0].set_xticks(majorlist_x, minor=False)
-      ax[0].set_xticklabels(majorlabels, minor=False, fontsize=16)
-      ax[0].set_yticks(ticklist_y, minor=True)
-      ax[0].set_yticks(majorlist_y, minor=False)
-      ax[0].set_yticklabels(majorlabels, minor=False, fontsize=16)
-      
-      ax[1].set_title(r'$\overline{xs}$ with $TF_{filtering}$', fontsize=16)
-      ax[1].set_xticks(ticklist_x, minor=True)
-      ax[1].set_xticks(majorlist_x, minor=False)
-      ax[1].set_xticklabels(majorlabels, minor=False, fontsize=16)
-      ax[1].set_yticks(ticklist_y, minor=True)
-      ax[1].set_yticks(majorlist_y, minor=False)
-      ax[1].set_yticklabels(majorlabels, minor=False, fontsize=16)
+      ax[1].set_title(r'$\overline{xs}$ with $TF_{filter}$', fontsize=16)
+      ax[2].set_title(r'$\overline{xs}$ with $TF_{filter}$ and $TF_{smooth}$ ', fontsize=16)
+
+      for i in range(3):
+         ax[i].set_xticks(ticklist_x, minor=True)
+         ax[i].set_xticks(majorlist_x, minor=False)
+         ax[i].set_xticklabels(majorlabels, minor=False, fontsize=16)
+         ax[i].set_yticks(ticklist_y, minor=True)
+         ax[i].set_yticks(majorlist_y, minor=False)
+         ax[i].set_yticklabels(majorlabels, minor=False, fontsize=16)
       
       ax[0].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]',fontsize=16)
       ax[0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=16)
-    
       ax[1].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=16)
-      #ax2.set_ylabel(r'$k_{\bot}$')
+      ax[2].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=16)
+      
      
       
       tools.ensure_dir_exists('xs_2D_mean_figures')
