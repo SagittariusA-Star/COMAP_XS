@@ -358,29 +358,4 @@ xs_2D_plot('figure_test.png', k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_s
  0.08598428 0.11947477 0.16600966 0.23066968 0.32051448 0.44535342
  0.61881657 0.85984284]
 '''
-'''
-fig, ax = plt.subplots(1,2,figsize=(16,7))
 
-#lum_1 = sph.image(h1.g, qty="lum", width='12 kpc', ret_im=True, cmap='magma', subplot=ax[0], av_z=True)#, vmin=1e31, vmax=1e36)
-#lum_1 = sph.image(h1.g, qty="lum_lsun", width='12 kpc', ret_im=True, cmap='gnuplot2', subplot=ax[0], vmin=1e-5, vmax=1e2, av_z='rho')
-lum_1 = sph.faceon_image(h1.g, qty="lum_lsun", width='12 kpc', ret_im=True, cmap='gnuplot2', subplot=ax[0], av_z='rho', vmin=1e2, vmax=1e5)
-
-#lum_1 = sph.velocity_image(h1.g, qty="lum_lsun", vector_color="w", width='200 kpc a', ret_im=True, cmap='magma', subplot=ax[0], vmin=1e-10, vmax=1e2)
-
-fig.colorbar(lum_1, ax=ax[0], fraction=0.046, pad=0.04, label=r'L/L$_{\odot}$')# [erg s$^{-1}$]')
-ax[0].set(ylabel=r'y [kpc]', xlabel=r'x [kpc]')
-#ax[0].ticklabel_format(style='sci', axis='both', scilimits=(0,0))
-ax[0].set_title('luminosity')
-
-#flux_1 = sph.image(h1.g, qty="flux" ,width='12 kpc', ret_im=True, cmap='cubehelix', subplot=ax[1], vmin=1, vmax=1e10, av_z='rho')
-flux_1 = sph.faceon_image(h1.g, qty="flux" ,width='12 kpc', ret_im=True, cmap='cubehelix', subplot=ax[1], av_z='rho', vmin=1e7, vmax=1e12)
-
-fig.colorbar(flux_1, ax=ax[1], fraction=0.046, pad=0.04, label=r'F [photons s$^{-1}$ cm$^{-2}$]')
-ax[1].set(ylabel=r'y [kpc]', xlabel=r'x [kpc]')
-#ax[1].ticklabel_format(style='sci', axis='both', scilimits=(0,0))
-ax[1].set_title('flux')
-
-#plt.tight_layout()
-fig.suptitle('Halo 1: luminosity and flux from [CII] - faceon - avereged down LOS', fontsize=15)
-#plt.savefig('galaxy_lum_flux_avgz_2.png')
-'''
