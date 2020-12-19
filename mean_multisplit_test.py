@@ -295,7 +295,7 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sig
       fig, ax = plt.subplots(1,3,figsize=(16,5.6))
       fig.tight_layout()
       fig.suptitle(titlename, fontsize=16)
-      norm = mpl.colors.Normalize(vmin=1.5*np.amin(xs_mean), vmax=1.5*np.amax(xs_mean))  
+      norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean), vmax=-1.3*np.amin(xs_mean))  
       
       img1 = ax[0].imshow(xs_mean, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
       fig.colorbar(img1, ax=ax[0],fraction=0.046, pad=0.04)
