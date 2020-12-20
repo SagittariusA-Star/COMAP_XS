@@ -28,7 +28,7 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
    rmselev2 = rms_elev[:,1,:,:,:,:,:]
    #maps_list = [mapdayn1, mapdayn2, mapelev1, mapelev2]
    #rms_list = [rmsdayn1, rmsdayn2, rmselev1, rmselev2]
-   maps_created = ['co6_map_dayn_cesc_0.h5','co6_map_dayn_cesc_1.h5', 'co6_map_elev_cesc_0.h5', 'co6_map_elev_cesc_1.h5']
+   maps_created = ['co2_map_dayn_cesc_0.h5','co2_map_dayn_cesc_1.h5', 'co2_map_elev_cesc_0.h5', 'co2_map_elev_cesc_1.h5']
    create_h5_file('dayn', mapdayn1, rmsdayn1, maps_created[0],x,y)
    create_h5_file('dayn', mapdayn2, rmsdayn2, maps_created[1],x,y)
    create_h5_file('elev', mapelev1, rmselev1, maps_created[2],x,y)
