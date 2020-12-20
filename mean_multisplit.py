@@ -33,7 +33,7 @@ ps_2d_notsmooth = np.load('ps_2d_notsmooth.npy')
 k_smooth = np.load('k_smooth.npy')
 #k_notsmooth = np.load('k_notsmooth.npy')
 
-print (ps_2d_smooth/ps_2d_notsmooth)
+#print (ps_2d_smooth/ps_2d_notsmooth)
 
 k_perp_sim = k_smooth[0]
 k_par_sim = k_smooth[1]
@@ -318,9 +318,9 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sig
       fig.colorbar(img1, ax=ax[0],fraction=0.046, pad=0.04)
   
       img2 = ax[1].imshow(xs_mean/transfer_filt_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
-      fig.colorbar(img2, ax=ax[1], fraction=0.046, pad=0.04,norm=norm)
+      fig.colorbar(img2, ax=ax[1], fraction=0.046, pad=0.04)
       img3 = ax[2].imshow(xs_mean/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
-      fig.colorbar(img2, ax=ax[2], fraction=0.046, pad=0.04,norm=norm).set_label(r'$\tilde{C}_{\parallel, \bot}(k)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=16)
+      fig.colorbar(img2, ax=ax[2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}_{\parallel, \bot}(k)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=16)
      
      
       ticks = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,0.1,
