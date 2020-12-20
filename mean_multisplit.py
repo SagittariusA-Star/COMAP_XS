@@ -21,6 +21,23 @@ k_th = np.load('k.npy')
 ps_th = np.load('ps.npy')
 ps_th_nobeam = np.load('psn.npy') #instrumental beam, less sensitive to small scales line broadening, error bars go up at high k, something with the intrinsic resolution of the telescope (?)
 
+#in 2D
+ps_2d_smooth = np.load('ps_2d_smooth.npy')
+ps_2d_notsmooth = np.load('ps_2d_notsmooth.npy')
+#ps_2d_smooth = np.load('smooth_mean.npy')
+#ps_2d_notsmooth = np.load('notsmooth_mean.npy')
+#ps_2d_smooth = np.load('ps_smooth_single.npy') #'ps_2dfrom3d.npy'
+#ps_2d_notsmooth = np.load('ps_notsmooth_single.npy')
+
+k_smooth = np.load('k_smooth.npy')
+k_notsmooth = np.load('k_notsmooth.npy')
+
+print (ps_2d_smooth/ps_2d_notsmooth)
+
+k_perp_sim = k_smooth[0]
+k_par_sim = k_smooth[1]
+
+transfer_sim_2D = scipy.interpolate.interp2d(k_perp_sim, k_par_sim, ps_2d_smooth/ps_2d_notsmooth)
 #values from COPPS
 ps_copps = 8.746e3 * ps_th / ps_th_nobeam #shot noise level
 ps_copps_nobeam = 8.7e3
@@ -291,19 +308,20 @@ def xs_feed_feed_2D(map_file):
 
 def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma, titlename):
       #k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma =  k[3:],k_bin_edges_par[3:], k_bin_edges_perp[3:], xs_mean[3:], xs_sigma[3:]
-      fig, (ax1, ax2) = plt.subplots(1, 2)
+      fig, ax = plt.subplots(1,3,figsize=(16,5.6))
       fig.tight_layout()
-      fig.suptitle(titlename)
-
-      img1 = ax1.imshow(xs_mean, interpolation='none', origin='lower',extent=[0,1,0,1])
-      cbar1 = fig.colorbar(img1, ax=ax1)
-      #cbar1.set_label(r'$\tilde{C}_{\parallel, \bot}(k)$ [$\mu$K${}^2$ (Mpc)${}^3$]')
+      fig.suptitle(titlename, fontsize=16)
+      norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean), vmax=-1.3*np.amin(xs_mean))  
+      
+      img1 = ax[0].imshow(xs_mean, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      fig.colorbar(img1, ax=ax[0],fraction=0.046, pad=0.04)
   
-      img2 = ax2.imshow(xs_mean/transfer_filt_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1])
-      
-      
-      cbar2 = fig.colorbar(img2, ax=ax2)
-      cbar2.set_label(r'$\tilde{C}_{\parallel, \bot}(k)$ [$\mu$K${}^2$ (Mpc)${}^3$]')
+      img2 = ax[1].imshow(xs_mean/transfer_filt_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      fig.colorbar(img2, ax=ax[1], fraction=0.046, pad=0.04,norm=norm)
+      img3 = ax[2].imshow(xs_mean/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      fig.colorbar(img2, ax=ax[2], fraction=0.046, pad=0.04,norm=norm).set_label(r'$\tilde{C}_{\parallel, \bot}(k)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=16)
+     
+     
       ticks = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,0.1,
               0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,1., 1.1, 1.2, 1.3]
 
@@ -320,33 +338,30 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sig
 
       ticklist_y = log2lin(ticks, ybins)
       majorlist_y = log2lin(majorticks, ybins)
+
+      ax[0].set_title(r'$\overline{xs}$', fontsize=16)
+      ax[1].set_title(r'$\overline{xs}$ with $TF_{filter}$', fontsize=16)
+      ax[2].set_title(r'$\overline{xs}$ with $TF_{filter}$ and $TF_{smooth}$ ', fontsize=16)
+
+      for i in range(3):
+         ax[i].set_xticks(ticklist_x, minor=True)
+         ax[i].set_xticks(majorlist_x, minor=False)
+         ax[i].set_xticklabels(majorlabels, minor=False, fontsize=16)
+         ax[i].set_yticks(ticklist_y, minor=True)
+         ax[i].set_yticks(majorlist_y, minor=False)
+         ax[i].set_yticklabels(majorlabels, minor=False, fontsize=16)
       
-      ax1.set_title(r'$\overline{xs}$')
-      ax1.set_xticks(ticklist_x, minor=True)
-      ax1.set_xticks(majorlist_x, minor=False)
-      ax1.set_xticklabels(majorlabels, minor=False)
-      ax1.set_yticks(ticklist_y, minor=True)
-      ax1.set_yticks(majorlist_y, minor=False)
-      ax1.set_yticklabels(majorlabels, minor=False)
+      ax[0].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]',fontsize=16)
+      ax[0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=16)
+      ax[1].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=16)
+      ax[2].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=16)
       
-      ax2.set_title(r'$\overline{xs}/TF$')
-      ax2.set_xticks(ticklist_x, minor=True)
-      ax2.set_xticks(majorlist_x, minor=False)
-      ax2.set_xticklabels(majorlabels, minor=False)
-      ax2.set_yticks(ticklist_y, minor=True)
-      ax2.set_yticks(majorlist_y, minor=False)
-      ax2.set_yticklabels(majorlabels, minor=False)
-      
-      ax1.set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]')
-      ax1.set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]')
-    
-      ax2.set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]')
-      #ax2.set_ylabel(r'$k_{\bot}$')
      
- 
+      
       tools.ensure_dir_exists('xs_2D_mean_figures')
       plt.tight_layout()
-      plt.savefig('xs_2D_mean_figures/' + figure_name)
+      plt.savefig('xs_2D_mean_figures/' +  figure_name) 
+    
     
 
 
