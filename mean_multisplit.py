@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 plt.ioff() #turn of the interactive plotting
 import matplotlib as matplotlib
