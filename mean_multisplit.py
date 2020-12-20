@@ -30,7 +30,7 @@ ps_2d_notsmooth = np.load('ps_2d_notsmooth.npy')
 #ps_2d_notsmooth = np.load('ps_notsmooth_single.npy')
 
 k_smooth = np.load('k_smooth.npy')
-k_notsmooth = np.load('k_notsmooth.npy')
+#k_notsmooth = np.load('k_notsmooth.npy')
 
 print (ps_2d_smooth/ps_2d_notsmooth)
 

@@ -104,7 +104,7 @@ for g in range(number_of_ff_variables):
       #make xs for all feed-combinations
       pool = multiprocessing.Pool(8) #here number of cores
       np.array(pool.map(all_feed_combo_xs, feed_combos))
-'''
+
 
 print ('STAGE 3/4: Calculating cross-spectra for all split-split feed-feed combinations.')
 for g in range(4):
@@ -119,7 +119,7 @@ for g in range(4):
    #make xs for all feed-combinations
    pool = multiprocessing.Pool(8) #here number of cores
    np.array(pool.map(all_feed_combo_xs, feed_combos))
-
+'''
 print ('STAGE 4/4: Calculating the mean of cross-spectra from all combinations.')
 k_arr = []
 xs_mean_arr = []
