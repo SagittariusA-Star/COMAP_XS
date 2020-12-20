@@ -159,10 +159,10 @@ for mn in range(number_of_maps):
    for ds in range(how_many_different_splits):
       if ds != how_many_different_splits - 1:
          last_part = split_names_arr[mn][ds] + split_numbers_arr[mn][ds] + '_'
-         other_part = split_names_arr[mn][ds] + '-' + split_numbers_arr[mn][ds] + ', '
+         other_part = split_names_arr[mn][ds] + ' ' + split_numbers_arr[mn][ds] + ', '
       if ds == how_many_different_splits - 1:
          last_part = split_names_arr[mn][ds] + split_numbers_arr[mn][ds] 
-         other_part = split_names_arr[mn][ds] + '-' + split_numbers_arr[mn][ds] 
+         other_part = split_names_arr[mn][ds] + ' ' + split_numbers_arr[mn][ds] 
       last_name_part += last_part
       other += other_part
    
