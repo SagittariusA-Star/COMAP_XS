@@ -57,7 +57,7 @@ def read_field_jklist(mappath):
    jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_' + last_part + '.txt'
    print ('Field:', field_name)
    print ('List of split-variables:', jk_list)
-   return field_name, jk_list
+   return field_name, jk_list, map_name
 
 
 #read from the command:
@@ -80,7 +80,7 @@ if two_dimensions == False:
    print ('- chi2_grids - chi2 grids for all split-split combinations')
    print ('- xs_mean_figures - figures of mean cross-spectra for each combination of variables')
 
-field, jk_list = read_field_jklist(mappath)
+field, jk_list, main_map_name = read_field_jklist(mappath)
 
 control_variables, test_variables, feed_feed_variables, all_variables = read_multisplit.read_jk(jk_list)
 
@@ -130,6 +130,7 @@ split_names_arr = []
 split_numbers_arr = []
 k_edges_perp = []
 k_edges_par = []
+figure_names = []
 for mn in range(number_of_maps):
    if two_dimensions == True:
       k, k_bin_edges_par, k_bin_edges_perp,xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_2D(map_files[mn])
@@ -174,12 +175,29 @@ for mn in range(number_of_maps):
       scan_strategy = 'ces'
    if two_dimensions == False:
       figure_name = 'xs_mean_' + field_arr[mn] + '_map_' + ff_jk_arr[mn] + last_name_part + '.pdf'
+      figure_names.append(figure_name)
       print ('Saving the figure ' + figure_name) #Saving the figure xs_mean_co6_map_snup_elev0_cesc0.pdf
       mean_multisplit.xs_with_model(figure_name, k_arr[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title, scan_strategy)
    if two_dimensions == True:
       figure_name = 'xs_mean_2D_' + field_arr[mn] + '_map_' + ff_jk_arr[mn] + last_name_part + '.pdf'
+      figure_names.append(figure_name)
       print ('Saving the figure ' + figure_name)
       mean_multisplit.xs_2D_plot(figure_name, k_arr[mn],k_edges_par[mn], k_edges_perp[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title)
 
-#maybe write arrays to a hdf5 file, to be able to coadd them later, do PS_amplitude fits, etc.
+#save arrays as a file
+if two_dimensions == True:
+   outname = main_map_name + '_2D_arrays.h5'
+if two_dimensions == False:
+   outname = main_map_name + '_1D_arrays.h5'
+f = h5py.File(outname, 'w') #create HDF5 file with the sliced map
+f.create_dataset('k', data=k_arr)
+f.create_dataset('xs_mean', data=xs_mean_arr)
+f.create_dataset('xs_sigma', data=xs_sigma_arr)
+if two_dimensions == True:
+   f.create_dataset('k_edges_perp', data=k_edges_perp)
+   f.create_dataset('k_edges_par', data=k_edges_par)
+f.create_dataset('names', data=figure_names)
+f.close()   
+
+
 
