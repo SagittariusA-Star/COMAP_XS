@@ -187,8 +187,10 @@ for mn in range(number_of_maps):
 #save arrays as a file
 if two_dimensions == True:
    outname = main_map_name + '_2D_arrays.h5'
+   npyname = main_map_name + '_2D_names.npy'
 if two_dimensions == False:
    outname = main_map_name + '_1D_arrays.h5'
+   npyname = main_map_name + '_1D_names.npy'
 print ('Saving data in ' + outname + '.')
 f = h5py.File(outname, 'w') #create HDF5 file with the sliced map
 f.create_dataset('k', data=k_arr)
@@ -197,8 +199,9 @@ f.create_dataset('xs_sigma', data=xs_sigma_arr)
 if two_dimensions == True:
    f.create_dataset('k_edges_perp', data=k_edges_perp)
    f.create_dataset('k_edges_par', data=k_edges_par)
-f.create_dataset('names', data=figure_names)
 f.close()   
 
+print ('Saving names of sub-maps in ' + npyname + '.')
+np.save(npyname,np.array(figure_names))
 
 
