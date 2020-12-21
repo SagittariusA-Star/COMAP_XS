@@ -62,7 +62,7 @@ def read_field_jklist(mappath):
 
 #read from the command:
 #sys.argv[-1] = mappath
-mappath = '/mn/stornext/d16/cmbco/comap/protodir/maps/co2_map_signal.h5'
+mappath = '/mn/stornext/d16/cmbco/comap/protodir/maps/co6_map_signal.h5'
 
 xs_2D = input("Cross-spectra in two dimensions? (yes/no) ")
 if xs_2D == 'yes':
