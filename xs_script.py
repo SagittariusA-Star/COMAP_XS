@@ -189,6 +189,7 @@ if two_dimensions == True:
    outname = main_map_name + '_2D_arrays.h5'
 if two_dimensions == False:
    outname = main_map_name + '_1D_arrays.h5'
+print ('Saving data in ' + outname + '.')
 f = h5py.File(outname, 'w') #create HDF5 file with the sliced map
 f.create_dataset('k', data=k_arr)
 f.create_dataset('xs_mean', data=xs_mean_arr)
