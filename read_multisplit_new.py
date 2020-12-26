@@ -261,7 +261,7 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
    return maps_created
 
 '''
-control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control = read_jk('/mn/stornext/d16/cmbco/comap/protodir/maps/co2_map_signal.h5')
+control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control = read_jk('/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_signal.txt')
 print (all_variables, feed_and_test, feed_and_control)
 
 maps_created = read_map_ft('/mn/stornext/d16/cmbco/comap/protodir/maps/co2_map_signal.h5','co2', control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test)
