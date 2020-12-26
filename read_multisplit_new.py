@@ -183,7 +183,7 @@ def read_map_ft(mappath,field, control_variables, test_variables, feed_feed_vari
    
    return maps_created
 
-'''
+
 control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control = read_jk('/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_signal.txt')
 print (all_variables, feed_and_test, feed_and_control)
 
