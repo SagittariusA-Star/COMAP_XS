@@ -122,7 +122,7 @@ def read_map_ft(mappath,field, control_variables, test_variables, feed_feed_vari
       print ('to be implemented')
       for ff_variable in feed_and_control:
       print ('ff',ff_variable)
-      for test_variable in test_variables:
+         for test_variable in test_variables:
          print ('test',test_variable)
          if test_variable != ff_variable: 
             print ('fit',ff_variable, test_variable)
