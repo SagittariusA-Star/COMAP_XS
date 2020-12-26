@@ -59,7 +59,7 @@ def read_field_jklist(mappath):
    return field_name, jk_list, map_name
 
 def read_jk(single_map_name):
-   jk_name = single_map_name.rpartition('_')[2]
+   jk_name = single_map_name.split('_')[2]
    print ('jk',jk_name)
    return jk_name
 
