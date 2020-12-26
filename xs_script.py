@@ -10,7 +10,6 @@ import map_cosmo
 import xs_class
 import multiprocessing
 import read_multisplit
-import read_multisplit_temporary
 import mean_multisplit
 
 def run_all_methods(feed1,feed2, n_of_splits, two_dimensions):
