@@ -1,0 +1,8 @@
+6        # number of different jack-knives (including acceptlist)
+accr     # accept/reject (reject=0)
+snup     3 1
+cesc     3 #
+elev     2 #
+ambt     2 #
+half     2 # sad
+
