@@ -44,7 +44,7 @@ def read_jk(filename):
    for variable in all_variables:
       if variable in test_variables and variable in feed_feed_variables:
          feed_and_test.append(variable)
-      if variable in test_variables and variable in control_variables:
+      if variable in feed_feed_variables and variable in control_variables:
          feed_and_control.append(variable)
  
    return control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control
