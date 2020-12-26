@@ -187,7 +187,7 @@ def read_map_ft(mappath,field, control_variables, test_variables, feed_feed_vari
 control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control = read_jk('jk_list_splittest.txt')
 print (all_variables, feed_and_test, feed_and_control)
 
-maps_created = read_map_ft('/mn/stornext/d16/cmbco/comap/protodir/maps/co6_map_splittest.h5','co2', control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control)
+maps_created = read_map_ft('/mn/stornext/d16/cmbco/comap/nils/COMAP_general/data/maps/successive_split_test/co6_map_good_splittest.h5','co2', control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control)
 
 print (maps_created)
 
@@ -207,6 +207,7 @@ accr     # accept/reject (reject=0)
 cesc     3 #
 elev     2 1 #
 dayn     2 1
+['co2_map_elev_cesc_0.h5', 'co2_map_elev_cesc_1.h5', 'co2_map_dayn_cesc_0.h5', 'co2_map_dayn_cesc_1.h5']
 
 '''
 
