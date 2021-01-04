@@ -63,8 +63,8 @@ def read_jk(single_map_name):
    return jk_name
 
 #read from the command:
-#sys.argv[-1] = mappath
-mappath = '/mn/stornext/d16/cmbco/comap/protodir/maps/co2_map_signal.h5' #<-------------------------------------------------------------------------
+sys.argv[-1] = mappath_last_part
+mappath = '/mn/stornext/d16/cmbco/comap/protodir/maps/' + mappath_last_part 
 
 xs_2D = input("Cross-spectra in two dimensions? (yes/no) ")
 if xs_2D == 'yes':
