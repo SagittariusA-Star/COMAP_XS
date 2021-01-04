@@ -63,7 +63,7 @@ def read_jk(single_map_name):
    return jk_name
 
 #read from the command:
-sys.argv[-1] = mappath_last_part
+mappath_last_part = sys.argv[-1]
 print (sys.argv[-1])
 mappath = '/mn/stornext/d16/cmbco/comap/protodir/maps/' + mappath_last_part 
 
