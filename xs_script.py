@@ -19,7 +19,7 @@ def run_all_methods(feed1,feed2, n_of_splits, two_dimensions):
 
    if two_dimensions == False:
       xs, k, nmodes = my_xs.calculate_xs()
-      rms_mean, rms_sig = my_xs.run_noise_sims(10) #these rms's are arrays of 14 elements, that give error bars (number of bin edges minus 1)
+      rms_mean, rms_sig = my_xs.run_noise_sims(50) #these rms's are arrays of 14 elements, that give error bars (number of bin edges minus 1)
 
       #plot all cross-spectra that have been calculated
       my_xs.plot_xs(k, xs, rms_sig, rms_mean, save=True)
@@ -27,7 +27,7 @@ def run_all_methods(feed1,feed2, n_of_splits, two_dimensions):
 
    if two_dimensions == True:
       xs, k, nmodes = my_xs.calculate_xs_2d()
-      rms_mean, rms_sig = my_xs.run_noise_sims_2d(10)
+      rms_mean, rms_sig = my_xs.run_noise_sims_2d(50)
       my_xs.make_h5_2d()
 
 def all_feed_combo_xs(p):
