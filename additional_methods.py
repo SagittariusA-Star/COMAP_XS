@@ -79,10 +79,20 @@ np.save('k_co2_ces.npy',np.array(k2[1]))
 np.save('xs_co2_ces.npy',np.array(xs_mean2[1]))
 np.save('sigma_co2_ces.npy',np.array(xs_sigma2[1]))
 print (k2[1],xs_mean2[1],xs_sigma2[1])
-
+'''
+[0.01215163 0.0173808  0.02486021 0.03555821 0.05085983 0.07274615
+ 0.10405072 0.14882648 0.21287041 0.30447412 0.4354973  0.6229032
+ 0.89095476 1.27435592] [-111394.55879619  -35713.77249337  -63660.34236317   -2403.03453446
+  -10983.39995201  -62925.38996002  -51229.31200701  -26009.15152815
+   -5208.28158103    7848.84887646   -7672.5316699     -149.65956843
+    3036.73274278    -303.45343263] [502402.56502822 260465.31564856 191957.69052262 134950.36658772
+  93414.04731901  63488.46854868  41459.50760101  27083.94180769
+  17198.45857079  10336.38453305   6368.44938107   3865.63125151
+   2795.62660359   5222.61565755]
+'''
 k6, xs_mean6, xs_sigma6 = read_h5_arrays('co6_map_signal_1D_arrays.h5')
 k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_signal_1D_arrays.h5')
-print (np.load('co7_map_signal_1D_names.npy'))
+print (np.load('co2_map_signal_1D_names.npy'))
 '''
 ['xs_mean_co7_map_elev_cesc0.pdf' 'xs_mean_co7_map_elev_cesc1.pdf'
  'xs_mean_co7_map_dayn_cesc0.pdf' 'xs_mean_co7_map_dayn_cesc1.pdf'
