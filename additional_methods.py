@@ -120,7 +120,7 @@ def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma
       ax1.set_ylim(-lim, lim)              # ax1.set_ylim(0, 0.1)
    ax1.set_xlim(0.04,0.7)
    ax1.set_xscale('log')
-   ax1.set_title(titlename)
+   #ax1.set_title(titlename)
    ax1.grid()
    #ax1.set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=14)
    labnums = [0.05,0.1, 0.2, 0.5]
