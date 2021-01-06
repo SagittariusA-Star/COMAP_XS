@@ -79,8 +79,14 @@ k6, xs_mean6, xs_sigma6 = read_h5_arrays('co6_map_signal_1D_arrays.h5')
 k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_signal_1D_arrays.h5')
 print (np.load('co7_map_signal_1D_names.npy'))
 '''
-[u'xs_mean_co7_map_dayn_cesc0.pdf' u'xs_mean_co7_map_dayn_cesc1.pdf'
- u'xs_mean_co7_map_elev_cesc0.pdf' u'xs_mean_co7_map_elev_cesc1.pdf']
+['xs_mean_co7_map_elev_cesc0.pdf' 'xs_mean_co7_map_elev_cesc1.pdf'
+ 'xs_mean_co7_map_dayn_cesc0.pdf' 'xs_mean_co7_map_dayn_cesc1.pdf'
+ 'xs_mean_co7_map_sidr_cesc0.pdf' 'xs_mean_co7_map_sidr_cesc1.pdf'
+ 'xs_mean_co7_map_ambt_cesc0.pdf' 'xs_mean_co7_map_ambt_cesc1.pdf'
+ 'xs_mean_co7_map_wind_cesc0.pdf' 'xs_mean_co7_map_wind_cesc1.pdf'
+ 'xs_mean_co7_map_wint_cesc0.pdf' 'xs_mean_co7_map_wint_cesc1.pdf'
+ 'xs_mean_co7_map_rise_cesc0.pdf' 'xs_mean_co7_map_rise_cesc1.pdf']
+
 '''
 
 def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma2, xs_sigma6, xs_sigma7, scan_strategy):
@@ -147,4 +153,4 @@ def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma
    plt.savefig(figure_name, bbox_inches='tight')
    #plt.show()
 
-xs_with_model_3fields('ces_all_fields_map_signal.pdf', k2[3],xs_mean2[3], xs_mean6[3], xs_mean7[3], xs_sigma2[3], xs_sigma6[3], xs_sigma7[3], 'ces')
+xs_with_model_3fields('ces_all_fields_map_signal_new.pdf', k2[1],xs_mean2[1], xs_mean6[1], xs_mean7[1], xs_sigma2[1], xs_sigma6[1], xs_sigma7[1], 'ces')
