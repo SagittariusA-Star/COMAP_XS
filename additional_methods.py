@@ -75,6 +75,11 @@ def read_h5_arrays(filename, two_dim=False):
           return k, xs_mean, xs_sigma
 
 k2, xs_mean2, xs_sigma2 = read_h5_arrays('co2_map_signal_1D_arrays.h5')
+np.save('k_co2_ces.npy',np.array(k2[1]))
+np.save('xs_co2_ces.npy',np.array(xs_mean2[1]))
+np.save('sigma_co2_ces.npy',np.array(xs_sigma2[1]))
+print (k2[1],xs_mean2[1],xs_sigma2[1])
+
 k6, xs_mean6, xs_sigma6 = read_h5_arrays('co6_map_signal_1D_arrays.h5')
 k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_signal_1D_arrays.h5')
 print (np.load('co7_map_signal_1D_names.npy'))
