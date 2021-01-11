@@ -125,7 +125,7 @@ def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma
    ax1.plot(k, 0 * xs_mean2, 'k', alpha=0.4, zorder=1)
    #ax1.plot(k, k*PS_function.PS_f(k)/ transfer(k), label='k*PS of the input signal')
    #ax1.plot(k, k*PS_function.PS_f(k), label='k*PS of the input signal')
-   #ax1.plot(k_th, k_th * ps_th_nobeam * 10, '--', label=r'$10\times kP_{Theory}(k)$', color='dodgerblue')
+   ax1.plot(k_th, k_th * ps_th_nobeam * 10, '--', label=r'$10\times kP_{Theory}(k)$', color='dodgerblue')
    #ax1.plot(k_th, k_th * ps_copps_nobeam * 5, 'g--', label=r'$5 \times kP_{COPPS}$ (shot)')
    ax1.set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=14)
    if scan_strategy == 'ces':
@@ -167,4 +167,4 @@ def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma
    plt.savefig(figure_name, bbox_inches='tight')
    #plt.show()
 
-xs_with_model_3fields('ces_all_fields_map_signal_forpres.pdf', k2[1],xs_mean2[1], xs_mean6[1], xs_mean7[1], xs_sigma2[1], xs_sigma6[1], xs_sigma7[1], 'ces')
+xs_with_model_3fields('ces_all_fields_map_signal_forpres_wmodel.pdf', k2[1],xs_mean2[1], xs_mean6[1], xs_mean7[1], xs_sigma2[1], xs_sigma6[1], xs_sigma7[1], 'ces')
