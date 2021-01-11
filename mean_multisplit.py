@@ -321,7 +321,7 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sig
       fig.colorbar(img2, ax=ax[1], fraction=0.046, pad=0.04)
       img3 = ax[2].imshow(xs_mean/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
       fig.colorbar(img2, ax=ax[2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}_{\parallel, \bot}(k)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=16)
-     
+      
      
       ticks = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,0.1,
               0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,1., 1.1, 1.2, 1.3]
@@ -340,9 +340,9 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sig
       ticklist_y = log2lin(ticks, ybins)
       majorlist_y = log2lin(majorticks, ybins)
 
-      ax[0].set_title(r'$\overline{xs}$', fontsize=16)
-      ax[1].set_title(r'$\overline{xs}$ with $TF_{filter}$', fontsize=16)
-      ax[2].set_title(r'$\overline{xs}$ with $TF_{filter}$ and $TF_{smooth}$ ', fontsize=16)
+      ax[0].set_title(r'$\tilde{C}^{\mathrm{FPXS}}$ ', fontsize=16)
+      ax[1].set_title(r'$\tilde{C}^{\mathrm{FPXS}}$ with $T^{pipeline}$', fontsize=16)
+      ax[2].set_title(r'$\tilde{C}^{\mathrm{FPXS}}$ with $T^{pipeline}$ and $T^{beam}$ ', fontsize=16)
 
       for i in range(3):
          ax[i].set_xticks(ticklist_x, minor=True)
@@ -375,5 +375,7 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sig
  0.08598428 0.11947477 0.16600966 0.23066968 0.32051448 0.44535342
  0.61881657 0.85984284]
 '''
+
+
 
 
