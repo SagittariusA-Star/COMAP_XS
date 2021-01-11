@@ -106,7 +106,7 @@ print (np.load('co2_map_signal_1D_names.npy'))
 def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma2, xs_sigma6, xs_sigma7, scan_strategy):
   
    if scan_strategy == 'ces':
-      titlename = 'CES scans'
+      titlename = 'CES scans; Feed-feed variable: elev'
    if scan_strategy == 'liss':
       titlename = 'Lissajous scans'
    
@@ -125,7 +125,7 @@ def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma
    ax1.plot(k, 0 * xs_mean2, 'k', alpha=0.4, zorder=1)
    #ax1.plot(k, k*PS_function.PS_f(k)/ transfer(k), label='k*PS of the input signal')
    #ax1.plot(k, k*PS_function.PS_f(k), label='k*PS of the input signal')
-   ax1.plot(k_th, k_th * ps_th_nobeam * 10, '--', label=r'$10\times kP_{Theory}(k)$', color='dodgerblue')
+   #ax1.plot(k_th, k_th * ps_th_nobeam * 10, '--', label=r'$10\times kP_{Theory}(k)$', color='dodgerblue')
    #ax1.plot(k_th, k_th * ps_copps_nobeam * 5, 'g--', label=r'$5 \times kP_{COPPS}$ (shot)')
    ax1.set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=14)
    if scan_strategy == 'ces':
@@ -134,7 +134,7 @@ def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma
       ax1.set_ylim(-lim, lim)              # ax1.set_ylim(0, 0.1)
    ax1.set_xlim(0.04,0.7)
    ax1.set_xscale('log')
-   #ax1.set_title(titlename)
+   ax1.set_title(titlename, fontsize=16)
    ax1.grid()
    #ax1.set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=14)
    labnums = [0.05,0.1, 0.2, 0.5]
@@ -167,4 +167,4 @@ def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma
    plt.savefig(figure_name, bbox_inches='tight')
    #plt.show()
 
-xs_with_model_3fields('ces_all_fields_map_signal_new_wmodel10.pdf', k2[1],xs_mean2[1], xs_mean6[1], xs_mean7[1], xs_sigma2[1], xs_sigma6[1], xs_sigma7[1], 'ces')
+xs_with_model_3fields('ces_all_fields_map_signal_forpres.pdf', k2[1],xs_mean2[1], xs_mean6[1], xs_mean7[1], xs_sigma2[1], xs_sigma6[1], xs_sigma7[1], 'ces')
