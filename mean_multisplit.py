@@ -264,7 +264,7 @@ def xs_feed_feed_2D(map_file):
       noise = np.zeros_like(chi2)
       for i in range(n_feed): #go through all the feed combinations
          for j in range(n_feed):
-            if i != 7 and j != 7:
+            #if i != 7 and j != 7:
               try:
                   filepath = path_to_xs %(i+1, j+1)
                   with h5py.File(filepath, mode="r") as my_file:
