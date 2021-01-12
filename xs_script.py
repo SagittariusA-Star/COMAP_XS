@@ -19,8 +19,10 @@ def run_all_methods(feed1,feed2, n_of_splits, two_dimensions):
 
    if two_dimensions == False:
       xs, k, nmodes = my_xs.calculate_xs()
+      np.save('knmodes.npy',np.array(k))
+      np.save('nmodes.npy',np.array(nmodes))
       rms_mean, rms_sig = my_xs.run_noise_sims(50) #these rms's are arrays of 14 elements, that give error bars (number of bin edges minus 1)
-
+     
       #plot all cross-spectra that have been calculated
       my_xs.plot_xs(k, xs, rms_sig, rms_mean, save=True)
       my_xs.make_h5()
@@ -92,7 +94,7 @@ number_of_maps = len(map_files)
 number_of_ff_variables = len(feed_feed_variables)
 maps_per_jk = int(number_of_maps/number_of_ff_variables)
 feed_combos = list(range(19*19)) #number of combinations between feeds
-'''
+
 print ('STAGE 3/4: Calculating cross-spectra for all split-split feed-feed combinations.')
 for g in range(number_of_maps):
    mapname = map_files[g]
@@ -103,7 +105,7 @@ for g in range(number_of_maps):
    #make xs for all feed-combinations
    pool = multiprocessing.Pool(8) #here number of cores
    np.array(pool.map(all_feed_combo_xs, feed_combos))
-'''
+
 print ('STAGE 4/4: Calculating the mean of cross-spectra from all combinations.')
 k_arr = []
 xs_mean_arr = []
