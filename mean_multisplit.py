@@ -160,7 +160,7 @@ def xs_feed_feed_grid(map_file):
       
       #plt.show()
       #print ("xs_div:", xs_div)
-   return k, xs_sum / xs_div, 1. / np.sqrt(xs_div), field, ff_jk, split_names, split_numbers, went_through_first_cut, went_through_sigma_cut
+   return k, xs_sum / xs_div, 1. / np.sqrt(xs_div), field, ff_jk, split_names, split_numbers
 
 
 
@@ -381,7 +381,7 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sig
  0.08598428 0.11947477 0.16600966 0.23066968 0.32051448 0.44535342
  0.61881657 0.85984284]
 '''
-
+'''
 def check_sigma_cut(map_file):
    k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers, went1, went2 = xs_feed_feed_grid(map_file)
    print ('Mapfile:', map_file)
@@ -398,7 +398,7 @@ check_sigma_cut('co6_map_elev_cesc_0.h5')
 
 check_sigma_cut('co7_map_elev_cesc_1.h5')
 check_sigma_cut('co7_map_elev_cesc_0.h5')
-
+'''
 
 
 
