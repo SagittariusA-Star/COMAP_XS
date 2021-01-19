@@ -382,8 +382,24 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sig
  0.61881657 0.85984284]
 '''
 
-k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers, went1, went2 = xs_feed_feed_grid('co2_map_elev_cesc_1.h5')
+def check_sigma_cut(map_file):
+   k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers, went1, went2 = xs_feed_feed_grid(map_file)
+   print ('Mapfile:', map_file)
+   print ('Went through first cut:', went1)
+   print ('Went through 5 sigma cut:', went2)
+   print ('Difference:', went1-went2)
+   print ('---------------------------')
+  
+check_sigma_cut('co2_map_elev_cesc_1.h5')
+check_sigma_cut('co2_map_elev_cesc_0.h5')
 
-print(went1, went2, went1-went2)
+check_sigma_cut('co6_map_elev_cesc_1.h5')
+check_sigma_cut('co6_map_elev_cesc_0.h5')
+
+check_sigma_cut('co7_map_elev_cesc_1.h5')
+check_sigma_cut('co7_map_elev_cesc_0.h5')
+
+
+
 
 
