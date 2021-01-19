@@ -75,6 +75,8 @@ def read_number_of_splits(mapfile, jk):
    return number_of_splits
 
 def xs_feed_feed_grid(map_file):
+   went_through_first_cut = 0
+   went_through_sigma_cut = 0
    #n_sim = 100
    n_k = 14
    n_feed = 19
@@ -111,7 +113,7 @@ def xs_feed_feed_grid(map_file):
       noise = np.zeros_like(chi2)
       for i in range(n_feed): #go through all the feed combinations
          for j in range(n_feed):
-            if i != 7 and j != 7:
+            #if i != 7 and j != 7:
               try:
                   filepath = path_to_xs %(i+1, j+1)
                   with h5py.File(filepath, mode="r") as my_file:
@@ -132,11 +134,15 @@ def xs_feed_feed_grid(map_file):
               chi2[i, j] = np.sign(chi3) * abs((np.sum((xs[i,j] / rms_xs_std[i,j]) ** 2) - n_k) / np.sqrt(2 * n_k)) #magnitude (how far from white noise)
             
               
-              if abs(chi2[i,j]) < 5. and not np.isnan(chi2[i,j]) and i != j:  #if excess power is smaller than 5 sigma, chi2 is not nan, not on diagonal
-                  xs_sum += xs[i,j] / rms_xs_std[i,j] ** 2
-                  #print ("if test worked")
-                  xs_div += 1 / rms_xs_std[i,j] ** 2
-                  n_sum += 1
+              #if abs(chi2[i,j]) < 5. and not np.isnan(chi2[i,j]) and i != j:  #if excess power is smaller than 5 sigma, chi2 is not nan, not on diagonal
+              if not np.isnan(chi2[i,j]) and i != j:
+                  went_through_first_cut += 1
+                  if abs(chi2[i,j]) < 5.:
+                     went_through_sigma_cut += 1
+                     xs_sum += xs[i,j] / rms_xs_std[i,j] ** 2
+                     #print ("if test worked")
+                     xs_div += 1 / rms_xs_std[i,j] ** 2
+                     n_sum += 1
 
       tools.ensure_dir_exists('chi2_grids')
       figure_name = 'chi2_grids/xs_grid_' + name_of_map + '_splits' + split1 + split2 + '.pdf'
@@ -154,7 +160,7 @@ def xs_feed_feed_grid(map_file):
       
       #plt.show()
       #print ("xs_div:", xs_div)
-   return k, xs_sum / xs_div, 1. / np.sqrt(xs_div), field, ff_jk, split_names, split_numbers
+   return k, xs_sum / xs_div, 1. / np.sqrt(xs_div), field, ff_jk, split_names, split_numbers, went_through_first_cut, went_through_sigma_cut
 
 
 
@@ -376,6 +382,8 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sig
  0.61881657 0.85984284]
 '''
 
+k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers, went1, went2 = xs_feed_feed_grid('co2_map_elev_cesc_1.h5')
 
+print(went1, went2, went1-went2)
 
 
