@@ -234,8 +234,8 @@ def null_test_subtract(maps_created, test_variables, field):
       rms34 = np.sqrt(rms3**2 + rms4**2)
       new_map12 = write_map_created(mapfile1, map12, rms12, test_variable,'0',field)
       new_map34 = write_map_created(mapfile1, map34, rms34, test_variable,'1',field)
-   new_subtracted_maps.append(new_map12)
-   new_subtracted_maps.append(new_map34)
+      new_subtracted_maps.append(new_map12)
+      new_subtracted_maps.append(new_map34)
    print (new_subtracted_maps)
    return new_subtracted_maps
 
