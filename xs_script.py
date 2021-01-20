@@ -90,6 +90,10 @@ control_variables, test_variables, feed_feed_variables, all_variables, feed_and_
 
 map_files = read_multisplit.read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control)
 
+#Perform null-test
+new_subtracted_maps = null_test_subtract(map_files, test_variables, field)
+map_files = new_subtracted_maps
+
 number_of_maps = len(map_files)
 number_of_ff_variables = len(feed_feed_variables)
 maps_per_jk = int(number_of_maps/number_of_ff_variables)

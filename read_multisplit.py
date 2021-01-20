@@ -249,14 +249,15 @@ def read_field_jklist(mappath):
    print ('List of split-variables:', jk_list)
    return field_name, jk_list, map_name
 
+'''
 mappath = '/mn/stornext/d16/cmbco/comap/protodir/maps/co6_map_null.h5'
 field_name, jk_list, map_name = read_field_jklist(mappath)
 control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control = read_jk(jk_list)
 #['ambt', 'wind', 'wint', 'rise', 'half', 'odde', 'fpol', 'dayn']
-#maps_created = read_map(mappath,field_name, control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control)
-maps_created = ['co6_map_elev_ambt_0_cesc_0.h5', 'co6_map_elev_ambt_0_cesc_1.h5', 'co6_map_elev_ambt_1_cesc_0.h5', 'co6_map_elev_ambt_1_cesc_1.h5', 'co6_map_elev_wind_0_cesc_0.h5', 'co6_map_elev_wind_0_cesc_1.h5', 'co6_map_elev_wind_1_cesc_0.h5', 'co6_map_elev_wind_1_cesc_1.h5', 'co6_map_elev_wint_0_cesc_0.h5', 'co6_map_elev_wint_0_cesc_1.h5', 'co6_map_elev_wint_1_cesc_0.h5', 'co6_map_elev_wint_1_cesc_1.h5', 'co6_map_elev_rise_0_cesc_0.h5', 'co6_map_elev_rise_0_cesc_1.h5', 'co6_map_elev_rise_1_cesc_0.h5', 'co6_map_elev_rise_1_cesc_1.h5', 'co6_map_elev_half_0_cesc_0.h5', 'co6_map_elev_half_0_cesc_1.h5', 'co6_map_elev_half_1_cesc_0.h5', 'co6_map_elev_half_1_cesc_1.h5', 'co6_map_elev_odde_0_cesc_0.h5', 'co6_map_elev_odde_0_cesc_1.h5', 'co6_map_elev_odde_1_cesc_0.h5', 'co6_map_elev_odde_1_cesc_1.h5', 'co6_map_elev_fpol_0_cesc_0.h5', 'co6_map_elev_fpol_0_cesc_1.h5', 'co6_map_elev_fpol_1_cesc_0.h5', 'co6_map_elev_fpol_1_cesc_1.h5', 'co6_map_elev_dayn_0_cesc_0.h5', 'co6_map_elev_dayn_0_cesc_1.h5', 'co6_map_elev_dayn_1_cesc_0.h5', 'co6_map_elev_dayn_1_cesc_1.h5']
+maps_created = read_map(mappath,field_name, control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control)
 new_subtracted_maps = null_test_subtract(maps_created, test_variables, field_name)
-print (maps_created, new_subtracted_maps)
+'''
+
 '''
 ['co6_map_elev_ambt_0_cesc_0.h5', 'co6_map_elev_ambt_0_cesc_1.h5', 'co6_map_elev_ambt_1_cesc_0.h5', 'co6_map_elev_ambt_1_cesc_1.h5', 'co6_map_elev_wind_0_cesc_0.h5', 'co6_map_elev_wind_0_cesc_1.h5', 'co6_map_elev_wind_1_cesc_0.h5', 'co6_map_elev_wind_1_cesc_1.h5', 'co6_map_elev_wint_0_cesc_0.h5', 'co6_map_elev_wint_0_cesc_1.h5', 'co6_map_elev_wint_1_cesc_0.h5', 'co6_map_elev_wint_1_cesc_1.h5', 'co6_map_elev_rise_0_cesc_0.h5', 'co6_map_elev_rise_0_cesc_1.h5', 'co6_map_elev_rise_1_cesc_0.h5', 'co6_map_elev_rise_1_cesc_1.h5', 'co6_map_elev_half_0_cesc_0.h5', 'co6_map_elev_half_0_cesc_1.h5', 'co6_map_elev_half_1_cesc_0.h5', 'co6_map_elev_half_1_cesc_1.h5', 'co6_map_elev_odde_0_cesc_0.h5', 'co6_map_elev_odde_0_cesc_1.h5', 'co6_map_elev_odde_1_cesc_0.h5', 'co6_map_elev_odde_1_cesc_1.h5', 'co6_map_elev_fpol_0_cesc_0.h5', 'co6_map_elev_fpol_0_cesc_1.h5', 'co6_map_elev_fpol_1_cesc_0.h5', 'co6_map_elev_fpol_1_cesc_1.h5', 'co6_map_elev_dayn_0_cesc_0.h5', 'co6_map_elev_dayn_0_cesc_1.h5', 'co6_map_elev_dayn_1_cesc_0.h5', 'co6_map_elev_dayn_1_cesc_1.h5']
 '''
