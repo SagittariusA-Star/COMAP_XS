@@ -204,7 +204,7 @@ def read_field_jklist(mappath):
 mappath = '/mn/stornext/d16/cmbco/comap/protodir/maps/co6_map_null.h5'
 field_name, jk_list, map_name = read_field_jklist(mappath)
 control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control = read_jk(jk_list)
-maps_created = read_map(mappath,field, control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control)
+maps_created = read_map(mappath,field_name, control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control)
 print (maps_created)
 
 
