@@ -214,15 +214,17 @@ def null_test_subtract(maps_created, test_variables, field):
    We want: 'co6_map_elev_ambt_1_cesc_0.h5 - co6_map_elev_ambt_0_cesc_0.h5' and call it 'co6_map_elev_ambt_subtr_cesc_0.h5'.
    '''
    number_of_maps = len(maps_created) 
-   mapfiles = np.zeros(number_of_maps)
+   mapfiles = []
    for i in range(number_of_maps):
-      mapfiles[i] = 'split_maps/' + maps_created[i]
+      mapfiles.append('split_maps/' + maps_created[i])
    for i in range(len(test_variables)):
       test_variable = test_variables[i]
       mapfile1 = mapfiles[i*4] #test_variable = 0, cesc = 0
       mapfile2 = mapfiles[i*4+2] #test_variable = 1, cesc = 0
       mapfile3 = mapfiles[i*4+1] #test_variable = 0, cesc = 1
       mapfile4 = mapfiles[i*4+3] #test_variable = 1, cesc = 1
+      print (mapfile1, mapfile2)
+      print (mapfile3, mapfile4)
       map1, rms1 = read_map_created(mapfile1)
       map2, rms2 = read_map_created(mapfile2)
       map3, rms3 = read_map_created(mapfile3)
@@ -251,7 +253,8 @@ mappath = '/mn/stornext/d16/cmbco/comap/protodir/maps/co6_map_null.h5'
 field_name, jk_list, map_name = read_field_jklist(mappath)
 control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control = read_jk(jk_list)
 #['ambt', 'wind', 'wint', 'rise', 'half', 'odde', 'fpol', 'dayn']
-maps_created = read_map(mappath,field_name, control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control)
+#maps_created = read_map(mappath,field_name, control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control)
+maps_created = ['co6_map_elev_ambt_0_cesc_0.h5', 'co6_map_elev_ambt_0_cesc_1.h5', 'co6_map_elev_ambt_1_cesc_0.h5', 'co6_map_elev_ambt_1_cesc_1.h5', 'co6_map_elev_wind_0_cesc_0.h5', 'co6_map_elev_wind_0_cesc_1.h5', 'co6_map_elev_wind_1_cesc_0.h5', 'co6_map_elev_wind_1_cesc_1.h5', 'co6_map_elev_wint_0_cesc_0.h5', 'co6_map_elev_wint_0_cesc_1.h5', 'co6_map_elev_wint_1_cesc_0.h5', 'co6_map_elev_wint_1_cesc_1.h5', 'co6_map_elev_rise_0_cesc_0.h5', 'co6_map_elev_rise_0_cesc_1.h5', 'co6_map_elev_rise_1_cesc_0.h5', 'co6_map_elev_rise_1_cesc_1.h5', 'co6_map_elev_half_0_cesc_0.h5', 'co6_map_elev_half_0_cesc_1.h5', 'co6_map_elev_half_1_cesc_0.h5', 'co6_map_elev_half_1_cesc_1.h5', 'co6_map_elev_odde_0_cesc_0.h5', 'co6_map_elev_odde_0_cesc_1.h5', 'co6_map_elev_odde_1_cesc_0.h5', 'co6_map_elev_odde_1_cesc_1.h5', 'co6_map_elev_fpol_0_cesc_0.h5', 'co6_map_elev_fpol_0_cesc_1.h5', 'co6_map_elev_fpol_1_cesc_0.h5', 'co6_map_elev_fpol_1_cesc_1.h5', 'co6_map_elev_dayn_0_cesc_0.h5', 'co6_map_elev_dayn_0_cesc_1.h5', 'co6_map_elev_dayn_1_cesc_0.h5', 'co6_map_elev_dayn_1_cesc_1.h5']
 new_subtracted_maps = null_test_subtract(maps_created, test_variables, field_name)
 print (maps_created, new_subtracted_maps)
 '''
