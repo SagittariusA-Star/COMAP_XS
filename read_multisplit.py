@@ -187,7 +187,15 @@ def null_test_subtract(maps_created):
    print ('Subtracting test-variable maps for the null-tests.')
    '''
    We want to subract split-maps (split according to test variables) for both cesc = 0 and cesc = 1 and then create new map-files for the FPXS.
+   This sequence: ['co6_map_elev_ambt_0_cesc_0.h5', 'co6_map_elev_ambt_0_cesc_1.h5', 'co6_map_elev_ambt_1_cesc_0.h5',  
+   'co6_map_elev_ambt_1_cesc_1.h5'] is repeating for different test variables.
+   We want: 'co6_map_elev_ambt_1_cesc_0.h5 - co6_map_elev_ambt_0_cesc_0.h5' and call it 'co6_map_elev_ambt_subtr_cesc_0.h5'.
    '''
+   len(maps_created) = number_of_maps
+   mapfiles = np.zeros(number_of_maps)
+   new_subtracted_maps = np.zeros(number_of_maps/2)
+   for i in range(number_of_maps):
+      mapfiles[i] = 'split_maps/' + maps_created[i]
    
    return new_subtracted_maps
 
@@ -204,8 +212,13 @@ def read_field_jklist(mappath):
 mappath = '/mn/stornext/d16/cmbco/comap/protodir/maps/co6_map_null.h5'
 field_name, jk_list, map_name = read_field_jklist(mappath)
 control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control = read_jk(jk_list)
-maps_created = read_map(mappath,field_name, control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control)
-print (maps_created)
+print (test_variables)
+#maps_created = read_map(mappath,field_name, control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control)
+
+'''
+['co6_map_elev_ambt_0_cesc_0.h5', 'co6_map_elev_ambt_0_cesc_1.h5', 'co6_map_elev_ambt_1_cesc_0.h5', 'co6_map_elev_ambt_1_cesc_1.h5', 'co6_map_elev_wind_0_cesc_0.h5', 'co6_map_elev_wind_0_cesc_1.h5', 'co6_map_elev_wind_1_cesc_0.h5', 'co6_map_elev_wind_1_cesc_1.h5', 'co6_map_elev_wint_0_cesc_0.h5', 'co6_map_elev_wint_0_cesc_1.h5', 'co6_map_elev_wint_1_cesc_0.h5', 'co6_map_elev_wint_1_cesc_1.h5', 'co6_map_elev_rise_0_cesc_0.h5', 'co6_map_elev_rise_0_cesc_1.h5', 'co6_map_elev_rise_1_cesc_0.h5', 'co6_map_elev_rise_1_cesc_1.h5', 'co6_map_elev_half_0_cesc_0.h5', 'co6_map_elev_half_0_cesc_1.h5', 'co6_map_elev_half_1_cesc_0.h5', 'co6_map_elev_half_1_cesc_1.h5', 'co6_map_elev_odde_0_cesc_0.h5', 'co6_map_elev_odde_0_cesc_1.h5', 'co6_map_elev_odde_1_cesc_0.h5', 'co6_map_elev_odde_1_cesc_1.h5', 'co6_map_elev_fpol_0_cesc_0.h5', 'co6_map_elev_fpol_0_cesc_1.h5', 'co6_map_elev_fpol_1_cesc_0.h5', 'co6_map_elev_fpol_1_cesc_1.h5', 'co6_map_elev_dayn_0_cesc_0.h5', 'co6_map_elev_dayn_0_cesc_1.h5', 'co6_map_elev_dayn_1_cesc_0.h5', 'co6_map_elev_dayn_1_cesc_1.h5']
+'''
+
 
 
 '''
