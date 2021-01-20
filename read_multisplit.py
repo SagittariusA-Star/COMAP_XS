@@ -67,7 +67,7 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
             how_many_twos = len(control_variables) + 1 #how many parts to reshape the map with respect to splits
             new_shape = []
             for i in range(how_many_twos):
-               new_shape.append(2)
+               new_shape.append(2) #because we split in 2 - needs to be changed if more splits are implemented
             new_shape.append(shp[1]) #feed
             new_shape.append(shp[2]) #sideband
             new_shape.append(shp[3]) #freq
@@ -180,6 +180,31 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
    return maps_created
 
 
+def null_test_subtract(maps_created):
+   print ('Subtracting test-variable maps for the null-tests.')
+   '''
+   We want to subract split-maps (split according to test variables) for both cesc = 0 and cesc = 1 and then create new map-files for the FPXS.
+   '''
+   
+   return new_subtracted_maps
+
+def read_field_jklist(mappath):
+   map_name = mappath.rpartition('/')[-1] #get rid of the path, leave only the name of the map
+   map_name = map_name.rpartition('.')[0] #get rid of the ".h5" part
+   field_name = map_name.split('_')[0]
+   last_part = map_name.split('_')[-1]
+   jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_' + last_part + '.txt'
+   print ('Field:', field_name)
+   print ('List of split-variables:', jk_list)
+   return field_name, jk_list, map_name
+
+mappath = '/mn/stornext/d16/cmbco/comap/protodir/maps/co6_map_null.h5'
+field_name, jk_list, map_name = read_field_jklist(mappath)
+control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control = read_jk(jk_list)
+maps_created = read_map(mappath,field, control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control)
+print (maps_created)
+
+
 '''
 EXAMPLES:
 
@@ -203,6 +228,34 @@ elev     2 1 #
 dayn     2 1
 --maps:
 ['co2_map_elev_cesc_0.h5', 'co2_map_elev_cesc_1.h5', 'co2_map_dayn_cesc_0.h5', 'co2_map_dayn_cesc_1.h5']
+
+--jk_list_signal.txt, new file:
+9        # number of different jack-knives (including acceptlist)
+accr     # accept/reject (reject=0)
+cesc     3 #
+elev     2 1 #
+dayn     2 1
+sidr     2 1
+ambt     2 1
+wind     2 1
+wint     2 1
+rise     2 1
+
+
+--jk_list_null.txt, for the null test
+11	 # number of different jack-knives (including acceptlist)
+accr     # accept/reject (reject=0)
+cesc     3 #
+elev     3 1 #
+ambt     2
+wind     2
+wint     2
+rise     2
+half     2
+odde     2
+fpol     2
+dayn     2
+
 '''
 
 
