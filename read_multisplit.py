@@ -195,7 +195,7 @@ def write_map_created(mapfile1, new_map, new_rms, test_variable, cesc, field):
 
    outname1 = field + '_map_elev_' + test_variable + '_subtr_cesc_' + cesc +'.h5'
    print ('Creating the file ' + outname1)
-   outname = outname1 + 'split_maps/'
+   outname = 'split_maps/' + outanme1
 
    f = h5py.File(outname, 'w') #create HDF5 file with the sliced map
    f.create_dataset('x', data=x)
