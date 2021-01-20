@@ -215,6 +215,7 @@ def null_test_subtract(maps_created, test_variables, field):
    '''
    number_of_maps = len(maps_created) 
    mapfiles = []
+   new_subtracted_maps = []
    for i in range(number_of_maps):
       mapfiles.append('split_maps/' + maps_created[i])
    for i in range(len(test_variables)):
@@ -223,8 +224,6 @@ def null_test_subtract(maps_created, test_variables, field):
       mapfile2 = mapfiles[i*4+2] #test_variable = 1, cesc = 0
       mapfile3 = mapfiles[i*4+1] #test_variable = 0, cesc = 1
       mapfile4 = mapfiles[i*4+3] #test_variable = 1, cesc = 1
-      print (mapfile1, mapfile2)
-      print (mapfile3, mapfile4)
       map1, rms1 = read_map_created(mapfile1)
       map2, rms2 = read_map_created(mapfile2)
       map3, rms3 = read_map_created(mapfile3)
@@ -237,6 +236,7 @@ def null_test_subtract(maps_created, test_variables, field):
       new_map34 = write_map_created(mapfile1, map34, rms34, test_variable,'1',field)
    new_subtracted_maps.append(new_map12)
    new_subtracted_maps.append(new_map34)
+   print (new_subtracted_maps)
    return new_subtracted_maps
 
 def read_field_jklist(mappath):
