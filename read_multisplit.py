@@ -27,7 +27,10 @@ def read_jk(filename):
       split_line = line.split()
       variable = split_line[0]
       number = split_line[1]
-      extra = split_line[2]
+      if len(split_line) > 2:
+         extra = split_line[2]
+      if len(split_line) < 2 or len(split_line) == 2:
+         extra = '#'
       all_variables.append(variable)
 
       if number == '3':
