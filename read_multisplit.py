@@ -188,7 +188,7 @@ def read_map_created(mapfile):
          rms_old = np.array(my_file['/jackknives/rms_elev'][:])
    return map_old, rms_old
      
-def write_map_created(mapfile1, new_map, new_rms, test_variable, cesc, field)
+def write_map_created(mapfile1, new_map, new_rms, test_variable, cesc, field):
    with h5py.File(mapfile1, mode="r") as my_file1:
          x = np.array(my_file1['x'][:])
          y = np.array(my_file1['y'][:])
