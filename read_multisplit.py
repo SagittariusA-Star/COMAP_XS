@@ -191,7 +191,7 @@ def null_test_subtract(maps_created):
    'co6_map_elev_ambt_1_cesc_1.h5'] is repeating for different test variables.
    We want: 'co6_map_elev_ambt_1_cesc_0.h5 - co6_map_elev_ambt_0_cesc_0.h5' and call it 'co6_map_elev_ambt_subtr_cesc_0.h5'.
    '''
-   len(maps_created) = number_of_maps
+   number_of_maps = len(maps_created) 
    mapfiles = np.zeros(number_of_maps)
    new_subtracted_maps = np.zeros(number_of_maps/2)
    for i in range(number_of_maps):
