@@ -325,9 +325,9 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
       ax[ax_i].set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=14)
 
    if cesc == '1':
-      ax[ax_i].set_ylim(-lim*4, lim*4)          
+      ax[ax_i].set_ylim(-lim*6, lim*6)          
    if cesc == '0':
-      ax[ax_i].set_ylim(-lim*4, lim*4)         
+      ax[ax_i].set_ylim(-lim*6, lim*6)         
    ax[ax_i].set_xlim(0.04,0.7)
    ax[ax_i].set_xscale('log')
    ax[ax_i].set_title(field, fontsize=16)
@@ -337,7 +337,7 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
    ax[ax_i].set_xticks(labnums)
    ax[ax_i].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    #plt.legend(bbox_to_anchor=(0, 0.61))
-   ax[ax_i].legend(ncol=4)
+   #ax[ax_i].legend(ncol=4)
    return l1,l2,l3,l4
 
 def plot_nulltest(cesc):
@@ -359,7 +359,7 @@ def plot_nulltest(cesc):
    l1,l2,l3,l4 = plot_sub_fig('CO6',jk_we_want,1,lim,cesc,ax)
   
    l1,l2,l3,l4 = plot_sub_fig('CO7',jk_we_want,2,lim,cesc,ax)
-   plt.figlegend((l1,l2,l3,l4), ('wint', 'half', 'odde', 'dayn'))
+   plt.figlegend((l1,l2,l3,l4), ('wint', 'half', 'odde', 'dayn'),loc='center', ncol=4, fontsize=13)
    plt.tight_layout()
    if cesc == '0':
       plt.savefig('nulltests_3fields_liss.pdf')
