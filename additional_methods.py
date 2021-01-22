@@ -328,10 +328,11 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
       ax[ax_i].set_ylim(-lim*6, lim*6)          
    if cesc == '0':
       ax[ax_i].set_ylim(-lim*6, lim*6)  
-          
+   
+   ax[ax_i].text(.5,.9,field,horizontalalignment='center',transform=ax.transAxes, fontsize=16)     
    ax[ax_i].set_xlim(0.04,0.7)
    ax[ax_i].set_xscale('log')
-   ax[ax_i].set_title(field, fontsize=16)
+   #ax[ax_i].set_title(field, fontsize=16)
    ax[ax_i].grid()
    ax[ax_i].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=14)
    labnums = [0.05,0.1, 0.2, 0.5]
@@ -360,7 +361,7 @@ def plot_nulltest(cesc):
    l1,l2,l3,l4 = plot_sub_fig('CO6',jk_we_want,1,lim,cesc,ax)
   
    l1,l2,l3,l4 = plot_sub_fig('CO7',jk_we_want,2,lim,cesc,ax)
-   plt.figlegend((l1,l2,l3,l4), ('wint', 'half', 'odde', 'dayn'),loc='upper center',bbox_to_anchor=(1.05,0.5), ncol=1, fontsize=14)
+   plt.figlegend((l1,l2,l3,l4), ('wint', 'half', 'odde', 'dayn'),loc='upper center',bbox_to_anchor=(0.5,1.01), ncol=1, fontsize=14)
    plt.tight_layout()
    if cesc == '0':
       plt.savefig('nulltests_3fields_liss.pdf')
