@@ -334,7 +334,7 @@ def plot_nulltest(cesc):
       jk_we_want = [4,8,10,14] #indices of jk we want to use: wint, half, odde, dayn
    if cesc == '1':
       jk_we_want = [5,9,11,15]
-
+   fig = plt.figure()
    ax1 = fig.add_subplot(311)
    plot_sub_fig('CO2',jk_we_want,ax1,lim,cesc)
    ax2 = fig.add_subplot(321)
