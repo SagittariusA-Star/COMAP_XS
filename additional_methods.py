@@ -284,7 +284,7 @@ print (np.load('co6_map_null_1D_names.npy'))
 
 
 
-def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc):
+def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
    if field == 'CO2':
       k, xs_mean, xs_sigma = read_h5_arrays('co6_map_null_1D_arrays.h5') #replace with co2 when it will be done
    if field == 'CO6':
@@ -339,11 +339,11 @@ def plot_nulltest(cesc):
    fig, ax = plt.subplots(nrows=3,ncols=1,figsize=(15.5,5))
    
   
-   plot_sub_fig('CO2',jk_we_want,0,lim,cesc)
+   plot_sub_fig('CO2',jk_we_want,0,lim,cesc,ax)
   
-   plot_sub_fig('CO6',jk_we_want,1,lim,cesc)
+   plot_sub_fig('CO6',jk_we_want,1,lim,cesc,ax)
   
-   plot_sub_fig('CO7',jk_we_want,2,lim,cesc)
+   plot_sub_fig('CO7',jk_we_want,2,lim,cesc,ax)
    plt.tight_layout()
    if cesc == '0':
       plt.savefig('nulltests_3fields_liss.pdf')
