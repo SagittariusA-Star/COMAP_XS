@@ -290,10 +290,10 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
       kt = k
    if field == 'CO6':
       k, xs_mean, xs_sigma = read_h5_arrays('co6_map_null_1D_arrays.h5')
-      kt = k*1.025
+      kt = k*1.5
    if field == 'CO7':
       k, xs_mean, xs_sigma = read_h5_arrays('co7_map_null_1D_arrays.h5')
-      kt = k*0.975
+      kt = k*0.5
    ax[ax_i].plot(k[0], 0 * xs_mean[0], 'k', alpha=0.4)
    for index in jk_we_want:
       if index == 4 or index == 5:
