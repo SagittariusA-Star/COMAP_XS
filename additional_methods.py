@@ -265,8 +265,87 @@ xs_2D_plot('liss_3fields_2D.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_me
 xs_2D_plot('ces_3fields_2D.pdf', k2[1],k_edges_par2[1], k_edges_perp2[1], xs_mean2[1],xs_mean6[1],xs_mean7[1], xs_sigma2[1],xs_sigma6[1],xs_sigma7[1], 'CES cans')
     
 print (np.load('co6_map_null_1D_names.npy'))
-def plot_nulltest():
-   k2, xs_mean2, xs_sigma2 = read_h5_arrays('co6_map_null_1D_arrays.h5')
+['xs_mean_co6_map_elev_ambtsubtr_cesc0.pdf'
+ 'xs_mean_co6_map_elev_ambtsubtr_cesc1.pdf'
+ 'xs_mean_co6_map_elev_windsubtr_cesc0.pdf'
+ 'xs_mean_co6_map_elev_windsubtr_cesc1.pdf'
+ 'xs_mean_co6_map_elev_wintsubtr_cesc0.pdf'
+ 'xs_mean_co6_map_elev_wintsubtr_cesc1.pdf'
+ 'xs_mean_co6_map_elev_risesubtr_cesc0.pdf'
+ 'xs_mean_co6_map_elev_risesubtr_cesc1.pdf'
+ 'xs_mean_co6_map_elev_halfsubtr_cesc0.pdf'
+ 'xs_mean_co6_map_elev_halfsubtr_cesc1.pdf'
+ 'xs_mean_co6_map_elev_oddesubtr_cesc0.pdf'
+ 'xs_mean_co6_map_elev_oddesubtr_cesc1.pdf'
+ 'xs_mean_co6_map_elev_fpolsubtr_cesc0.pdf'
+ 'xs_mean_co6_map_elev_fpolsubtr_cesc1.pdf'
+ 'xs_mean_co6_map_elev_daynsubtr_cesc0.pdf'
+ 'xs_mean_co6_map_elev_daynsubtr_cesc1.pdf']
 
 
+
+def plot_sub_fig(field,jk_we_want,ax,lim,cesc):
+   if field == 'CO2':
+      k, xs_mean, xs_sigma = read_h5_arrays('co6_map_null_1D_arrays.h5') #replace with co2 when it will be done
+   if field == 'CO6':
+      k, xs_mean, xs_sigma = read_h5_arrays('co6_map_null_1D_arrays.h5')
+   if field == 'CO7':
+      k, xs_mean, xs_sigma = read_h5_arrays('co7_map_null_1D_arrays.h5')
+   ax.plot(k[0] 0 * xs_mean[0], 'k', alpha=0.4)
+   for index in jk_we_want:
+      if index == 4 or index == 5:
+         label_name = 'wint'
+         color_name = 'teal'
+      if index == 8 or index == 9:
+         label_name = 'half'
+         color_name = 'indianred'
+      if index == 10 or index == 11:
+         label_name = 'odde'
+         color_name = 'purple'
+      if index == 14 or index == 14:
+         label_name = 'dayn'
+         color_name = 'forestgreen'
+      ax.errorbar(k[index], k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
+   if ax == ax1:
+      ax.set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=14)
+
+   if cesc == '1':
+      ax.set_ylim(-lim*3, lim*3)          
+   if cesc == '0':
+      ax.set_ylim(-lim, lim)         
+   ax.set_xlim(0.04,0.7)
+   ax.set_xscale('log')
+   ax.set_title(field, fontsize=16)
+   ax.grid()
+   ax.set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=14)
+   labnums = [0.05,0.1, 0.2, 0.5]
+   ax.set_xticks(labnums)
+   ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+   #plt.legend(bbox_to_anchor=(0, 0.61))
+   ax.legend(ncol=4)
+
+
+def plot_nulltest(cesc):
+   k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_null_1D_arrays.h5') 
+   xs_mean7 = xs_mean7[8]
+   lim = np.mean(np.abs(xs_mean7[4:-2] * k7[4:-2])) * 8
+   if cesc = '0':
+      jk_we_want = [4,8,10,14] #indices of jk we want to use: wint, half, odde, dayn
+   if cesc = '1':
+      jk_we_want = [5,9,11,15]
+
+   ax1 = fig.add_subplot(311)
+   plot_sub_fig('CO2',jk_we_want,ax1,lim,cesc)
+   ax2 = fig.add_subplot(321)
+   plot_sub_fig('CO6',jk_we_want,ax2,lim,cesc)
+   ax3 = fig.add_subplot(331)
+   plot_sub_fig('CO7',jk_we_want,ax3,lim,cesc)
+   plt.tight_layout()
+   if cesc = '0':
+      plt.savefig('nulltests_3fields_liss.pdf')
+    if cesc = '1':
+      plt.savefig('nulltests_3fields_ces.pdf')
+
+plot_nulltest('0')
+plot_nulltest('1')
 
