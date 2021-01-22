@@ -336,7 +336,7 @@ def plot_nulltest(cesc):
       jk_we_want = [5,9,11,15]
 
 
-   fig, ax = plt.subplots(nrows=1,ncols=3,figsize=(15.5,5))
+   fig, ax = plt.subplots(nrows=1,ncols=3,figsize=(17,4))
    
   
    plot_sub_fig('CO2',jk_we_want,0,lim,cesc,ax)
