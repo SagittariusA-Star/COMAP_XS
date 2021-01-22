@@ -287,13 +287,13 @@ print (np.load('co6_map_null_1D_names.npy'))
 def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
    if field == 'CO2':
       k, xs_mean, xs_sigma = read_h5_arrays('co6_map_null_1D_arrays.h5') #replace with co2 when it will be done
-      
+      kt = k
    if field == 'CO6':
       k, xs_mean, xs_sigma = read_h5_arrays('co6_map_null_1D_arrays.h5')
-      k = k*1.02
+      kt = k*1.02
    if field == 'CO7':
       k, xs_mean, xs_sigma = read_h5_arrays('co7_map_null_1D_arrays.h5')
-      k = k*0.98
+      kt = k*0.98
    ax[ax_i].plot(k[0], 0 * xs_mean[0], 'k', alpha=0.4)
    for index in jk_we_want:
       if index == 4 or index == 5:
@@ -308,7 +308,7 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
       if index == 14 or index == 15:
          label_name = 'dayn'
          color_name = 'forestgreen'
-      ax[ax_i].errorbar(k[index], k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
+      ax[ax_i].errorbar(kt[index], k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
    if ax[ax_i] == 0:
       ax[ax_i].set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=14)
 
