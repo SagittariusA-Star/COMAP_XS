@@ -360,8 +360,8 @@ def plot_nulltest(cesc):
    l1,l2,l3,l4 = plot_sub_fig('CO6',jk_we_want,1,lim,cesc,ax)
   
    l1,l2,l3,l4 = plot_sub_fig('CO7',jk_we_want,2,lim,cesc,ax)
-   plt.figlegend((l1,l2,l3,l4), ('wint', 'half', 'odde', 'dayn'),loc='upper center',bbox_to_anchor=(0.5,1.05), ncol=4, fontsize=14)
-   #plt.tight_layout()
+   plt.figlegend((l1,l2,l3,l4), ('wint', 'half', 'odde', 'dayn'),loc='upper center',bbox_to_anchor=(1.05,0.5), ncol=1, fontsize=14)
+   plt.tight_layout()
    if cesc == '0':
       plt.savefig('nulltests_3fields_liss.pdf')
    if cesc == '1':
