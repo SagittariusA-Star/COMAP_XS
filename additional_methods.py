@@ -328,6 +328,7 @@ def plot_sub_fig(field,jk_we_want,ax,lim,cesc):
 def plot_nulltest(cesc):
    k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_null_1D_arrays.h5') 
    xs_mean7 = xs_mean7[8]
+   k7 = k7[8]
    lim = np.mean(np.abs(xs_mean7[4:-2] * k7[4:-2])) * 8
    if cesc == '0':
       jk_we_want = [4,8,10,14] #indices of jk we want to use: wint, half, odde, dayn
