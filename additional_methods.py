@@ -247,6 +247,6 @@ def read_h5_arrays(filename, two_dim=False):
 k2, xs_mean2, xs_sigma2, k_edges_perp2, k_edges_par2 = read_h5_arrays('co2_map_signal_2D_arrays.h5', two_dim=True)
 k6, xs_mean6, xs_sigma6, k_edges_perp6, k_edges_par6 = read_h5_arrays('co6_map_signal_2D_arrays.h5', two_dim=True)
 k7, xs_mean7, xs_sigma7, k_edges_perp7, k_edges_par7 = read_h5_arrays('co7_map_signal_2D_arrays.h5', two_dim=True)
-xs_2D_plot('liss_3fields_2D.pdf', k2[0],k_bin_edges_par[0], k_bin_edges_perp[0], xs_mean2[0],xs_mean6[0],xs_mean7[0], xs_sigma2[0],xs_sigma6[0],xs_sigma7[0], 'Liss cans')
-xs_2D_plot('ces_3fields_2D.pdf', k2[1],k_bin_edges_par[1], k_bin_edges_perp[1], xs_mean2[1],xs_mean6[1],xs_mean7[1], xs_sigma2[1],xs_sigma6[1],xs_sigma7[1], 'CES cans')
+xs_2D_plot('liss_3fields_2D.pdf', k2[0],k_bin_edges_par2[0], k_bin_edges_perp2[0], xs_mean2[0],xs_mean6[0],xs_mean7[0], xs_sigma2[0],xs_sigma6[0],xs_sigma7[0], 'Liss cans')
+xs_2D_plot('ces_3fields_2D.pdf', k2[1],k_bin_edges_par2[1], k_bin_edges_perp2[1], xs_mean2[1],xs_mean6[1],xs_mean7[1], xs_sigma2[1],xs_sigma6[1],xs_sigma7[1], 'CES cans')
     
