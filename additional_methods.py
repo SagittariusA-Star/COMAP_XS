@@ -181,11 +181,12 @@ def log2lin(x, k_edges):
 
 def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mean6,xs_mean7, xs_sigma2,xs_sigma6,xs_sigma7, titlename):
       #k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma =  k[3:],k_bin_edges_par[3:], k_bin_edges_perp[3:], xs_mean[3:], xs_sigma[3:]
-      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,12))
+      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,10))
       fig.tight_layout()
       #fig.suptitle(titlename, fontsize=16)
       norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean2), vmax=-1.3*np.amin(xs_mean2))  
-      
+      norm1 = mpl.colors.Normalize(vmin=1.3*np.amin(xs_sigma2), vmax=-1.3*np.amin(xs_sigma2)) 
+
       img1 = ax[0][0].imshow(xs_mean2/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
       fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.04)
   
@@ -194,12 +195,12 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mea
       img3 = ax[0][2].imshow(xs_mean7/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
       fig.colorbar(img2, ax=ax[0][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=16)
       
-      img4 = ax[1][0].imshow(xs_mean2/xs_sigma2, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      img4 = ax[1][0].imshow(xs_mean2/xs_sigma2, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm1)
       fig.colorbar(img4, ax=ax[1][0],fraction=0.046, pad=0.04)
   
-      img5 = ax[1][1].imshow(xs_mean6/xs_sigma6, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      img5 = ax[1][1].imshow(xs_mean6/xs_sigma6, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm1)
       fig.colorbar(img5, ax=ax[1][1], fraction=0.046, pad=0.04)
-      img6 = ax[1][2].imshow(xs_mean7/xs_sigma7, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      img6 = ax[1][2].imshow(xs_mean7/xs_sigma7, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm1)
       fig.colorbar(img6, ax=ax[1][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)/\sigma_{\tilde{C}}$', size=16)
       
      
