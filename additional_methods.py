@@ -284,14 +284,14 @@ print (np.load('co6_map_null_1D_names.npy'))
 
 
 
-def plot_sub_fig(field,jk_we_want,ax,lim,cesc):
+def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc):
    if field == 'CO2':
       k, xs_mean, xs_sigma = read_h5_arrays('co6_map_null_1D_arrays.h5') #replace with co2 when it will be done
    if field == 'CO6':
       k, xs_mean, xs_sigma = read_h5_arrays('co6_map_null_1D_arrays.h5')
    if field == 'CO7':
       k, xs_mean, xs_sigma = read_h5_arrays('co7_map_null_1D_arrays.h5')
-   ax.plot(k[0], 0 * xs_mean[0], 'k', alpha=0.4)
+   ax[ax_i].plot(k[0], 0 * xs_mean[0], 'k', alpha=0.4)
    for index in jk_we_want:
       if index == 4 or index == 5:
          label_name = 'wint'
@@ -305,24 +305,24 @@ def plot_sub_fig(field,jk_we_want,ax,lim,cesc):
       if index == 14 or index == 14:
          label_name = 'dayn'
          color_name = 'forestgreen'
-      ax.errorbar(k[index], k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
-   if ax == ax1:
-      ax.set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=14)
+      ax[ax_i].errorbar(k[index], k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
+   if ax[ax_i] == 0:
+      ax[ax_i].set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=14)
 
    if cesc == '1':
-      ax.set_ylim(-lim*3, lim*3)          
+      ax[ax_i].set_ylim(-lim*3, lim*3)          
    if cesc == '0':
-      ax.set_ylim(-lim, lim)         
-   ax.set_xlim(0.04,0.7)
-   ax.set_xscale('log')
-   ax.set_title(field, fontsize=16)
-   ax.grid()
-   ax.set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=14)
+      ax[ax_i].set_ylim(-lim, lim)         
+   ax[ax_i].set_xlim(0.04,0.7)
+   ax[ax_i].set_xscale('log')
+   ax[ax_i].set_title(field, fontsize=16)
+   ax[ax_i].grid()
+   ax[ax_i].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=14)
    labnums = [0.05,0.1, 0.2, 0.5]
-   ax.set_xticks(labnums)
-   ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+   ax[ax_i].set_xticks(labnums)
+   ax[ax_i].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    #plt.legend(bbox_to_anchor=(0, 0.61))
-   ax.legend(ncol=4)
+   ax[ax_i].legend(ncol=4)
 
 
 def plot_nulltest(cesc):
@@ -334,13 +334,16 @@ def plot_nulltest(cesc):
       jk_we_want = [4,8,10,14] #indices of jk we want to use: wint, half, odde, dayn
    if cesc == '1':
       jk_we_want = [5,9,11,15]
-   fig = plt.figure()
-   ax1 = fig.add_subplot(311)
-   plot_sub_fig('CO2',jk_we_want,ax1,lim,cesc)
-   ax2 = fig.add_subplot(321)
-   plot_sub_fig('CO6',jk_we_want,ax2,lim,cesc)
-   ax3 = fig.add_subplot(331)
-   plot_sub_fig('CO7',jk_we_want,ax3,lim,cesc)
+
+
+   fig, ax = plt.subplots(nrows=3,ncols=1,figsize=(15.5,5))
+   
+  
+   plot_sub_fig('CO2',jk_we_want,0,lim,cesc)
+  
+   plot_sub_fig('CO6',jk_we_want,1,lim,cesc)
+  
+   plot_sub_fig('CO7',jk_we_want,2,lim,cesc)
    plt.tight_layout()
    if cesc == '0':
       plt.savefig('nulltests_3fields_liss.pdf')
