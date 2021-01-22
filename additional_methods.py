@@ -177,7 +177,7 @@ xs_with_model_3fields('liss_all_fields_map_signal.pdf', k2[0],xs_mean2[0], xs_me
 
 def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mean6,xs_mean7, xs_sigma2,xs_sigma6,xs_sigma7, titlename):
       #k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma =  k[3:],k_bin_edges_par[3:], k_bin_edges_perp[3:], xs_mean[3:], xs_sigma[3:]
-      fig, ax = plt.subplots(2,3,figsize=(16,5.6))
+      fig, ax = plt.subplots(2,3,figsize=(16,12))
       fig.tight_layout()
       #fig.suptitle(titlename, fontsize=16)
       norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean2), vmax=-1.3*np.amin(xs_mean2))  
@@ -250,6 +250,7 @@ def read_h5_arrays(filename, two_dim=False):
           return k, xs_mean, xs_sigma
 '''
 k2, xs_mean2, xs_sigma2, k_edges_perp2, k_edges_par2 = read_h5_arrays('co2_map_signal_2D_arrays.h5', two_dim=True)
+print (xs_mean2[0])
 k6, xs_mean6, xs_sigma6, k_edges_perp6, k_edges_par6 = read_h5_arrays('co6_map_signal_2D_arrays.h5', two_dim=True)
 k7, xs_mean7, xs_sigma7, k_edges_perp7, k_edges_par7 = read_h5_arrays('co7_map_signal_2D_arrays.h5', two_dim=True)
 xs_2D_plot('liss_3fields_2D.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[0],xs_mean6[0],xs_mean7[0], xs_sigma2[0],xs_sigma6[0],xs_sigma7[0], 'Liss cans')
