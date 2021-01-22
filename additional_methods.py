@@ -182,7 +182,7 @@ def log2lin(x, k_edges):
 def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mean6,xs_mean7, xs_sigma2,xs_sigma6,xs_sigma7, titlename):
       #k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma =  k[3:],k_bin_edges_par[3:], k_bin_edges_perp[3:], xs_mean[3:], xs_sigma[3:]
       fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,10))
-      fig.tight_layout(h_pad=0.5, w_pad=1)
+      fig.tight_layout(h_pad=0.005, w_pad=1)
       #fig.suptitle(titlename, fontsize=16)
       norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7), vmax=-1.3*np.amin(xs_mean7))  
       norm1 = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7/xs_sigma7), vmax=-1.3*np.amin(xs_mean7/xs_sigma7)) 
