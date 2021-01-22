@@ -299,7 +299,7 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
    for index in jk_we_want:
       if index == 4 or index == 5:
          kt = -0.015
-         line = line1
+         
          label_name = 'wint'
          color_name = 'teal'
          l1 = ax[ax_i].errorbar(k[index]+k[index]*kt, k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
