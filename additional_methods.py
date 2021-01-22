@@ -365,7 +365,7 @@ def plot_nulltest(cesc):
       plt.savefig('nulltests_3fields_liss.pdf')
    if cesc == '1':
       plt.savefig('nulltests_3fields_ces.pdf')
-   fig.legend(
+   
 
 plot_nulltest('0')
 plot_nulltest('1')
