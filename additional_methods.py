@@ -291,7 +291,7 @@ def plot_sub_fig(field,jk_we_want,ax,lim,cesc):
       k, xs_mean, xs_sigma = read_h5_arrays('co6_map_null_1D_arrays.h5')
    if field == 'CO7':
       k, xs_mean, xs_sigma = read_h5_arrays('co7_map_null_1D_arrays.h5')
-   ax.plot(k[0] 0 * xs_mean[0], 'k', alpha=0.4)
+   ax.plot(k[0], 0 * xs_mean[0], 'k', alpha=0.4)
    for index in jk_we_want:
       if index == 4 or index == 5:
          label_name = 'wint'
