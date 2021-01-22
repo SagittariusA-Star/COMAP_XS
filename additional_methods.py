@@ -343,7 +343,7 @@ def plot_nulltest(cesc):
    plt.tight_layout()
    if cesc == '0':
       plt.savefig('nulltests_3fields_liss.pdf')
-    if cesc == '1':
+   if cesc == '1':
       plt.savefig('nulltests_3fields_ces.pdf')
 
 plot_nulltest('0')
