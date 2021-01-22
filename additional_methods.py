@@ -302,7 +302,7 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
       if index == 10 or index == 11:
          label_name = 'odde'
          color_name = 'purple'
-      if index == 14 or index == 14:
+      if index == 14 or index == 15:
          label_name = 'dayn'
          color_name = 'forestgreen'
       ax[ax_i].errorbar(k[index], k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
