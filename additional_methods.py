@@ -187,20 +187,20 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mea
       norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean2), vmax=-1.3*np.amin(xs_mean2))  
       
       img1 = ax[0][0].imshow(xs_mean2/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
-      fig.colorbar(img1, ax=ax[0],fraction=0.046, pad=0.04)
+      fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.04)
   
       img2 = ax[0][1].imshow(xs_mean6/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1]))/transfer_filt_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
-      fig.colorbar(img2, ax=ax[1], fraction=0.046, pad=0.04)
+      fig.colorbar(img2, ax=ax[0][1], fraction=0.046, pad=0.04)
       img3 = ax[0][2].imshow(xs_mean7/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
-      fig.colorbar(img2, ax=ax[2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=16)
+      fig.colorbar(img2, ax=ax[0][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=16)
       
-      img4 = ax[1][3].imshow(xs_mean2/xs_sigma2, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
-      fig.colorbar(img4, ax=ax[3],fraction=0.046, pad=0.04)
+      img4 = ax[1][0].imshow(xs_mean2/xs_sigma2, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      fig.colorbar(img4, ax=ax[1][0],fraction=0.046, pad=0.04)
   
-      img5 = ax[1][4].imshow(xs_mean6/xs_sigma6, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
-      fig.colorbar(img5, ax=ax[4], fraction=0.046, pad=0.04)
-      img6 = ax[1][5].imshow(xs_mean7/xs_sgima7, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
-      fig.colorbar(img6, ax=ax[5], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)/\sigma_{\tilde{C}}$', size=16)
+      img5 = ax[1][1].imshow(xs_mean6/xs_sigma6, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      fig.colorbar(img5, ax=ax[1][1], fraction=0.046, pad=0.04)
+      img6 = ax[1][2].imshow(xs_mean7/xs_sgima7, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      fig.colorbar(img6, ax=ax[1][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)/\sigma_{\tilde{C}}$', size=16)
       
      
       ticks = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,0.1,
@@ -219,25 +219,26 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mea
 
       ticklist_y = log2lin(ticks, ybins)
       majorlist_y = log2lin(majorticks, ybins)
-      '''
-      ax[0].set_title(r'CO2', fontsize=16)
-      ax[1].set_title(r'CO6', fontsize=16)
-      ax[2].set_title(r'CO7', fontsize=16)
-
-      for i in range(6):
-         ax[i].set_xticks(ticklist_x, minor=True)
-         ax[i].set_xticks(majorlist_x, minor=False)
-         ax[i].set_xticklabels(majorlabels, minor=False, fontsize=16)
-         ax[i].set_yticks(ticklist_y, minor=True)
-         ax[i].set_yticks(majorlist_y, minor=False)
-         ax[i].set_yticklabels(majorlabels, minor=False, fontsize=16)
       
-      ax[3].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]',fontsize=16)
-      ax[0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=16)
-      ax[3].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=16)
-      ax[4].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=16)
-      ax[5].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=16)
-      '''
+      ax[0][0].set_title(r'CO2', fontsize=16)
+      ax[0][1].set_title(r'CO6', fontsize=16)
+      ax[0][2].set_title(r'CO7', fontsize=16)
+
+      for i in range(3):
+         for j in range(2):
+            ax[j][i].set_xticks(ticklist_x, minor=True)
+            ax[j][i].set_xticks(majorlist_x, minor=False)
+            ax[j][i].set_xticklabels(majorlabels, minor=False, fontsize=16)
+            ax[j][i].set_yticks(ticklist_y, minor=True)
+            ax[j][i].set_yticks(majorlist_y, minor=False)
+            ax[j][i].set_yticklabels(majorlabels, minor=False, fontsize=16)
+      
+      ax[1][0].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]',fontsize=16)
+      ax[0][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=16)
+      ax[1][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=16)
+      ax[1][1].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=16)
+      ax[1][2].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=16)
+      
       plt.tight_layout()
       plt.savefig(figure_name) 
  
