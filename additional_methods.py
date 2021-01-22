@@ -1,5 +1,7 @@
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
+plt.ioff() #turn of the interactive plotting
 import matplotlib as matplotlib
 import numpy.fft as fft
 import corner
@@ -11,7 +13,10 @@ import tools
 import map_cosmo
 import xs_class
 import PS_function
+import itertools as itr
 from scipy.optimize import curve_fit
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+
 #theory spectrum
 k_th = np.load('k.npy')
 ps_th = np.load('ps.npy')
