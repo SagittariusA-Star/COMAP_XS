@@ -287,10 +287,13 @@ print (np.load('co6_map_null_1D_names.npy'))
 def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
    if field == 'CO2':
       k, xs_mean, xs_sigma = read_h5_arrays('co6_map_null_1D_arrays.h5') #replace with co2 when it will be done
+      
    if field == 'CO6':
       k, xs_mean, xs_sigma = read_h5_arrays('co6_map_null_1D_arrays.h5')
+      k = k*1.02
    if field == 'CO7':
       k, xs_mean, xs_sigma = read_h5_arrays('co7_map_null_1D_arrays.h5')
+      k = k*0.98
    ax[ax_i].plot(k[0], 0 * xs_mean[0], 'k', alpha=0.4)
    for index in jk_we_want:
       if index == 4 or index == 5:
@@ -310,9 +313,9 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
       ax[ax_i].set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=14)
 
    if cesc == '1':
-      ax[ax_i].set_ylim(-lim*3, lim*3)          
+      ax[ax_i].set_ylim(-lim*4, lim*4)          
    if cesc == '0':
-      ax[ax_i].set_ylim(-lim*3, lim*3)         
+      ax[ax_i].set_ylim(-lim*4, lim*4)         
    ax[ax_i].set_xlim(0.04,0.7)
    ax[ax_i].set_xscale('log')
    ax[ax_i].set_title(field, fontsize=16)
