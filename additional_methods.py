@@ -329,7 +329,7 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
    if cesc == '0':
       ax[ax_i].set_ylim(-lim*6, lim*6)  
    
-   ax[ax_i].text(.5,.9,field,horizontalalignment='center',transform=ax.transAxes, fontsize=16)     
+   ax[ax_i].text(.5,.9,field,horizontalalignment='center',transform=ax[ax_i].transAxes, fontsize=16)     
    ax[ax_i].set_xlim(0.04,0.7)
    ax[ax_i].set_xscale('log')
    #ax[ax_i].set_title(field, fontsize=16)
