@@ -174,30 +174,34 @@ def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma
 
 xs_with_model_3fields('liss_all_fields_map_signal.pdf', k2[0],xs_mean2[0], xs_mean6[0], xs_mean7[0], xs_sigma2[0], xs_sigma6[0], xs_sigma7[0], 'liss')
 
+def log2lin(x, k_edges):
+    loglen = np.log10(k_edges[-1]) - np.log10(k_edges[0])
+    logx = np.log10(x) - np.log10(k_edges[0])
+    return logx / loglen
 
 def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mean6,xs_mean7, xs_sigma2,xs_sigma6,xs_sigma7, titlename):
       #k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma =  k[3:],k_bin_edges_par[3:], k_bin_edges_perp[3:], xs_mean[3:], xs_sigma[3:]
-      fig, ax = plt.subplots(1,3,figsize=(16,12))
+      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,12))
       fig.tight_layout()
       #fig.suptitle(titlename, fontsize=16)
       norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean2), vmax=-1.3*np.amin(xs_mean2))  
       
-      img1 = ax[0].imshow(xs_mean2/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      img1 = ax[0][0].imshow(xs_mean2/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
       fig.colorbar(img1, ax=ax[0],fraction=0.046, pad=0.04)
   
-      img2 = ax[1].imshow(xs_mean6/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1]))/transfer_filt_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      img2 = ax[0][1].imshow(xs_mean6/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1]))/transfer_filt_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
       fig.colorbar(img2, ax=ax[1], fraction=0.046, pad=0.04)
-      img3 = ax[2].imshow(xs_mean7/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      img3 = ax[0][2].imshow(xs_mean7/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
       fig.colorbar(img2, ax=ax[2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=16)
-      '''
-      img4 = ax[3].imshow(xs_mean2/xs_sigma2, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      
+      img4 = ax[1][3].imshow(xs_mean2/xs_sigma2, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
       fig.colorbar(img4, ax=ax[3],fraction=0.046, pad=0.04)
   
-      img5 = ax[4].imshow(xs_mean6/xs_sigma6, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      img5 = ax[1][4].imshow(xs_mean6/xs_sigma6, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
       fig.colorbar(img5, ax=ax[4], fraction=0.046, pad=0.04)
-      img6 = ax[5].imshow(xs_mean7/xs_sgima7, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      img6 = ax[1][5].imshow(xs_mean7/xs_sgima7, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
       fig.colorbar(img6, ax=ax[5], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)/\sigma_{\tilde{C}}$', size=16)
-      '''
+      
      
       ticks = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,0.1,
               0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,1., 1.1, 1.2, 1.3]
