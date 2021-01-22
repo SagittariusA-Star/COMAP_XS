@@ -264,3 +264,9 @@ k7, xs_mean7, xs_sigma7, k_edges_perp7, k_edges_par7 = read_h5_arrays('co7_map_s
 xs_2D_plot('liss_3fields_2D.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[0],xs_mean6[0],xs_mean7[0], xs_sigma2[0],xs_sigma6[0],xs_sigma7[0], 'Liss cans')
 xs_2D_plot('ces_3fields_2D.pdf', k2[1],k_edges_par2[1], k_edges_perp2[1], xs_mean2[1],xs_mean6[1],xs_mean7[1], xs_sigma2[1],xs_sigma6[1],xs_sigma7[1], 'CES cans')
     
+print (np.load('co2_map_null_1D_names.npy'))
+def plot_nulltest():
+   k2, xs_mean2, xs_sigma2 = read_h5_arrays('co6_map_null_1D_arrays.h5')
+
+
+
