@@ -183,7 +183,7 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mea
       #k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma =  k[3:],k_bin_edges_par[3:], k_bin_edges_perp[3:], xs_mean[3:], xs_sigma[3:]
       fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,10))
       #fig.tight_layout(h_pad=0.005, w_pad=1)
-      fig.subplots_adjust(top = 0.99, bottom=0.01, hspace=0.5, wspace=0.5)
+      fig.subplots_adjust(hspace=0.0, wspace=0.0)
       #fig.suptitle(titlename, fontsize=16)
       norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7), vmax=-1.3*np.amin(xs_mean7))  
       norm1 = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7/xs_sigma7), vmax=-1.3*np.amin(xs_mean7/xs_sigma7)) 
