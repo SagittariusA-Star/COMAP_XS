@@ -338,7 +338,7 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
    ax[ax_i].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    #plt.legend(bbox_to_anchor=(0, 0.61))
    ax[ax_i].legend(ncol=4)
-   return l1,l2,l4,l4
+   return l1,l2,l3,l4
 
 def plot_nulltest(cesc):
    k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_null_1D_arrays.h5') 
@@ -354,11 +354,11 @@ def plot_nulltest(cesc):
    fig, ax = plt.subplots(nrows=1,ncols=3,figsize=(17,4))
    
   
-   l1,l2,l4,l4 = plot_sub_fig('CO2',jk_we_want,0,lim,cesc,ax)
+   l1,l2,l3,l4 = plot_sub_fig('CO2',jk_we_want,0,lim,cesc,ax)
   
-   l1,l2,l4,l4 = plot_sub_fig('CO6',jk_we_want,1,lim,cesc,ax)
+   l1,l2,l3,l4 = plot_sub_fig('CO6',jk_we_want,1,lim,cesc,ax)
   
-   l1,l2,l4,l4 = plot_sub_fig('CO7',jk_we_want,2,lim,cesc,ax)
+   l1,l2,l3,l4 = plot_sub_fig('CO7',jk_we_want,2,lim,cesc,ax)
    plt.figlegend((l1,l2,l3,l4), ('wint', 'half', 'odde', 'dayn'))
    plt.tight_layout()
    if cesc == '0':
