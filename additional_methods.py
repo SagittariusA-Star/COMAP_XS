@@ -321,13 +321,14 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
          color_name = 'forestgreen'
        
          l4 = ax[ax_i].errorbar(k[index]+k[index]*kt, k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
-   if ax[ax_i] == 0:
+   if ax_i == 0:
       ax[ax_i].set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=14)
 
    if cesc == '1':
       ax[ax_i].set_ylim(-lim*6, lim*6)          
    if cesc == '0':
-      ax[ax_i].set_ylim(-lim*6, lim*6)         
+      ax[ax_i].set_ylim(-lim*6, lim*6)  
+          
    ax[ax_i].set_xlim(0.04,0.7)
    ax[ax_i].set_xscale('log')
    ax[ax_i].set_title(field, fontsize=16)
@@ -359,7 +360,7 @@ def plot_nulltest(cesc):
    l1,l2,l3,l4 = plot_sub_fig('CO6',jk_we_want,1,lim,cesc,ax)
   
    l1,l2,l3,l4 = plot_sub_fig('CO7',jk_we_want,2,lim,cesc,ax)
-   plt.figlegend((l1,l2,l3,l4), ('wint', 'half', 'odde', 'dayn'),loc='center', ncol=4, fontsize=13)
+   plt.figlegend((l1,l2,l3,l4), ('wint', 'half', 'odde', 'dayn'),loc='upper center', ncol=4, fontsize=14)
    plt.tight_layout()
    if cesc == '0':
       plt.savefig('nulltests_3fields_liss.pdf')
