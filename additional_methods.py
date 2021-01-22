@@ -287,28 +287,40 @@ print (np.load('co6_map_null_1D_names.npy'))
 def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
    if field == 'CO2':
       k, xs_mean, xs_sigma = read_h5_arrays('co6_map_null_1D_arrays.h5') #replace with co2 when it will be done
-      kt = 0
+      
    if field == 'CO6':
       k, xs_mean, xs_sigma = read_h5_arrays('co6_map_null_1D_arrays.h5')
-      kt = 0.025
+      
    if field == 'CO7':
       k, xs_mean, xs_sigma = read_h5_arrays('co7_map_null_1D_arrays.h5')
-      kt = -0.025
+     
    ax[ax_i].plot(k[0], 0 * xs_mean[0], 'k', alpha=0.4)
+   
    for index in jk_we_want:
       if index == 4 or index == 5:
+         kt = -0.015
+         line = line1
          label_name = 'wint'
          color_name = 'teal'
+         l1 = ax[ax_i].errorbar(k[index]+k[index]*kt, k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
       if index == 8 or index == 9:
+         
+         kt = -0.005
          label_name = 'half'
          color_name = 'indianred'
+         l2 = ax[ax_i].errorbar(k[index]+k[index]*kt, k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
       if index == 10 or index == 11:
+         
+         kt = 0.005
          label_name = 'odde'
          color_name = 'purple'
+         l3 = ax[ax_i].errorbar(k[index]+k[index]*kt, k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
       if index == 14 or index == 15:
+         kt = 0.015
          label_name = 'dayn'
          color_name = 'forestgreen'
-      ax[ax_i].errorbar(k[index]+k[index]*kt, k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
+       
+         l4 = ax[ax_i].errorbar(k[index]+k[index]*kt, k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
    if ax[ax_i] == 0:
       ax[ax_i].set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=14)
 
@@ -326,7 +338,7 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
    ax[ax_i].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    #plt.legend(bbox_to_anchor=(0, 0.61))
    ax[ax_i].legend(ncol=4)
-
+   return l1,l2,l4,l4
 
 def plot_nulltest(cesc):
    k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_null_1D_arrays.h5') 
@@ -342,16 +354,18 @@ def plot_nulltest(cesc):
    fig, ax = plt.subplots(nrows=1,ncols=3,figsize=(17,4))
    
   
-   plot_sub_fig('CO2',jk_we_want,0,lim,cesc,ax)
+   l1,l2,l4,l4 = plot_sub_fig('CO2',jk_we_want,0,lim,cesc,ax)
   
-   plot_sub_fig('CO6',jk_we_want,1,lim,cesc,ax)
+   l1,l2,l4,l4 = plot_sub_fig('CO6',jk_we_want,1,lim,cesc,ax)
   
-   plot_sub_fig('CO7',jk_we_want,2,lim,cesc,ax)
+   l1,l2,l4,l4 = plot_sub_fig('CO7',jk_we_want,2,lim,cesc,ax)
+   plt.figlegend((l1,l2,l3,l4), ('wint', 'half', 'odde', 'dayn'))
    plt.tight_layout()
    if cesc == '0':
       plt.savefig('nulltests_3fields_liss.pdf')
    if cesc == '1':
       plt.savefig('nulltests_3fields_ces.pdf')
+   fig.legend(
 
 plot_nulltest('0')
 plot_nulltest('1')
