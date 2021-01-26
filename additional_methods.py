@@ -286,7 +286,7 @@ print (np.load('co6_map_null_1D_names.npy'))
 
 def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
    if field == 'CO2':
-      k, xs_mean, xs_sigma = read_h5_arrays('co6_map_null_1D_arrays.h5') #replace with co2 when it will be done
+      k, xs_mean, xs_sigma = read_h5_arrays('co2_map_null_1D_arrays.h5')
       
    if field == 'CO6':
       k, xs_mean, xs_sigma = read_h5_arrays('co6_map_null_1D_arrays.h5')
