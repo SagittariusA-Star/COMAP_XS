@@ -330,7 +330,7 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
       ax[ax_i].set_ylim(-lim*6, lim*6)  
    
    if field == 'CO6':
-      ax[ax_i].xaxis.set_label_position('top')
+      #ax[ax_i].xaxis.set_label_position('top')
       ax[ax_i].xaxis.tick_top()
       if cesc == '0':
          ax[ax_i].set_title('Lissajous scans', fontsize=16)
