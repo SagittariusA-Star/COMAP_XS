@@ -194,7 +194,7 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mea
       img2 = ax[0][1].imshow(xs_mean6/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1]))/transfer_filt_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img2, ax=ax[0][1], fraction=0.046, pad=0.04)
       img3 = ax[0][2].imshow(xs_mean7/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
-      fig.colorbar(img2, ax=ax[0][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=16)
+      fig.colorbar(img2, ax=ax[0][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=14)
       
       img4 = ax[1][0].imshow(xs_mean2/xs_sigma2, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
       fig.colorbar(img4, ax=ax[1][0],fraction=0.046, pad=0.04)
@@ -202,7 +202,7 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mea
       img5 = ax[1][1].imshow(xs_mean6/xs_sigma6, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
       fig.colorbar(img5, ax=ax[1][1], fraction=0.046, pad=0.04)
       img6 = ax[1][2].imshow(xs_mean7/xs_sigma7, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
-      fig.colorbar(img6, ax=ax[1][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)/\sigma_{\tilde{C}}$', size=16)
+      fig.colorbar(img6, ax=ax[1][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)/\sigma_{\tilde{C}}$', size=14)
       
      
       ticks = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,0.1,
@@ -230,16 +230,17 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mea
          for j in range(2):
             ax[j][i].set_xticks(ticklist_x, minor=True)
             ax[j][i].set_xticks(majorlist_x, minor=False)
-            ax[j][i].set_xticklabels(majorlabels, minor=False, fontsize=16)
+            ax[j][i].set_xticklabels(majorlabels, minor=False, fontsize=12)
             ax[j][i].set_yticks(ticklist_y, minor=True)
             ax[j][i].set_yticks(majorlist_y, minor=False)
-            ax[j][i].set_yticklabels(majorlabels, minor=False, fontsize=16)
+            ax[j][i].set_yticklabels(majorlabels, minor=False, fontsize=12)
+            cbar.ax[j][i].tick_params(labelsize=12)
       
-      ax[1][0].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]',fontsize=16)
-      ax[0][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=16)
-      ax[1][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=16)
-      ax[1][1].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=16)
-      ax[1][2].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=16)
+      ax[1][0].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]',fontsize=14)
+      ax[0][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=14)
+      ax[1][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=14)
+      ax[1][1].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=14)
+      ax[1][2].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=14)
       
       plt.tight_layout()
       plt.savefig(figure_name) 
