@@ -234,7 +234,7 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mea
             ax[j][i].set_yticks(ticklist_y, minor=True)
             ax[j][i].set_yticks(majorlist_y, minor=False)
             ax[j][i].set_yticklabels(majorlabels, minor=False, fontsize=12)
-            cbar.ax[j][i].tick_params(labelsize=12)
+            fig.colorbar.ax[j][i].tick_params(labelsize=12)
       
       ax[1][0].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]',fontsize=14)
       ax[0][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=14)
