@@ -361,7 +361,7 @@ def plot_nulltest(cesc):
    l1,l2,l3,l4 = plot_sub_fig('CO6',jk_we_want,1,lim,cesc,ax)
   
    l1,l2,l3,l4 = plot_sub_fig('CO7',jk_we_want,2,lim,cesc,ax)
-   plt.figlegend((l1,l2,l3,l4), ('Winter/Summer split', 'Half-mission split', 'Odd/Even split', 'Day/Night split'),loc='upper right',bbox_to_anchor=(0.7,1.09), ncol=4, fontsize=14)
+   plt.figlegend((l1,l2,l3,l4), ('Winter/Summer split', 'Half-mission split', 'Odd/Even split', 'Day/Night split'),loc='upper right',bbox_to_anchor=(0.7,1.085), ncol=4, fontsize=14)
    plt.tight_layout()
    if cesc == '0':
       plt.title('Lissajous scans', fontsize=16, loc='right')
