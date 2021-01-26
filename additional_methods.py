@@ -333,7 +333,7 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax):
       #ax[ax_i].xaxis.set_label_position('top')
       #ax[ax_i].xaxis.tick_top()
       if cesc == '0':
-         ax[ax_i].set_title('Lissajous scans', fontsize=16, pad=10)
+         ax[ax_i].set_title('Lissajous scans', fontsize=16, pad=50)
       if cesc == '1':
          ax[ax_i].set_title('CES scans', fontsize=16, pad=10)  
    ax[ax_i].text(.5,.9,field,horizontalalignment='center',transform=ax[ax_i].transAxes, fontsize=16)     
