@@ -371,10 +371,10 @@ def plot_nulltest(cesc):
    plt.figlegend((l1,l2,l3,l4), ('Winter/Summer split', 'Half-mission split', 'Odd/Even split', 'Day/Night split'),loc='upper center',bbox_to_anchor=(0.52,0.9), ncol=4, fontsize=14)
    plt.tight_layout()
    if cesc == '0':
-      plt.title('Lissajous scans', fontsize=16, loc='right')
+      #plt.title('Lissajous scans', fontsize=16, loc='right')
       plt.savefig('nulltests_3fields_liss.pdf', bbox_inches='tight')
    if cesc == '1':
-      plt.title('CES scans', fontsize=16, loc='right')
+      #plt.title('CES scans', fontsize=16, loc='right')
       plt.savefig('nulltests_3fields_ces.pdf', bbox_inches='tight')
    
 
