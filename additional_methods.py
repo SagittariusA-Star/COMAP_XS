@@ -102,8 +102,8 @@ def coadd_all_ces(k2, xs_mean2, xs_sigma2, k6, xs_mean6, xs_sigma6,k7, xs_mean7,
    k6, xs6, sigma6 = k6[1], xs_mean6[1], xs_sigma6[1] #take CES
    k7, xs7, sigma7 = k7[1], xs_mean7[1], xs_sigma7[1] #take CES
    xs_sigma_arr = np.array([sigma2, sigma6, sigma7])
-   xs_mean_arr  np.array([xs2,xs6,xs7])
-   k2  np.array(k2)
+   xs_mean_arr = np.array([xs2,xs6,xs7])
+   k2 = np.array(k2)
    no_k = len(k2)
    mean_combined = np.zeros(no_k)
    w_sum = np.zeros(no_k)
