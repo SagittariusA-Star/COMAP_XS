@@ -231,12 +231,12 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mea
       norm1 = mpl.colors.Normalize(vmin=-5, vmax=5) 
 
 
-      img1 = ax[0][0].imshow(xs_mean2/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      img1 = ax[0][0].imshow(xs_mean2/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])*pix_wind(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.04)
   
-      img2 = ax[0][1].imshow(xs_mean6/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      img2 = ax[0][1].imshow(xs_mean6/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])*pix_wind(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img2, ax=ax[0][1], fraction=0.046, pad=0.04)
-      img3 = ax[0][2].imshow(xs_mean7/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      img3 = ax[0][2].imshow(xs_mean7/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])*pix_wind(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img2, ax=ax[0][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=14)
       
       img4 = ax[1][0].imshow(xs_mean2/xs_sigma2, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
@@ -305,7 +305,8 @@ k2, xs_mean2, xs_sigma2, k_edges_perp2, k_edges_par2 = read_h5_arrays('co2_map_s
 print (xs_mean2[0])
 k6, xs_mean6, xs_sigma6, k_edges_perp6, k_edges_par6 = read_h5_arrays('co6_map_signal_2D_arrays.h5', two_dim=True)
 k7, xs_mean7, xs_sigma7, k_edges_perp7, k_edges_par7 = read_h5_arrays('co7_map_signal_2D_arrays.h5', two_dim=True)
-xs_2D_plot('liss_3fields_2D.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[0],xs_mean6[0],xs_mean7[0], xs_sigma2[0],xs_sigma6[0],xs_sigma7[0], 'Liss cans')
+
+xs_2D_plot('liss_3fields_2D_pixel_window.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[0],xs_mean6[0],xs_mean7[0], xs_sigma2[0],xs_sigma6[0],xs_sigma7[0], 'Liss cans')
 
 #xs_2D_plot('ces_3fields_2D.pdf', k2[1],k_edges_par2[1], k_edges_perp2[1], xs_mean2[1],xs_mean6[1],xs_mean7[1], xs_sigma2[1],xs_sigma6[1],xs_sigma7[1], 'CES cans')
 
