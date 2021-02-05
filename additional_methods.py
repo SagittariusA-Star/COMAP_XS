@@ -195,7 +195,7 @@ def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma
    ax2.set_xlim(0.04,0.7)
    ax2.set_xscale('log')
    ax2.grid()
-   ax2.legend(ncol=3)
+   ax2.legend(ncol=4)
    ax2.set_xticks(labnums)
    ax2.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    
