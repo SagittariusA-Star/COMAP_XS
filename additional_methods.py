@@ -97,6 +97,35 @@ print (k2[1],xs_mean2[1],xs_sigma2[1])
 '''
 k6, xs_mean6, xs_sigma6 = read_h5_arrays('co6_map_signal_1D_arrays.h5')
 k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_signal_1D_arrays.h5')
+def coadd_all_ces(k2, xs_mean2, xs_sigma2, k6, xs_mean6, xs_sigma6,k7, xs_mean7, xs_sigma7):
+   k2, xs2, sigma2 = k2[1], xs_mean2[1], xs_sigma2[1] #take CES
+   k6, xs6, sigma6 = k6[1], xs_mean6[1], xs_sigma6[1] #take CES
+   k7, xs7, sigma7 = k7[1], xs_mean7[1], xs_sigma7[1] #take CES
+   xs_sigma_arr = np.array([sigma2, sigma6, sigma7])
+   xs_mean_arr  np.array([xs2,xs6,xs7])
+   k2  np.array(k2)
+   no_k = len(k2)
+   mean_combined = np.zeros(no_k)
+   w_sum = np.zeros(no_k)
+   
+   for i in range(3): 
+      w = 1./ xs_sigma_arr[i]**2.
+      w_sum += w
+      mean_combined += w*xs_mean_arr[i]
+   mean_combined1 = mean_combined/w_sum
+   sigma_combined1 = w_sum**(-0.5)
+
+   mean_combined = mean_combined1/(transfer(k2)*transfer_filt(k2))
+   sigma_combined = sigma_combined1/(transfer(k2)*transfer_filt(k2))
+
+   np.save('k_ces.npy', k2)
+   np.save('sigma_ces.npy', sigma_combined)
+   np.save('xs_mean_ces.npy', mean_combined)
+
+   return mean_combined1, sigma_combined1
+
+mean_combo, sigma_combo = coadd_all_ces(k2, xs_mean2, xs_sigma2, k6, xs_mean6, xs_sigma6,k7, xs_mean7, xs_sigma7)
+
 print (np.load('co2_map_signal_1D_names.npy'))
 '''
 ['xs_mean_co7_map_elev_cesc0.pdf' 'xs_mean_co7_map_elev_cesc1.pdf'
@@ -173,6 +202,7 @@ def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma
    #plt.show()
 
 xs_with_model_3fields('liss_all_fields_map_signal.pdf', k2[0],xs_mean2[0], xs_mean6[0], xs_mean7[0], xs_sigma2[0], xs_sigma6[0], xs_sigma7[0], 'liss')
+xs_with_model_3fields('ces_all_fields_map_signal_withcombo.pdf', k2[1],mean_combo, xs_mean6[1], xs_mean7[1], sigma_combo, xs_sigma6[1], xs_sigma7[1], 'ces')
 
 def log2lin(x, k_edges):
     loglen = np.log10(k_edges[-1]) - np.log10(k_edges[0])
