@@ -66,6 +66,10 @@ transfer_filt = scipy.interpolate.interp1d(k_filtering_1D, TF_filtering_1D)
 k_perp_filt, k_par_filt, TF_filtering_2D = filtering_TF('TF_2d.h5', 2)
 transfer_filt_2D = scipy.interpolate.interp2d(k_perp_filt, k_par_filt, TF_filtering_2D)
 
+pixel_window = np.load('pixel_window.npy')
+k_pw = np.load('k_arr.npy')
+print ('k_pw', k_pw.shape)
+pix_wind = scipy.interpolate.interp2d(k_pw[0][0], k_pw[0][1], pixel_window)
 
 def read_h5_arrays(filename, two_dim=False):
    with h5py.File(filename, mode="r") as my_file:
@@ -212,6 +216,7 @@ def log2lin(x, k_edges):
     logx = np.log10(x) - np.log10(k_edges[0])
     return logx / loglen
 
+
 def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mean6,xs_mean7, xs_sigma2,xs_sigma6,xs_sigma7, titlename):
       #k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma =  k[3:],k_bin_edges_par[3:], k_bin_edges_perp[3:], xs_mean[3:], xs_sigma[3:]
       fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(15.5,8))
@@ -299,7 +304,11 @@ print (xs_mean2[0])
 k6, xs_mean6, xs_sigma6, k_edges_perp6, k_edges_par6 = read_h5_arrays('co6_map_signal_2D_arrays.h5', two_dim=True)
 k7, xs_mean7, xs_sigma7, k_edges_perp7, k_edges_par7 = read_h5_arrays('co7_map_signal_2D_arrays.h5', two_dim=True)
 xs_2D_plot('liss_3fields_2D.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[0],xs_mean6[0],xs_mean7[0], xs_sigma2[0],xs_sigma6[0],xs_sigma7[0], 'Liss cans')
-xs_2D_plot('ces_3fields_2D.pdf', k2[1],k_edges_par2[1], k_edges_perp2[1], xs_mean2[1],xs_mean6[1],xs_mean7[1], xs_sigma2[1],xs_sigma6[1],xs_sigma7[1], 'CES cans')
+
+#xs_2D_plot('ces_3fields_2D.pdf', k2[1],k_edges_par2[1], k_edges_perp2[1], xs_mean2[1],xs_mean6[1],xs_mean7[1], xs_sigma2[1],xs_sigma6[1],xs_sigma7[1], 'CES cans')
+
+xs_2D_plot('ces_3fields_2D_pixel_window.pdf', k2[1],k_edges_par2[1], k_edges_perp2[1], xs_mean2[1],xs_mean6[1],xs_mean7[1], xs_sigma2[1],xs_sigma6[1],xs_sigma7[1], 'CES cans')
+    
     
 print (np.load('co6_map_null_1D_names.npy'))
 ['xs_mean_co6_map_elev_ambtsubtr_cesc0.pdf'
