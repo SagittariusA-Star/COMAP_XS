@@ -69,8 +69,8 @@ transfer_filt_2D = scipy.interpolate.interp2d(k_perp_filt, k_par_filt, TF_filter
 pixel_window = np.load('pixel_window.npy')
 k_pw = np.load('k_arr.npy') #{10,2,14}
 k_pw = k_pw[0]
-print ('k_pw', k_pw.shape)
-pix_wind = scipy.interpolate.interp2d(k_pw[0][0], k_pw[0][1], pixel_window)
+print ('pw', pixel_window.shape)
+pix_wind = scipy.interpolate.interp2d(k_pw[0], k_pw[1], pixel_window)
 
 def read_h5_arrays(filename, two_dim=False):
    with h5py.File(filename, mode="r") as my_file:
