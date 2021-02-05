@@ -156,7 +156,7 @@ def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma
    ax1.errorbar(k6, k * xs_mean6 / (transfer(k)*transfer_filt(k)), k * xs_sigma6 / (transfer(k)*transfer_filt(k)), fmt='o', label=r'co6', color='teal', zorder=3)
    ax1.errorbar(k7, k * xs_mean7 / (transfer(k)*transfer_filt(k)), k * xs_sigma7 / (transfer(k)*transfer_filt(k)), fmt='o', label=r'co7', color='purple', zorder=2)
    ax1.errorbar(k, k * xs_mean2 / (transfer(k)*transfer_filt(k)), k * xs_sigma2 / (transfer(k)*transfer_filt(k)), fmt='o', label=r'co2', color='indianred', zorder=4)
-    ax1.errorbar(k_combo, k * mean_combo / (transfer(k)*transfer_filt(k)), k * sigma_combo / (transfer(k)*transfer_filt(k)), fmt='o', label=r'combo', color='black', zorder=5)
+   ax1.errorbar(k_combo, k * mean_combo / (transfer(k)*transfer_filt(k)), k * sigma_combo / (transfer(k)*transfer_filt(k)), fmt='o', label=r'combo', color='black', zorder=5)
    #ax1.errorbar(k, k * xs_mean, k * xs_sigma, fmt='o', label=r'$k\tilde{C}_{data}(k)$')
    ax1.plot(k, 0 * xs_mean2, 'k', alpha=0.4, zorder=1)
    #ax1.plot(k, k*PS_function.PS_f(k)/ transfer(k), label='k*PS of the input signal')
