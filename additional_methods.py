@@ -67,6 +67,7 @@ k_perp_filt, k_par_filt, TF_filtering_2D = filtering_TF('TF_2d.h5', 2)
 transfer_filt_2D = scipy.interpolate.interp2d(k_perp_filt, k_par_filt, TF_filtering_2D)
 
 pixel_window = np.load('pixel_window.npy')
+pixel_window = np.mean(pixel_window, axis=0)
 k_pw = np.load('k_arr.npy') #{10,2,14}
 k_pw = k_pw[0]
 print ('pw', pixel_window.shape)
