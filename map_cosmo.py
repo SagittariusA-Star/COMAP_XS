@@ -54,6 +54,7 @@ class MapCosmo():
         self.dz = self.z[1] - self.z[0]
         
         self.voxel_volume = self.dx * self.dy * self.dz  # voxel volume in Mpc^3
+        print ('voxel volume:', self.voxel_volume)
 
     def coadd_feed_maps(self,map_file, which_split,jk): 
         map_single_feed = np.array(map_file['/jackknives/map_' + jk][which_split,0])
