@@ -326,7 +326,7 @@ def xs_2D_plot_pw_diff(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean
       img5 = ax[1][1].imshow(xs6_pw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
       fig.colorbar(img5, ax=ax[1][1], fraction=0.046, pad=0.04)
       img6 = ax[1][2].imshow(xs7_pw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
-      fig.colorbar(img6, ax=ax[1][2], fraction=0.046, pad=0.04).set_label(r'with pw, $\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=14
+      fig.colorbar(img6, ax=ax[1][2], fraction=0.046, pad=0.04).set_label(r'with pw, $\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=14)
      
       ticks = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,0.1,
               0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,1., 1.1, 1.2, 1.3]
