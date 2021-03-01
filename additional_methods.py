@@ -308,7 +308,7 @@ def xs_2D_plot_pw_diff(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean
       xs6_npw = xs_mean6/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1]))
       xs7_pw = xs_mean7/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])*pix_wind(k[0],k[1]))
       xs7_npw = xs_mean7/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1]))
-
+      print ('this is weird',-np.max(abs(xs2_pw-xs2_npw)), np.max(abs(xs2_pw-xs2_npw)) )
       norm = mpl.colors.Normalize(vmin=-np.max(abs(xs2_pw-xs2_npw)), vmax=np.max(abs(xs2_pw-xs2_npw)))  
     
       img1 = ax[0][0].imshow(xs2_pw-xs2_npw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
