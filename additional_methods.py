@@ -310,7 +310,7 @@ def xs_2D_plot_pw_diff(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean
       xs7_npw = xs_mean7/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1]))
       #print ('this is weird',-np.mean(abs(xs2_pw-xs2_npw)), np.mean(abs(xs2_pw-xs2_npw)) )
       #norm = mpl.colors.Normalize(vmin=-np.mean(abs(xs2_pw-xs2_npw)), vmax=np.mean(abs(xs2_pw-xs2_npw)))  
-      norm = mpl.colors.Normalize(vmin=-2, vmax=2) 
+      norm = mpl.colors.Normalize(vmin=0.86, vmax=1.05) 
 
       img1 = ax[0][0].imshow(xs2_npw/xs2_pw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.04)
