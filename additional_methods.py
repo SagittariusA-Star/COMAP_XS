@@ -16,6 +16,7 @@ import PS_function
 import itertools as itr
 from scipy.optimize import curve_fit
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+import pixel_window_TF
 
 #theory spectrum
 k_th = np.load('k.npy')
@@ -65,14 +66,15 @@ transfer_filt = scipy.interpolate.interp1d(k_filtering_1D, TF_filtering_1D)
 
 k_perp_filt, k_par_filt, TF_filtering_2D = filtering_TF('TF_2d.h5', 2)
 transfer_filt_2D = scipy.interpolate.interp2d(k_perp_filt, k_par_filt, TF_filtering_2D)
-
+'''
 pixel_window = np.load('pixel_window.npy')
 pixel_window = np.mean(pixel_window, axis=0)
 k_pw = np.load('k_arr.npy') #{10,2,14}
 k_pw = k_pw[0]
 print ('pw', pixel_window.shape)
 pix_wind = scipy.interpolate.interp2d(k_pw[0], k_pw[1], pixel_window)
-
+'''
+pix_wind = pixel_window_TF.pw()
 def read_h5_arrays(filename, two_dim=False):
    with h5py.File(filename, mode="r") as my_file:
        k = np.array(my_file['k'][:]) 
@@ -230,7 +232,7 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mea
       norm = mpl.colors.Normalize(vmin=-800000, vmax=800000)  
       norm1 = mpl.colors.Normalize(vmin=-5, vmax=5) 
 
-
+    
       img1 = ax[0][0].imshow(xs_mean2/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])*pix_wind(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.04)
   
