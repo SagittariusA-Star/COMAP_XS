@@ -312,12 +312,12 @@ def xs_2D_plot_pw_diff(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean
       #norm = mpl.colors.Normalize(vmin=-np.mean(abs(xs2_pw-xs2_npw)), vmax=np.mean(abs(xs2_pw-xs2_npw)))  
       norm = mpl.colors.Normalize(vmin=-2, vmax=2) 
 
-      img1 = ax[0][0].imshow(xs2_pw/xs2_npw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      img1 = ax[0][0].imshow(xs2_npw/xs2_pw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.04)
   
-      img2 = ax[0][1].imshow(xs6_pw/xs6_npw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      img2 = ax[0][1].imshow(xs6_npw/xs6_pw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img2, ax=ax[0][1], fraction=0.046, pad=0.04)
-      img3 = ax[0][2].imshow(xs7_pw/xs7_npw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      img3 = ax[0][2].imshow(xs7_npw/xs7_pw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img2, ax=ax[0][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=14)
       
       img4 = ax[1][0].imshow(xs_mean2/xs_sigma2, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
