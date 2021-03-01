@@ -17,6 +17,7 @@ import itertools as itr
 from scipy.optimize import curve_fit
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import pixel_window_TF
+#import matplotlib.colors as colors
 
 #theory spectrum
 k_th = np.load('k.npy')
@@ -299,8 +300,10 @@ def xs_2D_plot_pw_diff(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean
       #fig.suptitle(titlename, fontsize=16)
       #norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7), vmax=-1.3*np.amin(xs_mean7))  
       #norm1 = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7/xs_sigma7), vmax=-1.3*np.amin(xs_mean7/xs_sigma7)) 
-      norm = mpl.colors.Normalize(vmin=-800000, vmax=800000)
-      #norm1 = mpl.colors.Normalize(vmin=-5, vmax=5) 
+      norm = mpl.colors.LogNorm(vmin=-800000, vmax=800000)
+
+
+    
 
       xs2_pw = xs_mean2/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])*pix_wind(k[0],k[1]))
       xs2_npw = xs_mean2/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1]))
