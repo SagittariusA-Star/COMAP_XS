@@ -300,7 +300,7 @@ def xs_2D_plot_pw_diff(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean
       #fig.suptitle(titlename, fontsize=16)
       #norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7), vmax=-1.3*np.amin(xs_mean7))  
       #norm1 = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7/xs_sigma7), vmax=-1.3*np.amin(xs_mean7/xs_sigma7)) 
-      norm = mpl.colors.SymLogNorm(vmin=-800000, vmax=800000)
+      norm = mpl.colors.SymLogNorm(linthresh=0.03, vmin=-800000, vmax=800000)
 
 
     
