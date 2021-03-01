@@ -299,7 +299,7 @@ def xs_2D_plot_pw_diff(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean
       #fig.suptitle(titlename, fontsize=16)
       #norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7), vmax=-1.3*np.amin(xs_mean7))  
       #norm1 = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7/xs_sigma7), vmax=-1.3*np.amin(xs_mean7/xs_sigma7)) 
-      
+      norm = mpl.colors.Normalize(vmin=-800000, vmax=800000)
       #norm1 = mpl.colors.Normalize(vmin=-5, vmax=5) 
 
       xs2_pw = xs_mean2/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])*pix_wind(k[0],k[1]))
@@ -312,20 +312,20 @@ def xs_2D_plot_pw_diff(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean
       #norm = mpl.colors.Normalize(vmin=-np.mean(abs(xs2_pw-xs2_npw)), vmax=np.mean(abs(xs2_pw-xs2_npw)))  
       #norm = mpl.colors.Normalize(vmin=0.86, vmax=1.05) 
 
-      img1 = ax[0][0].imshow(xs2_npw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma')
+      img1 = ax[0][0].imshow(xs2_npw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.04)
   
-      img2 = ax[0][1].imshow(xs6_npw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma')
+      img2 = ax[0][1].imshow(xs6_npw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img2, ax=ax[0][1], fraction=0.046, pad=0.04)
-      img3 = ax[0][2].imshow(xs7_npw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma')
+      img3 = ax[0][2].imshow(xs7_npw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img2, ax=ax[0][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=14)
       
-      img4 = ax[1][0].imshow(xs2_pw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma')
+      img4 = ax[1][0].imshow(xs2_pw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img4, ax=ax[1][0],fraction=0.046, pad=0.04)
   
-      img5 = ax[1][1].imshow(xs6_pw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma')
+      img5 = ax[1][1].imshow(xs6_pw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img5, ax=ax[1][1], fraction=0.046, pad=0.04)
-      img6 = ax[1][2].imshow(xs7_pw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma')
+      img6 = ax[1][2].imshow(xs7_pw, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img6, ax=ax[1][2], fraction=0.046, pad=0.04).set_label(r'with pw, $\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=14)
      
       ticks = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,0.1,
