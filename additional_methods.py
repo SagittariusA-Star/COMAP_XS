@@ -146,8 +146,8 @@ print (np.load('co2_map_signal_1D_names.npy'))
  'xs_mean_co7_map_rise_cesc0.pdf' 'xs_mean_co7_map_rise_cesc1.pdf']
 '''
 
-#def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma2, xs_sigma6, xs_sigma7, scan_strategy, mean_combo, sigma_combo):
-def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma2, xs_sigma6, xs_sigma7, scan_strategy):  
+def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma2, xs_sigma6, xs_sigma7, scan_strategy, mean_combo, sigma_combo):
+#def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma2, xs_sigma6, xs_sigma7, scan_strategy):  
    if scan_strategy == 'ces':
       titlename = 'CES scans'
    if scan_strategy == 'liss':
@@ -165,7 +165,7 @@ def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma
    ax1.errorbar(k6, k * xs_mean6 / (transfer(k)*transfer_filt(k)), k * xs_sigma6 / (transfer(k)*transfer_filt(k)), fmt='o', label=r'co6', color='teal', zorder=3)
    ax1.errorbar(k7, k * xs_mean7 / (transfer(k)*transfer_filt(k)), k * xs_sigma7 / (transfer(k)*transfer_filt(k)), fmt='o', label=r'co7', color='purple', zorder=2)
    ax1.errorbar(k, k * xs_mean2 / (transfer(k)*transfer_filt(k)), k * xs_sigma2 / (transfer(k)*transfer_filt(k)), fmt='o', label=r'co2', color='indianred', zorder=4)
-   #ax1.errorbar(k_combo, k * mean_combo / (transfer(k)*transfer_filt(k)), k * sigma_combo / (transfer(k)*transfer_filt(k)), fmt='o', label=r'combo', color='black', zorder=5)
+   ax1.errorbar(k_combo, k * mean_combo / (transfer(k)*transfer_filt(k)), k * sigma_combo / (transfer(k)*transfer_filt(k)), fmt='o', label=r'combo', color='black', zorder=5)
    #ax1.errorbar(k, k * xs_mean, k * xs_sigma, fmt='o', label=r'$k\tilde{C}_{data}(k)$')
    ax1.plot(k, 0 * xs_mean2, 'k', alpha=0.4, zorder=1)
    #ax1.plot(k, k*PS_function.PS_f(k)/ transfer(k), label='k*PS of the input signal')
@@ -194,7 +194,7 @@ def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma
    ax2.errorbar(k6, xs_mean6 / xs_sigma6, xs_sigma6/xs_sigma6, fmt='o', label=r'co6', color='teal', zorder=3)
    ax2.errorbar(k7, xs_mean7 / xs_sigma7, xs_sigma7/xs_sigma7, fmt='o', label=r'co7', color='purple', zorder=2)
    ax2.errorbar(k, xs_mean2 / xs_sigma2, xs_sigma2/xs_sigma2, fmt='o', label=r'co2', color='indianred', zorder=4)
-   #ax2.errorbar(k_combo, mean_combo / sigma_combo, sigma_combo/sigma_combo, fmt='o', label=r'combo', color='black', zorder=5)
+   ax2.errorbar(k_combo, mean_combo / sigma_combo, sigma_combo/sigma_combo, fmt='o', label=r'combo', color='black', zorder=5)
    #ax2.errorbar(k, sum_mean / error, error /error, fmt='o', label=r'$\tilde{C}_{sum}(k)$', color='mediumorchid')
    ax2.plot(k, 0 * xs_mean2, 'k', alpha=0.4, zorder=1)
    #ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$')
@@ -214,8 +214,8 @@ def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma
    #plt.show()
 
 #xs_with_model_3fields('liss_all_fields_map_signal.pdf', k2[0],xs_mean2[0], xs_mean6[0], xs_mean7[0], xs_sigma2[0], xs_sigma6[0], xs_sigma7[0], 'liss')
-#xs_with_model_3fields('ces_all_fields_map_signal_withcombo.pdf', k2[1],xs_mean2[1], xs_mean6[1], xs_mean7[1], xs_sigma2[1], xs_sigma6[1], xs_sigma7[1], 'ces', mean_combo, sigma_combo)
-xs_with_model_3fields('ces_all_fields_map_signal.pdf', k2[1],xs_mean2[1], xs_mean6[1], xs_mean7[1], xs_sigma2[1], xs_sigma6[1], xs_sigma7[1], 'ces')
+xs_with_model_3fields('ces_all_fields_map_signal_withcombo.pdf', k2[1],xs_mean2[1], xs_mean6[1], xs_mean7[1], xs_sigma2[1], xs_sigma6[1], xs_sigma7[1], 'ces', mean_combo, sigma_combo)
+#xs_with_model_3fields('ces_all_fields_map_signal.pdf', k2[1],xs_mean2[1], xs_mean6[1], xs_mean7[1], xs_sigma2[1], xs_sigma6[1], xs_sigma7[1], 'ces')
 
 def log2lin(x, k_edges):
     loglen = np.log10(k_edges[-1]) - np.log10(k_edges[0])
