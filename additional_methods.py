@@ -106,6 +106,7 @@ print (k2[1],xs_mean2[1],xs_sigma2[1])
 '''
 k6, xs_mean6, xs_sigma6 = read_h5_arrays('co6_map_signal_1D_arrays.h5')
 k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_signal_1D_arrays.h5')
+
 def coadd_all_ces(k2, xs_mean2, xs_sigma2, k6, xs_mean6, xs_sigma6,k7, xs_mean7, xs_sigma7):
    k2, xs2, sigma2 = k2[1], xs_mean2[1], xs_sigma2[1] #take CES
    k6, xs6, sigma6 = k6[1], xs_mean6[1], xs_sigma6[1] #take CES
@@ -222,6 +223,8 @@ def xs_with_model_3fields(figure_name, k, xs_mean2, xs_mean6, xs_mean7, xs_sigma
 xs_with_model_3fields('liss_all_fields_map_signal_dayn.pdf', k2[2],xs_mean2[2], xs_mean6[2], xs_mean7[2], xs_sigma2[2], xs_sigma6[2], xs_sigma7[2], 'liss')
 xs_with_model_3fields('ces_all_fields_map_signal_dayn.pdf', k2[3],xs_mean2[3], xs_mean6[3], xs_mean7[3], xs_sigma2[3], xs_sigma6[3], xs_sigma7[3], 'ces')
 
+
+
 #wint
 xs_with_model_3fields('liss_all_fields_map_signal_wint.pdf', k2[10],xs_mean2[10], xs_mean6[10], xs_mean7[10], xs_sigma2[10], xs_sigma6[10], xs_sigma7[10], 'liss')
 xs_with_model_3fields('ces_all_fields_map_signal_wint.pdf', k2[11],xs_mean2[11], xs_mean6[11], xs_mean7[11], xs_sigma2[11], xs_sigma6[11], xs_sigma7[11], 'ces')
@@ -250,8 +253,8 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mea
       img2 = ax[0][1].imshow(xs_mean6/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])*pix_wind(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img2, ax=ax[0][1], fraction=0.046, pad=0.04)
       img3 = ax[0][2].imshow(xs_mean7/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])*pix_wind(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
-      fig.colorbar(img2, ax=ax[0][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=14)
-      
+      fig.colorbar(img3, ax=ax[0][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=14)
+      #this said fig.colorbar(img2 before, was something wrong because of that?
       img4 = ax[1][0].imshow(xs_mean2/xs_sigma2, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
       fig.colorbar(img4, ax=ax[1][0],fraction=0.046, pad=0.04)
   
@@ -404,16 +407,20 @@ print (xs_mean2[0])
 k6, xs_mean6, xs_sigma6, k_edges_perp6, k_edges_par6 = read_h5_arrays('co6_map_signal_2D_arrays.h5', two_dim=True)
 k7, xs_mean7, xs_sigma7, k_edges_perp7, k_edges_par7 = read_h5_arrays('co7_map_signal_2D_arrays.h5', two_dim=True)
 
-xs_2D_plot('liss_3fields_2D_pixel_window.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[0],xs_mean6[0],xs_mean7[0], xs_sigma2[0],xs_sigma6[0],xs_sigma7[0], 'Liss cans')
+#k2, xs_mean2, xs_sigma2, k_edges_perp2, k_edges_par2 = read_h5_arrays('co2_map_null_2D_arrays.h5', two_dim=True)
+#xs_2D_plot('ces_3fields_2D_null.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[0],xs_mean6[0],xs_mean7[0], xs_sigma2[0],xs_sigma6[0],xs_sigma7[0], 'Liss scans')
+
+
+xs_2D_plot('liss_3fields_2D_pixel_window.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[0],xs_mean6[0],xs_mean7[0], xs_sigma2[0],xs_sigma6[0],xs_sigma7[0], 'Liss scans')
 
 #xs_2D_plot('ces_3fields_2D.pdf', k2[1],k_edges_par2[1], k_edges_perp2[1], xs_mean2[1],xs_mean6[1],xs_mean7[1], xs_sigma2[1],xs_sigma6[1],xs_sigma7[1], 'CES cans')
 
-xs_2D_plot('ces_3fields_2D_pixel_window.pdf', k2[1],k_edges_par2[1], k_edges_perp2[1], xs_mean2[1],xs_mean6[1],xs_mean7[1], xs_sigma2[1],xs_sigma6[1],xs_sigma7[1], 'CES cans')
+xs_2D_plot('ces_3fields_2D_pixel_window.pdf', k2[1],k_edges_par2[1], k_edges_perp2[1], xs_mean2[1],xs_mean6[1],xs_mean7[1], xs_sigma2[1],xs_sigma6[1],xs_sigma7[1], 'CES scans')
     
 
-xs_2D_plot_pw_diff('liss_3fields_2D_pixel_window_diff.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[0],xs_mean6[0],xs_mean7[0], xs_sigma2[0],xs_sigma6[0],xs_sigma7[0], 'Liss cans')
+xs_2D_plot_pw_diff('liss_3fields_2D_pixel_window_diff.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[0],xs_mean6[0],xs_mean7[0], xs_sigma2[0],xs_sigma6[0],xs_sigma7[0], 'Liss scans')
 
-xs_2D_plot_pw_diff('ces_3fields_2D_pixel_window_diff.pdf', k2[1],k_edges_par2[1], k_edges_perp2[1], xs_mean2[1],xs_mean6[1],xs_mean7[1], xs_sigma2[1],xs_sigma6[1],xs_sigma7[1], 'CES cans')
+xs_2D_plot_pw_diff('ces_3fields_2D_pixel_window_diff.pdf', k2[1],k_edges_par2[1], k_edges_perp2[1], xs_mean2[1],xs_mean6[1],xs_mean7[1], xs_sigma2[1],xs_sigma6[1],xs_sigma7[1], 'CES scans')
     
     
 print (np.load('co6_map_null_1D_names.npy'))
