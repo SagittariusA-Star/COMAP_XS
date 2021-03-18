@@ -86,15 +86,15 @@ if two_dimensions == False:
 
 field, jk_list, main_map_name = read_field_jklist(mappath)
 
-#this jk list was an expection from the naming convention!
-jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_' + 'science' + '.txt'
+#this jk list was an exeption from the naming convention!
+#jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_' + 'science' + '.txt'
 control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control = read_multisplit.read_jk(jk_list)
 
 map_files = read_multisplit.read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control)
 
 #Perform null-test
-#new_subtracted_maps = read_multisplit.null_test_subtract(map_files, test_variables, field)
-#map_files = new_subtracted_maps
+new_subtracted_maps = read_multisplit.null_test_subtract(map_files, test_variables, field)
+map_files = new_subtracted_maps
 
 number_of_maps = len(map_files)
 number_of_ff_variables = len(feed_feed_variables)
