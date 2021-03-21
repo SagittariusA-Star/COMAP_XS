@@ -92,13 +92,13 @@ def log2lin(x, k_edges):
 
 def xs_2D_plot_null(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean1,xs_mean2,xs_mean3,xs_mean4, xs_mean5,xs_mean6, titlename, test1, test2, test3):
       #k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma =  k[3:],k_bin_edges_par[3:], k_bin_edges_perp[3:], xs_mean[3:], xs_sigma[3:]
-      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(15.5,8))
+      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,9))
       #fig.tight_layout(h_pad=0.005, w_pad=1)
       fig.subplots_adjust(hspace=-0.5, wspace=0.0)
       #fig.suptitle(titlename, fontsize=16)
       #norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7), vmax=-1.3*np.amin(xs_mean7))  
       #norm1 = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7/xs_sigma7), vmax=-1.3*np.amin(xs_mean7/xs_sigma7)) 
-      norm = mpl.colors.Normalize(vmin=-900000, vmax=900000)  #here it was 800000
+      norm = mpl.colors.Normalize(vmin=-1e6, vmax=1e6)  #here it was 800000
       norm1 = mpl.colors.Normalize(vmin=-5, vmax=5) 
 
     
