@@ -193,3 +193,105 @@ def plot_null_for_field(field):
 plot_null_for_field('co2')
 plot_null_for_field('co6')
 plot_null_for_field('co7')
+
+
+
+def xs_2D_plot_null_sigma(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean1,xs_mean2,xs_mean3,xs_mean4, xs_mean5,xs_mean6,xs_sigma1,xs_sigma2,xs_sigma3,xs_sigma4, xs_sigma5,xs_sigma6, titlename, test1, test2, test3, field):
+      #k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma =  k[3:],k_bin_edges_par[3:], k_bin_edges_perp[3:], xs_mean[3:], xs_sigma[3:]
+      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,9))
+      #fig.tight_layout(h_pad=0.005, w_pad=1)
+      fig.subplots_adjust(hspace=-0.5, wspace=0.0)
+      #fig.suptitle(titlename, fontsize=16)
+      #norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7), vmax=-1.3*np.amin(xs_mean7))  
+      #norm1 = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7/xs_sigma7), vmax=-1.3*np.amin(xs_mean7/xs_sigma7)) 
+      norm1 = mpl.colors.Normalize(vmin=-3e6, vmax=3e6)  #here it was 800000
+      norm = mpl.colors.Normalize(vmin=-5, vmax=5) 
+
+    
+      img1 = ax[0][0].imshow(xs_mean1/xs_sigma1, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.04)
+  
+      img2 = ax[0][1].imshow(xs_mean2/xs_sigma2, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img2, ax=ax[0][1], fraction=0.046, pad=0.04)
+      img3 = ax[0][2].imshow(xs_mean3/xs_sigma3, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img3, ax=ax[0][2], fraction=0.046, pad=0.04).set_label(r'CES', size=14)
+      
+
+ 
+      img4 = ax[1][0].imshow(xs_mean4/xs_sigma4, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img4, ax=ax[1][0],fraction=0.046, pad=0.04)
+  
+      img5 = ax[1][1].imshow(xs_mean5/xs_sigma5, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img5, ax=ax[1][1], fraction=0.046, pad=0.04)
+      img6 = ax[1][2].imshow(xs_mean6/xs_sigma6, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img6, ax=ax[1][2], fraction=0.046, pad=0.04).set_label(r'Liss', size=14)
+      
+     
+      ticks = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,0.1,
+              0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,1., 1.1, 1.2, 1.3]
+
+      majorticks = [ 0.03,0.1, 0.3,1]
+      majorlabels = [ '0.03','0.1', '0.3','1']
+
+      xbins = k_bin_edges_par
+
+
+      ticklist_x = log2lin(ticks[:-3], xbins)
+      majorlist_x = log2lin(majorticks, xbins)
+
+      ybins = k_bin_edges_perp
+
+      ticklist_y = log2lin(ticks, ybins)
+      majorlist_y = log2lin(majorticks, ybins)
+      
+      ax[0][0].set_title(field + ', ' + test1, fontsize=16)
+      ax[0][1].set_title(field + ', ' + test2, fontsize=16)
+      ax[0][2].set_title(field + ', ' + test3, fontsize=16)
+
+      for i in range(3):
+         for j in range(2):
+            ax[j][i].set_xticks(ticklist_x, minor=True)
+            ax[j][i].set_xticks(majorlist_x, minor=False)
+            ax[j][i].set_xticklabels(majorlabels, minor=False, fontsize=12)
+            ax[j][i].set_yticks(ticklist_y, minor=True)
+            ax[j][i].set_yticks(majorlist_y, minor=False)
+            ax[j][i].set_yticklabels(majorlabels, minor=False, fontsize=12)
+            ax[j][i].tick_params(labelsize=12)
+      
+      ax[1][0].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]',fontsize=14)
+      ax[0][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=14)
+      ax[1][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=14)
+      ax[1][1].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=14)
+      ax[1][2].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=14)
+      
+      plt.tight_layout()
+      plt.savefig(figure_name) 
+
+
+
+
+def plot_null_sigma_for_field(field):
+   k2, xs_mean2, xs_sigma2, k_edges_perp2, k_edges_par2 = read_h5_arrays(field + '_map_null_2D_arrays.h5', two_dim=True)
+   xs_2D_plot_null_sigma(field + '_sigma_2D_null1.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[1],xs_mean2[3], xs_mean2[5],xs_mean2[0],xs_mean2[2],xs_mean2[4], xs_sigma2[1],xs_sigma2[3], xs_sigma2[5],xs_sigma2[0],xs_sigma2[2],xs_sigma2[4],'CO2', 'ambt', 'wind', 'wint', field)
+
+   xs_2D_plot_null(field + '_sigma_2D_null2.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[7],xs_mean2[9], xs_mean2[11],xs_mean2[6],xs_mean2[8],xs_mean2[10], xs_sigma2[7],xs_sigma2[9], xs_sigma2[11],xs_sigma2[6],xs_sigma2[8],xs_sigma2[10], 'CO2', 'rise', 'half', 'odde', field)
+
+   xs_2D_plot_null(field + '_sigma_2D_null3.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[11],xs_mean2[13],  xs_mean2[15],xs_mean2[10],xs_mean2[12],xs_mean2[14],xs_sigma2[11],xs_sigma2[13], xs_sigma2[15],xs_sigma2[10],xs_sigma2[12],xs_sigma2[14],'CO2', 'odde', 'fpol', 'dayn', field)
+
+plot_null_sigma_for_field('co2')
+plot_null_sigma_for_field('co6')
+plot_null_sigma_for_field('co7')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
