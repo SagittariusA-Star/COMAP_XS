@@ -90,7 +90,7 @@ def log2lin(x, k_edges):
     return logx / loglen
 
 
-def xs_2D_plot_null(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean1,xs_mean2,xs_mean3,xs_mean4, xs_mean5,xs_mean6, titlename, test1, test2, test3):
+def xs_2D_plot_null(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean1,xs_mean2,xs_mean3,xs_mean4, xs_mean5,xs_mean6, titlename, test1, test2, test3, field):
       #k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma =  k[3:],k_bin_edges_par[3:], k_bin_edges_perp[3:], xs_mean[3:], xs_sigma[3:]
       fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,9))
       #fig.tight_layout(h_pad=0.005, w_pad=1)
@@ -138,9 +138,9 @@ def xs_2D_plot_null(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean1,x
       ticklist_y = log2lin(ticks, ybins)
       majorlist_y = log2lin(majorticks, ybins)
       
-      ax[0][0].set_title(test1, fontsize=16)
-      ax[0][1].set_title(test2, fontsize=16)
-      ax[0][2].set_title(test3, fontsize=16)
+      ax[0][0].set_title(field + ', ' + test1, fontsize=16)
+      ax[0][1].set_title(field + ', ' + test2, fontsize=16)
+      ax[0][2].set_title(field + ', ' + test3, fontsize=16)
 
       for i in range(3):
          for j in range(2):
@@ -184,11 +184,11 @@ def xs_2D_plot_null(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean1,x
 
 def plot_null_for_field(field):
    k2, xs_mean2, xs_sigma2, k_edges_perp2, k_edges_par2 = read_h5_arrays(field + '_map_null_2D_arrays.h5', two_dim=True)
-   xs_2D_plot_null(field + '_2D_null1.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[1],xs_mean2[3], xs_mean2[5],xs_mean2[0],xs_mean2[2],xs_mean2[4],'CO2', 'ambt', 'wind', 'wint')
+   xs_2D_plot_null(field + '_2D_null1.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[1],xs_mean2[3], xs_mean2[5],xs_mean2[0],xs_mean2[2],xs_mean2[4],'CO2', 'ambt', 'wind', 'wint', field)
 
-   xs_2D_plot_null(field + '_2D_null2.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[7],xs_mean2[9], xs_mean2[11],xs_mean2[6],xs_mean2[8],xs_mean2[10],'CO2', 'rise', 'half', 'odde')
+   xs_2D_plot_null(field + '_2D_null2.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[7],xs_mean2[9], xs_mean2[11],xs_mean2[6],xs_mean2[8],xs_mean2[10],'CO2', 'rise', 'half', 'odde', field)
 
-   xs_2D_plot_null(field + '_2D_null3.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[11],xs_mean2[13], xs_mean2[15],xs_mean2[10],xs_mean2[12],xs_mean2[14],'CO2', 'odde', 'fpol', 'dayn')
+   xs_2D_plot_null(field + '_2D_null3.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[11],xs_mean2[13], xs_mean2[15],xs_mean2[10],xs_mean2[12],xs_mean2[14],'CO2', 'odde', 'fpol', 'dayn', field)
 
 plot_null_for_field('co2')
 plot_null_for_field('co6')
