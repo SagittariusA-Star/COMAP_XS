@@ -98,7 +98,7 @@ def xs_2D_plot_null(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean1,x
       #fig.suptitle(titlename, fontsize=16)
       #norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7), vmax=-1.3*np.amin(xs_mean7))  
       #norm1 = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7/xs_sigma7), vmax=-1.3*np.amin(xs_mean7/xs_sigma7)) 
-      norm = mpl.colors.Normalize(vmin=-1e6, vmax=1e6)  #here it was 800000
+      norm = mpl.colors.Normalize(vmin=-3e6, vmax=3e6)  #here it was 800000
       norm1 = mpl.colors.Normalize(vmin=-5, vmax=5) 
 
     
