@@ -205,7 +205,7 @@ def xs_2D_plot_null_sigma(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_m
       #norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7), vmax=-1.3*np.amin(xs_mean7))  
       #norm1 = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7/xs_sigma7), vmax=-1.3*np.amin(xs_mean7/xs_sigma7)) 
       norm1 = mpl.colors.Normalize(vmin=-3e6, vmax=3e6)  #here it was 800000
-      norm = mpl.colors.Normalize(vmin=-4.5, vmax=4.5) 
+      norm = mpl.colors.Normalize(vmin=-4, vmax=4) 
 
     
       img1 = ax[0][0].imshow(xs_mean1/xs_sigma1, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
