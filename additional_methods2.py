@@ -184,11 +184,11 @@ def xs_2D_plot_null(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean1,x
 
 def plot_null_for_field(field):
    k2, xs_mean2, xs_sigma2, k_edges_perp2, k_edges_par2 = read_h5_arrays(field + '_map_null_2D_arrays.h5', two_dim=True)
-   xs_2D_plot_null(field + '_3fields_2D_null1.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[1],xs_mean2[3], xs_mean2[5],xs_mean2[0],xs_mean2[2],xs_mean2[4],'CO2', 'ambt', 'wind', 'wint')
+   xs_2D_plot_null(field + '_2D_null1.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[1],xs_mean2[3], xs_mean2[5],xs_mean2[0],xs_mean2[2],xs_mean2[4],'CO2', 'ambt', 'wind', 'wint')
 
-   xs_2D_plot_null(field + '_3fields_2D_null2.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[7],xs_mean2[9], xs_mean2[11],xs_mean2[6],xs_mean2[8],xs_mean2[10],'CO2', 'rise', 'half', 'odde')
+   xs_2D_plot_null(field + '_2D_null2.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[7],xs_mean2[9], xs_mean2[11],xs_mean2[6],xs_mean2[8],xs_mean2[10],'CO2', 'rise', 'half', 'odde')
 
-   xs_2D_plot_null(field + '_3fields_2D_null3.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[11],xs_mean2[13], xs_mean2[15],xs_mean2[10],xs_mean2[12],xs_mean2[14],'CO2', 'odde', 'fpol', 'dayn')
+   xs_2D_plot_null(field + '_2D_null3.pdf', k2[0],k_edges_par2[0], k_edges_perp2[0], xs_mean2[11],xs_mean2[13], xs_mean2[15],xs_mean2[10],xs_mean2[12],xs_mean2[14],'CO2', 'odde', 'fpol', 'dayn')
 
 plot_null_for_field('co2')
 plot_null_for_field('co6')
