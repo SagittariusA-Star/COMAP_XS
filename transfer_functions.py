@@ -131,7 +131,7 @@ k_bin_edges_par = np.logspace(-2.0, np.log10(1.0), 15)
 k_bin_edges_perp = np.logspace(-2.0 + np.log10(2), np.log10(1.5), 15)
 
 
-def plot_TF_1D(k, TF_1D, type_of_TF):
+def plot_TF_1D(k, TF_1D, type_of_TF, name_to_save):
 
    plt.plot(k, TF_1D(k), color='indianred')
    plt.xscale('log')
@@ -145,6 +145,7 @@ def plot_TF_1D(k, TF_1D, type_of_TF):
    plt.xticks(fontsize=12)
    plt.yticks(fontsize=12)
    plt.tight_layout()
+   plt.savefig(name_to_save)
    plt.show()
 
 def log2lin(x, k_edges):
@@ -152,7 +153,7 @@ def log2lin(x, k_edges):
     logx = np.log10(x) - np.log10(k_edges[0])
     return logx / loglen
 
-def plot_TF_2D(k_perp, k_par, TF_2D, type_of_TF):
+def plot_TF_2D(k_perp, k_par, TF_2D, type_of_TF, name_to_save):
     
       fig, ax = plt.subplots(1,1,figsize=(5.6,5.6))
       fig.tight_layout()
@@ -188,22 +189,27 @@ def plot_TF_2D(k_perp, k_par, TF_2D, type_of_TF):
       ax.set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=16)
     
       plt.tight_layout()
+      plt.savefig(name_to_save)
       plt.show()
 
-plot_TF_1D(beam_k_1D, beam_TF_1D_func, r'$\mathrm{T^{beam}(k)}$')
-plot_TF_1D(freq_k_1D, freq_TF_1D_func, r'$\mathrm{T^{freq}(k)}$')
-plot_TF_1D(mix_k_1D, mix_TF_1D_func, r'$\mathrm{T^{mix}(k)}$')
-plot_TF_1D(liss_k_1D, liss_TF_1D_func, r'$\mathrm{T^{Liss}(k)}$')
-plot_TF_1D(CES_k_1D, CES_TF_1D_func, r'$\mathrm{T^{CES}(k)}$')
-plot_TF_1D(CES_k_1D, TF_beam_freq_mix_1D, r'$\mathrm{T^{total}(k)}$')
 
-plot_TF_2D(beam_k_perp, beam_k_par, beam_TF_2D_func, r'$ T^{beam}(k_{\bot},k_{\parallel})$')
-plot_TF_2D(freq_k_perp, freq_k_par, freq_TF_2D_func, r'$ T^{freq}(k_{\bot},k_{\parallel})$')
-plot_TF_2D(mix_k_perp, mix_k_par, mix_TF_2D_func, r'$ T^{mix}(k_{\bot},k_{\parallel})$')
-plot_TF_2D(liss_k_perp, liss_k_par, liss_TF_2D_func, r'$ T^{Liss}(k_{\bot},k_{\parallel})$')
-plot_TF_2D(CES_k_perp, CES_k_par, CES_TF_2D_func, r'$ T^{CES}(k_{\bot},k_{\parallel})$')
-plot_TF_2D(CES_k_perp, CES_k_par, TF_beam_freq_mix_2D, r'$ T^{total}(k_{\bot},k_{\parallel})$')
+plot_TF_1D(beam_k_1D, beam_TF_1D_func, r'$\mathrm{T^{beam}(k)}$', 'beam_TF_1D.png')
+plot_TF_1D(freq_k_1D, freq_TF_1D_func, r'$\mathrm{T^{freq}(k)}$', 'freq_TF_1D.png')
+plot_TF_1D(mix_k_1D, mix_TF_1D_func, r'$\mathrm{T^{mix}(k)}$', 'mix_TF_1D.png')
+plot_TF_1D(liss_k_1D, liss_TF_1D_func, r'$\mathrm{T^{Liss}(k)}$','liss_TF_1D.png')
+plot_TF_1D(CES_k_1D, CES_TF_1D_func, r'$\mathrm{T^{CES}(k)}$', 'CES_TF_1D.png')
+plot_TF_1D(CES_k_1D, TF_beam_freq_mix_1D, r'$\mathrm{T^{total, mix}(k)}$', 'total_mix_TF_1D.png')
+plot_TF_1D(CES_k_1D, TF_beam_freq_liss_1D, r'$\mathrm{T^{total, Liss}(k)}$', 'total_liss_TF_1D.png')
+plot_TF_1D(CES_k_1D, TF_beam_freq_CES_1D, r'$\mathrm{T^{total, CES}(k)}$', 'total_CES_TF_1D.png')
 
+plot_TF_2D(beam_k_perp, beam_k_par, beam_TF_2D_func, r'$ T^{beam}(k_{\bot},k_{\parallel})$','beam_TF_2D.png')
+plot_TF_2D(freq_k_perp, freq_k_par, freq_TF_2D_func, r'$ T^{freq}(k_{\bot},k_{\parallel})$', 'freq_TF_2D.png')
+plot_TF_2D(mix_k_perp, mix_k_par, mix_TF_2D_func, r'$ T^{mix}(k_{\bot},k_{\parallel})$', 'mix_TF_2D.png')
+plot_TF_2D(liss_k_perp, liss_k_par, liss_TF_2D_func, r'$ T^{Liss}(k_{\bot},k_{\parallel})$', 'liss_TF_2D.png')
+plot_TF_2D(CES_k_perp, CES_k_par, CES_TF_2D_func, r'$ T^{CES}(k_{\bot},k_{\parallel})$', 'CES_TF_1D.png')
+plot_TF_2D(CES_k_perp, CES_k_par, TF_beam_freq_mix_2D, r'$ T^{total, mix}(k_{\bot},k_{\parallel})$', 'total_mix_TF_1D.png')
+plot_TF_2D(CES_k_perp, CES_k_par, TF_beam_freq_liss_2D, r'$ T^{total, Liss}(k_{\bot},k_{\parallel})$', 'total_liss_TF_1D.png')
+plot_TF_2D(CES_k_perp, CES_k_par, TF_beam_freq_CES_2D, r'$ T^{total, CES}(k_{\bot},k_{\parallel})$', 'total_CES_TF_1D.png')
 
 
 
