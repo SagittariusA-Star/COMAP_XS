@@ -3,7 +3,7 @@
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-plt.ioff() #turn of the interactive plotting
+#plt.ioff() #turn of the interactive plotting
 import matplotlib as matplotlib
 import numpy.fft as fft
 import corner
@@ -206,10 +206,10 @@ plot_TF_2D(beam_k_perp, beam_k_par, beam_TF_2D_func, r'$ T^{beam}(k_{\bot},k_{\p
 plot_TF_2D(freq_k_perp, freq_k_par, freq_TF_2D_func, r'$ T^{freq}(k_{\bot},k_{\parallel})$', 'freq_TF_2D.png')
 plot_TF_2D(mix_k_perp, mix_k_par, mix_TF_2D_func, r'$ T^{mix}(k_{\bot},k_{\parallel})$', 'mix_TF_2D.png')
 plot_TF_2D(liss_k_perp, liss_k_par, liss_TF_2D_func, r'$ T^{Liss}(k_{\bot},k_{\parallel})$', 'liss_TF_2D.png')
-plot_TF_2D(CES_k_perp, CES_k_par, CES_TF_2D_func, r'$ T^{CES}(k_{\bot},k_{\parallel})$', 'CES_TF_1D.png')
-plot_TF_2D(CES_k_perp, CES_k_par, TF_beam_freq_mix_2D, r'$ T^{total, mix}(k_{\bot},k_{\parallel})$', 'total_mix_TF_1D.png')
-plot_TF_2D(CES_k_perp, CES_k_par, TF_beam_freq_liss_2D, r'$ T^{total, Liss}(k_{\bot},k_{\parallel})$', 'total_liss_TF_1D.png')
-plot_TF_2D(CES_k_perp, CES_k_par, TF_beam_freq_CES_2D, r'$ T^{total, CES}(k_{\bot},k_{\parallel})$', 'total_CES_TF_1D.png')
+plot_TF_2D(CES_k_perp, CES_k_par, CES_TF_2D_func, r'$ T^{CES}(k_{\bot},k_{\parallel})$', 'CES_TF_2D.png')
+plot_TF_2D(CES_k_perp, CES_k_par, TF_beam_freq_mix_2D, r'$ T^{total, mix}(k_{\bot},k_{\parallel})$', 'total_mix_TF_2D.png')
+plot_TF_2D(CES_k_perp, CES_k_par, TF_beam_freq_liss_2D, r'$ T^{total, Liss}(k_{\bot},k_{\parallel})$', 'total_liss_TF_2D.png')
+plot_TF_2D(CES_k_perp, CES_k_par, TF_beam_freq_CES_2D, r'$ T^{total, CES}(k_{\bot},k_{\parallel})$', 'total_CES_TF_2D.png')
 
 
 
