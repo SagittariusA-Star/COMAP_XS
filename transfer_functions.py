@@ -195,13 +195,14 @@ plot_TF_1D(freq_k_1D, freq_TF_1D_func, r'$\mathrm{T^{freq}(k)}$')
 plot_TF_1D(mix_k_1D, mix_TF_1D_func, r'$\mathrm{T^{mix}(k)}$')
 plot_TF_1D(liss_k_1D, liss_TF_1D_func, r'$\mathrm{T^{Liss}(k)}$')
 plot_TF_1D(CES_k_1D, CES_TF_1D_func, r'$\mathrm{T^{CES}(k)}$')
+plot_TF_1D(CES_k_1D, TF_beam_freq_mix_1D, r'$\mathrm{T^{total}(k)}$')
 
 plot_TF_2D(beam_k_perp, beam_k_par, beam_TF_2D_func, r'$ T^{beam}(k_{\bot},k_{\parallel})$')
 plot_TF_2D(freq_k_perp, freq_k_par, freq_TF_2D_func, r'$ T^{freq}(k_{\bot},k_{\parallel})$')
 plot_TF_2D(mix_k_perp, mix_k_par, mix_TF_2D_func, r'$ T^{mix}(k_{\bot},k_{\parallel})$')
 plot_TF_2D(liss_k_perp, liss_k_par, liss_TF_2D_func, r'$ T^{Liss}(k_{\bot},k_{\parallel})$')
 plot_TF_2D(CES_k_perp, CES_k_par, CES_TF_2D_func, r'$ T^{CES}(k_{\bot},k_{\parallel})$')
-
+plot_TF_2D(CES_k_perp, CES_k_par, TF_beam_freq_mix_2D, r'$ T^{total}(k_{\bot},k_{\parallel})$')
 
 
 
