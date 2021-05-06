@@ -14,16 +14,17 @@ import itertools as itr
 from scipy.optimize import curve_fit
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
+location = 'transfer_functions/' #the directory where all the TF files are stored
 
 #Instrumental beam transfer function (from limited angular resolution)
 N_beam = 10 #number of signal map realizations used
-beam_ps_smooth_1D = np.load('ps_smooth_1D_newest.npy')
-beam_ps_original_1D = np.load('ps_original_1D_newest.npy')
-beam_k_1D = np.load('k_arr_1D_newest.npy')[0]
+beam_ps_smooth_1D = np.load(location + 'ps_smooth_1D_newest.npy')
+beam_ps_original_1D = np.load(location + 'ps_original_1D_newest.npy')
+beam_k_1D = np.load(location + 'k_arr_1D_newest.npy')[0]
 
-beam_ps_smooth_2D = np.load('ps_smooth_newest.npy')
-beam_ps_original_2D = np.load('ps_original_newest.npy')
-beam_k_2D = np.load('k_arr_newest.npy')[0]
+beam_ps_smooth_2D = np.load(location + 'ps_smooth_newest.npy')
+beam_ps_original_2D = np.load(location + 'ps_original_newest.npy')
+beam_k_2D = np.load(location + 'k_arr_newest.npy')[0]
 
 beam_TF_1D = np.zeros_like(beam_ps_smooth_1D)
 beam_TF_2D = np.zeros_like(beam_ps_smooth_2D)
@@ -42,13 +43,13 @@ beam_TF_2D_func = scipy.interpolate.interp2d(beam_k_perp, beam_k_par, beam_TF_2D
 
 #Pixel window transfer function (from limited spectral resolution)
 N_freq = 10 #number of signal map realizations used
-freq_ps_low_1D = np.load('ps_low_res_1D_v4.npy')
-freq_ps_high_1D = np.load('ps_high_res_1D_v4.npy')
-freq_k_1D = np.load('k_arr_1D_v4.npy')[0]
+freq_ps_low_1D = np.load(location + 'ps_low_res_1D_v4.npy')
+freq_ps_high_1D = np.load(location + 'ps_high_res_1D_v4.npy')
+freq_k_1D = np.load(location + 'k_arr_1D_v4.npy')[0]
 
-freq_ps_low_2D = np.load('ps_low_res_v4.npy')
-freq_ps_high_2D = np.load('ps_high_res_v4.npy')
-freq_k_2D = np.load('k_arr_v4.npy')[0]
+freq_ps_low_2D = np.load(location + 'ps_low_res_v4.npy')
+freq_ps_high_2D = np.load(location + 'ps_high_res_v4.npy')
+freq_k_2D = np.load(location + 'k_arr_v4.npy')[0]
 
 freq_TF_1D = np.zeros_like(freq_ps_low_1D)
 freq_TF_2D = np.zeros_like(freq_ps_low_2D)
@@ -82,24 +83,24 @@ def read_pipeline_TF(filename, dim):
       return k_perp, k_par, TF_2D
 
 #mix of Liss and CES scans
-mix_k_1D, mix_TF_1D = read_pipeline_TF('TF_1d.h5', 1)
+mix_k_1D, mix_TF_1D = read_pipeline_TF(location + 'TF_1d.h5', 1)
 mix_TF_1D_func = scipy.interpolate.interp1d(mix_k_1D, mix_TF_1D) 
 
-mix_k_perp, mix_k_par, mix_TF_2D = read_pipeline_TF('TF_2d.h5', 2)
+mix_k_perp, mix_k_par, mix_TF_2D = read_pipeline_TF(location + 'TF_2d.h5', 2)
 mix_TF_2D_func = scipy.interpolate.interp2d(mix_k_perp, mix_k_par, mix_TF_2D)
 
 #Liss scans only
-liss_k_1D, liss_TF_1D = read_pipeline_TF('1D_TF_Liss.h5', 1)
+liss_k_1D, liss_TF_1D = read_pipeline_TF(location + '1D_TF_Liss.h5', 1)
 liss_TF_1D_func = scipy.interpolate.interp1d(liss_k_1D, liss_TF_1D) 
 
-liss_k_perp, liss_k_par, liss_TF_2D = read_pipeline_TF('2D_TF_Liss.h5', 2)
+liss_k_perp, liss_k_par, liss_TF_2D = read_pipeline_TF(location + '2D_TF_Liss.h5', 2)
 liss_TF_2D_func = scipy.interpolate.interp2d(liss_k_perp, liss_k_par, liss_TF_2D)
 
 #CES scans only
-CES_k_1D, CES_TF_1D = read_pipeline_TF('1D_TF_CES.h5', 1)
+CES_k_1D, CES_TF_1D = read_pipeline_TF(location + '1D_TF_CES.h5', 1)
 CES_TF_1D_func = scipy.interpolate.interp1d(CES_k_1D, CES_TF_1D) 
 
-CES_k_perp, CES_k_par, CES_TF_2D = read_pipeline_TF('2D_TF_CES.h5', 2)
+CES_k_perp, CES_k_par, CES_TF_2D = read_pipeline_TF(location + '2D_TF_CES.h5', 2)
 CES_TF_2D_func = scipy.interpolate.interp2d(CES_k_perp, CES_k_par, CES_TF_2D)
 
 
@@ -210,7 +211,5 @@ plot_TF_2D(CES_k_perp, CES_k_par, CES_TF_2D_func, r'$ T^{CES}(k_{\bot},k_{\paral
 plot_TF_2D(CES_k_perp, CES_k_par, TF_beam_freq_mix_2D, r'$ T^{total, mix}(k_{\bot},k_{\parallel})$', 'total_mix_TF_2D.png')
 plot_TF_2D(CES_k_perp, CES_k_par, TF_beam_freq_liss_2D, r'$ T^{total, Liss}(k_{\bot},k_{\parallel})$', 'total_liss_TF_2D.png')
 plot_TF_2D(CES_k_perp, CES_k_par, TF_beam_freq_CES_2D, r'$ T^{total, CES}(k_{\bot},k_{\parallel})$', 'total_CES_TF_2D.png')
-
-
 
 
