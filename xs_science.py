@@ -118,7 +118,7 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax, TF, scan):
          ax[ax_i].set_title('Lissajous scans', fontsize=18, pad=40)
       if cesc == '1':
          ax[ax_i].set_title('CES scans', fontsize=18, pad=40)  
-   ax[ax_i].text(.5,.9,field,horizontalalignment='center',transform=ax[ax_i].transAxes, fontsize=16)     
+   ax[ax_i].text(.5,.9,field,horizontalalignment='center',transform=ax[ax_i].transAxes, fontsize=18)     
    ax[ax_i].set_xlim(0.04,0.7)
    ax[ax_i].set_xscale('log')
    #ax[ax_i].set_title(field, fontsize=16)
