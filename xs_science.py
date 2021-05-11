@@ -125,6 +125,7 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax, TF, scan):
    ax[ax_i].grid()
    ax[ax_i].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=16)
    labnums = [0.05,0.1, 0.2, 0.5]
+   ax[ax_i].tick_params(labelsize=16)
    ax[ax_i].set_xticks(labnums)
    ax[ax_i].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    #plt.legend(bbox_to_anchor=(0, 0.61))
@@ -146,7 +147,7 @@ def plot_nulltest(cesc):
       scan = 'CES'
 
 
-   fig, ax = plt.subplots(nrows=3,ncols=1,figsize=(8,17))
+   fig, ax = plt.subplots(nrows=3,ncols=1,figsize=(9,17))
    
   
    l1,l2,l3,l4, l5, l6 = plot_sub_fig('CO2',jk_we_want,0,lim,cesc,ax, TF,scan)
