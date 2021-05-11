@@ -104,7 +104,7 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax, TF, scan):
 
 
    
-   ax[ax_i].set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
+   ax[ax_i].set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=20)
 
    if cesc == '1':
       ax[ax_i].set_ylim(-lim*6, lim*6)          
@@ -115,17 +115,17 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax, TF, scan):
       #ax[ax_i].xaxis.set_label_position('top')
       #ax[ax_i].xaxis.tick_top()
       if cesc == '0':
-         ax[ax_i].set_title('Lissajous scans', fontsize=18, pad=40)
+         ax[ax_i].set_title('Lissajous scans', fontsize=22, pad=40)
       if cesc == '1':
-         ax[ax_i].set_title('CES scans', fontsize=18, pad=40)  
+         ax[ax_i].set_title('CES scans', fontsize=22, pad=40)  
    ax[ax_i].text(.5,.9,field,horizontalalignment='center',transform=ax[ax_i].transAxes, fontsize=20)     
    ax[ax_i].set_xlim(0.04,0.7)
    ax[ax_i].set_xscale('log')
    #ax[ax_i].set_title(field, fontsize=16)
    ax[ax_i].grid()
-   ax[ax_i].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
+   ax[ax_i].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=20)
    labnums = [0.05,0.1, 0.2, 0.5]
-   ax[ax_i].tick_params(labelsize=18)
+   ax[ax_i].tick_params(labelsize=20)
    ax[ax_i].set_xticks(labnums)
    ax[ax_i].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    #plt.legend(bbox_to_anchor=(0, 0.61))
@@ -155,7 +155,7 @@ def plot_nulltest(cesc):
    l1,l2,l3,l4, l5, l6 = plot_sub_fig('CO6',jk_we_want,1,lim,cesc,ax, TF, scan)
   
    l1,l2,l3,l4, l5, l6 = plot_sub_fig('CO7',jk_we_want,2,lim,cesc,ax, TF, scan)
-   plt.figlegend((l1,l2,l3,l4, l5, l6), ('Winter/Summer split', 'Half-mission split', 'Odd/Even split', 'Day/Night split', 'Ambient temperature', 'Wind speed'),loc='upper center',bbox_to_anchor=(0.52,0.983), ncol=6, fontsize=18)
+   plt.figlegend((l1,l2,l3,l4, l5, l6), ('Winter/Summer', 'Half-mission', 'Odd/Even ObsID', 'Day/Night', 'Ambient temperature', 'Wind speed'),loc='upper center',bbox_to_anchor=(0.52,0.983), ncol=6, fontsize=22)
    plt.tight_layout()
    if cesc == '0':
       #plt.title('Lissajous scans', fontsize=16, loc='right')
