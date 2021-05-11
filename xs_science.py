@@ -103,8 +103,8 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax, TF, scan):
          l6 = ax[ax_i].errorbar(k[index]+k[index]*kt, k[index] * xs_mean[index] / TF(k[index]), k[index] * xs_sigma[index] / TF(k[index]), fmt='o', label=label_name, color=color_name)
 
 
-   if ax_i == 0:
-      ax[ax_i].set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
+   
+   ax[ax_i].set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
 
    if cesc == '1':
       ax[ax_i].set_ylim(-lim*6, lim*6)          
