@@ -115,9 +115,9 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax, TF, scan):
       #ax[ax_i].xaxis.set_label_position('top')
       #ax[ax_i].xaxis.tick_top()
       if cesc == '0':
-         ax[ax_i].set_title('Lissajous scans', fontsize=22, pad=40)
+         ax[ax_i].set_title('Lissajous scans', fontsize=22, pad=42)
       if cesc == '1':
-         ax[ax_i].set_title('CES scans', fontsize=22, pad=40)  
+         ax[ax_i].set_title('CES scans', fontsize=22, pad=42)  
    ax[ax_i].text(.5,.9,field,horizontalalignment='center',transform=ax[ax_i].transAxes, fontsize=20)     
    ax[ax_i].set_xlim(0.04,0.7)
    ax[ax_i].set_xscale('log')
@@ -155,7 +155,7 @@ def plot_nulltest(cesc):
    l1,l2,l3,l4, l5, l6 = plot_sub_fig('CO6',jk_we_want,1,lim,cesc,ax, TF, scan)
   
    l1,l2,l3,l4, l5, l6 = plot_sub_fig('CO7',jk_we_want,2,lim,cesc,ax, TF, scan)
-   plt.figlegend((l1,l2,l3,l4, l5, l6), ('Winter/Summer', 'Half-mission', 'Odd/Even ObsID', 'Day/Night', 'Ambient temperature', 'Wind speed'),loc='upper center',bbox_to_anchor=(0.52,0.985), ncol=6, fontsize=22)
+   plt.figlegend((l1,l2,l3,l4, l5, l6), ('Winter/Summer', 'Half-mission', 'Odd/Even ObsID', 'Day/Night', 'Ambient temperature', 'Wind speed'),loc='upper center',bbox_to_anchor=(0.52,0.987), ncol=6, fontsize=22)
    plt.tight_layout()
    if cesc == '0':
       #plt.title('Lissajous scans', fontsize=16, loc='right')
