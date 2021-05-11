@@ -104,7 +104,7 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax, TF, scan):
 
 
    if ax_i == 0:
-      ax[ax_i].set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=14)
+      ax[ax_i].set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
 
    if cesc == '1':
       ax[ax_i].set_ylim(-lim*6, lim*6)          
@@ -115,17 +115,17 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax, TF, scan):
       #ax[ax_i].xaxis.set_label_position('top')
       #ax[ax_i].xaxis.tick_top()
       if cesc == '0':
-         ax[ax_i].set_title('Lissajous scans', fontsize=16, pad=40)
+         ax[ax_i].set_title('Lissajous scans', fontsize=18, pad=40)
       if cesc == '1':
-         ax[ax_i].set_title('CES scans', fontsize=16, pad=40)  
+         ax[ax_i].set_title('CES scans', fontsize=18, pad=40)  
    ax[ax_i].text(.5,.9,field,horizontalalignment='center',transform=ax[ax_i].transAxes, fontsize=16)     
    ax[ax_i].set_xlim(0.04,0.7)
    ax[ax_i].set_xscale('log')
    #ax[ax_i].set_title(field, fontsize=16)
    ax[ax_i].grid()
-   ax[ax_i].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=16)
+   ax[ax_i].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
    labnums = [0.05,0.1, 0.2, 0.5]
-   ax[ax_i].tick_params(labelsize=16)
+   ax[ax_i].tick_params(labelsize=18)
    ax[ax_i].set_xticks(labnums)
    ax[ax_i].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    #plt.legend(bbox_to_anchor=(0, 0.61))
@@ -155,7 +155,7 @@ def plot_nulltest(cesc):
    l1,l2,l3,l4, l5, l6 = plot_sub_fig('CO6',jk_we_want,1,lim,cesc,ax, TF, scan)
   
    l1,l2,l3,l4, l5, l6 = plot_sub_fig('CO7',jk_we_want,2,lim,cesc,ax, TF, scan)
-   plt.figlegend((l1,l2,l3,l4, l5, l6), ('Winter/Summer split', 'Half-mission split', 'Odd/Even split', 'Day/Night split', 'Ambient temperature', 'Wind speed'),loc='upper center',bbox_to_anchor=(0.52,0.983), ncol=6, fontsize=16)
+   plt.figlegend((l1,l2,l3,l4, l5, l6), ('Winter/Summer split', 'Half-mission split', 'Odd/Even split', 'Day/Night split', 'Ambient temperature', 'Wind speed'),loc='upper center',bbox_to_anchor=(0.52,0.983), ncol=6, fontsize=18)
    plt.tight_layout()
    if cesc == '0':
       #plt.title('Lissajous scans', fontsize=16, loc='right')
@@ -168,102 +168,5 @@ def plot_nulltest(cesc):
 plot_nulltest('0')
 plot_nulltest('1')
 
-'''
-def plot_sub_fig2(field,jk_we_want,ax_i,lim,cesc,ax):
-   if field == 'CO2':
-      k, xs_mean, xs_sigma = read_h5_arrays('co2_map_null_1D_arrays.h5')
-      
-   if field == 'CO6':
-      k, xs_mean, xs_sigma = read_h5_arrays('co6_map_null_1D_arrays.h5')
-      
-   if field == 'CO7':
-      k, xs_mean, xs_sigma = read_h5_arrays('co7_map_null_1D_arrays.h5')
-     
-   ax[ax_i].plot(k[0], 0 * xs_mean[0], 'k', alpha=0.4)
-   
-   for index in jk_we_want:
-      if index == 0 or index == 1:
-         kt = -0.015
-         
-         label_name = 'ambt'
-         color_name = 'teal'
-         l1 = ax[ax_i].errorbar(k[index]+k[index]*kt, k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
-      if index == 2 or index == 3:
-         
-         kt = -0.005
-         label_name = 'wind'
-         color_name = 'indianred'
-         l2 = ax[ax_i].errorbar(k[index]+k[index]*kt, k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
-      if index == 6 or index == 7:
-         
-         kt = 0.005
-         label_name = 'rise'
-         color_name = 'purple'
-         l3 = ax[ax_i].errorbar(k[index]+k[index]*kt, k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
-      if index == 12 or index == 13:
-         kt = 0.015
-         label_name = 'fpol'
-         color_name = 'forestgreen'
-       
-         l4 = ax[ax_i].errorbar(k[index]+k[index]*kt, k[index] * xs_mean[index] / (transfer(k[index])*transfer_filt(k[index])), k[index] * xs_sigma[index] / (transfer(k[index])*transfer_filt(k[index])), fmt='o', label=label_name, color=color_name)
-   if ax_i == 0:
-      ax[ax_i].set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=14)
 
-   if cesc == '1':
-      ax[ax_i].set_ylim(-lim*6, lim*6)          
-   if cesc == '0':
-      ax[ax_i].set_ylim(-lim*6, lim*6)  
-   
-   if field == 'CO6':
-      #ax[ax_i].xaxis.set_label_position('top')
-      #ax[ax_i].xaxis.tick_top()
-      if cesc == '0':
-         ax[ax_i].set_title('Lissajous scans', fontsize=16, pad=40)
-      if cesc == '1':
-         ax[ax_i].set_title('CES scans', fontsize=16, pad=40)  
-   ax[ax_i].text(.5,.9,field,horizontalalignment='center',transform=ax[ax_i].transAxes, fontsize=16)     
-   ax[ax_i].set_xlim(0.04,0.7)
-   ax[ax_i].set_xscale('log')
-   #ax[ax_i].set_title(field, fontsize=16)
-   ax[ax_i].grid()
-   ax[ax_i].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=14)
-   labnums = [0.05,0.1, 0.2, 0.5]
-   ax[ax_i].set_xticks(labnums)
-   ax[ax_i].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
-   #plt.legend(bbox_to_anchor=(0, 0.61))
-   #ax[ax_i].legend(ncol=4)
-   return l1,l2,l3,l4
-
-def plot_nulltest2(cesc):
-   k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_null_1D_arrays.h5') 
-   xs_mean7 = xs_mean7[8]
-   k7 = k7[8]
-   lim = np.mean(np.abs(xs_mean7[4:-2] * k7[4:-2])) * 8
-   if cesc == '0':
-      jk_we_want = [0,2,6,12] #indices of jk we want to use: wint, half, odde, dayn
-   if cesc == '1':
-      jk_we_want = [1,3,7,13]
-
-
-   fig, ax = plt.subplots(nrows=1,ncols=3,figsize=(17,4))
-   
-  
-   l1,l2,l3,l4 = plot_sub_fig2('CO2',jk_we_want,0,lim,cesc,ax)
-  
-   l1,l2,l3,l4 = plot_sub_fig2('CO6',jk_we_want,1,lim,cesc,ax)
-  
-   l1,l2,l3,l4 = plot_sub_fig2('CO7',jk_we_want,2,lim,cesc,ax)
-   plt.figlegend((l1,l2,l3,l4), ('Ambient temp', 'Wind speed', 'Rise', 'Fpol'),loc='upper center',bbox_to_anchor=(0.52,0.9), ncol=4, fontsize=14)
-   plt.tight_layout()
-   if cesc == '0':
-      #plt.title('Lissajous scans', fontsize=16, loc='right')
-      plt.savefig('nulltests_3fields_liss.pdf', bbox_inches='tight')
-   if cesc == '1':
-      #plt.title('CES scans', fontsize=16, loc='right')
-      plt.savefig('nulltests_3fields_ces.pdf', bbox_inches='tight')
-   
-
-plot_nulltest2('0')
-plot_nulltest2('1')
-'''
 
