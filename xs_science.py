@@ -115,7 +115,8 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax, TF, scan):
       #ax[ax_i].xaxis.set_label_position('top')
       #ax[ax_i].xaxis.tick_top()
       if cesc == '0':
-         ax[ax_i].set_title('Lissajous scans', fontsize=22, pad=50)
+         ax[ax_i].set_title('Lissajous scans', fontsize=22, pad=50
+)
       if cesc == '1':
          ax[ax_i].set_title('CES scans', fontsize=22, pad=50)  
    ax[ax_i].text(.5,.9,field,horizontalalignment='center',transform=ax[ax_i].transAxes, fontsize=20)     
@@ -147,7 +148,7 @@ def plot_nulltest(cesc):
       scan = 'CES'
 
 
-   fig, ax = plt.subplots(nrows=3,ncols=1,figsize=(9.5,18))
+   fig, ax = plt.subplots(nrows=3,ncols=1,figsize=(9.5,20))
    
   
    l1,l2,l3,l4, l5, l6 = plot_sub_fig('CO2',jk_we_want,0,lim,cesc,ax, TF,scan)
