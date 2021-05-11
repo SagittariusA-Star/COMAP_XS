@@ -94,13 +94,13 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax, TF, scan):
          label_name = 'ambt'
          color_name = 'royalblue'
        
-         l4 = ax[ax_i].errorbar(k[index]+k[index]*kt, k[index] * xs_mean[index] / TF(k[index]), k[index] * xs_sigma[index] / TF(k[index]), fmt='o', label=label_name, color=color_name)
+         l5 = ax[ax_i].errorbar(k[index]+k[index]*kt, k[index] * xs_mean[index] / TF(k[index]), k[index] * xs_sigma[index] / TF(k[index]), fmt='o', label=label_name, color=color_name)
       if index == 2 or index == 3:
          kt = -0.02
          label_name = 'wind'
          color_name = 'coral'
        
-         l4 = ax[ax_i].errorbar(k[index]+k[index]*kt, k[index] * xs_mean[index] / TF(k[index]), k[index] * xs_sigma[index] / TF(k[index]), fmt='o', label=label_name, color=color_name)
+         l6 = ax[ax_i].errorbar(k[index]+k[index]*kt, k[index] * xs_mean[index] / TF(k[index]), k[index] * xs_sigma[index] / TF(k[index]), fmt='o', label=label_name, color=color_name)
 
 
    if ax_i == 0:
