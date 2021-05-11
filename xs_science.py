@@ -147,7 +147,7 @@ def plot_nulltest(cesc):
       scan = 'CES'
 
 
-   fig, ax = plt.subplots(nrows=3,ncols=1,figsize=(9.5,17))
+   fig, ax = plt.subplots(nrows=3,ncols=1,figsize=(9.5,17.5))
    
   
    l1,l2,l3,l4, l5, l6 = plot_sub_fig('CO2',jk_we_want,0,lim,cesc,ax, TF,scan)
