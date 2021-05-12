@@ -64,7 +64,7 @@ def xs_feed_feed_grid(map_file, figure_name):
               try:
                   filepath = path_to_xs %(i+1, j+1)
                   with h5py.File(filepath, mode="r") as my_file:
-                      #print ("finds file", i, j)
+                      print ("finds file", i, j)
                       xs[i, j] = np.array(my_file['xs'][:])
                       #print (xs[i,j])
                       rms_xs_std[i, j] = np.array(my_file['rms_xs_std'][:])
@@ -87,7 +87,7 @@ def xs_feed_feed_grid(map_file, figure_name):
                   if abs(chi2[i,j]) < 5.:
                      went_through_sigma_cut += 1
                      xs_sum += xs[i,j] / rms_xs_std[i,j] ** 2
-                     #print ("if test worked")
+                     print ("if test worked")
                      xs_div += 1 / rms_xs_std[i,j] ** 2
                      n_sum += 1
 
@@ -109,8 +109,8 @@ def xs_feed_feed_grid(map_file, figure_name):
       #print ("xs_div:", xs_div)
    return k, xs_sum / xs_div, 1. / np.sqrt(xs_div), field, ff_jk, split_names, split_numbers
 
-map_file = 'co2_map_elev_cesc_0.h5' 
-figure_name = 'grid2liss.png'
+map_file = 'co6_map_elev_cesc_0.h5' 
+figure_name = 'grid6liss.png'
 k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = xs_feed_feed_grid(map_file, figure_name)
 
 
