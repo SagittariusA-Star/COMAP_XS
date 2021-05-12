@@ -106,13 +106,28 @@ def xs_feed_feed_grid(map_file, figure_name):
       
       #plt.show()
       #print ("xs_div:", xs_div)
-   return k, xs_sum / xs_div, 1. / np.sqrt(xs_div), field, ff_jk, split_names, split_numbers
+   return k, xs_sum / xs_div, 1. / np.sqrt(xs_div), field, ff_jk, split_names, split_numbers, went_through_first_cut, went_through_sigma_cut
 
-map_file = 'co6_map_elev_cesc_0.h5' 
-figure_name = 'grid6liss.png'
-k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = xs_feed_feed_grid(map_file, figure_name)
+#map_file = 'co6_map_elev_cesc_0.h5' 
+#figure_name = 'grid6liss.png'
+#k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = xs_feed_feed_grid(map_file, figure_name)
 
+def check_sigma_cut(map_file):
+   k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers, went1, went2 = xs_feed_feed_grid(map_file)
+   print ('Mapfile:', map_file)
+   print ('Went through first cut:', went1)
+   print ('Went through 5 sigma cut:', went2)
+   print ('Difference:', went1-went2)
+   print ('---------------------------')
+  
+check_sigma_cut('co2_map_elev_cesc_1.h5')
+check_sigma_cut('co2_map_elev_cesc_0.h5')
 
+check_sigma_cut('co6_map_elev_cesc_1.h5')
+check_sigma_cut('co6_map_elev_cesc_0.h5')
+
+check_sigma_cut('co7_map_elev_cesc_1.h5')
+check_sigma_cut('co7_map_elev_cesc_0.h5')
 
 
 
