@@ -91,7 +91,7 @@ def xs_feed_feed_grid(map_file, figure_name):
                      xs_div += 1 / rms_xs_std[i,j] ** 2
                      n_sum += 1
 
-      tools.ensure_dir_exists('chi2_grids')
+      #tools.ensure_dir_exists('chi2_grids')
       #figure_name = 'chi2_grids/xs_grid_' + name_of_map + '_splits' + split1 + split2 + '.pdf'
       plt.figure()
       vmax = 15
