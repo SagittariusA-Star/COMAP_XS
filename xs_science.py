@@ -207,12 +207,12 @@ def xs_2D_plot_null(index_liss, index_ces, figure_name):
       
 
  
-      img4 = ax[1][0].imshow(xs_mean4/TF_ces_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      img4 = ax[1][0].imshow(xs_mean4/TF_CES_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img4, ax=ax[1][0],fraction=0.046, pad=0.13, orientation='horizontal')
   
-      img5 = ax[1][1].imshow(xs_mean5/TF_ces_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      img5 = ax[1][1].imshow(xs_mean5/TF_CES_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img5, ax=ax[1][1], fraction=0.046, pad=0.13, orientation='horizontal')
-      img6 = ax[1][2].imshow(xs_mean6/TF_ces_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      img6 = ax[1][2].imshow(xs_mean6/TF_CES_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img6, ax=ax[1][2], fraction=0.046, pad=0.13, orientation='horizontal').set_label(r'$\tilde{C}^{\mathrm{CES}}_{k_{\bot}, k_{\parallel}}$', size=18)
       
       
