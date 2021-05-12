@@ -166,8 +166,8 @@ def plot_nulltest(cesc):
       plt.savefig('nc.png', bbox_inches='tight')
    
 
-plot_nulltest('0')
-plot_nulltest('1')
+#plot_nulltest('0')
+#plot_nulltest('1')
 
 
 #now plot one of these in 2D
@@ -271,7 +271,36 @@ def xs_2D_plot_null(index_liss, index_ces, figure_name):
 
 #Main results  -  mean from FPXS
 
-def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mean6,xs_mean7, xs_sigma2,xs_sigma6,xs_sigma7, titlename):
+#def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mean6,xs_mean7, xs_sigma2,xs_sigma6,xs_sigma7, titlename):
+def xs_2D_plot(figure_name, index, scan_type):
+      fields = ['co2', 'co6', 'co7']
+      k_c2, xs_mean_c2, xs_sigma_c2, k_edges_perp_c2, k_edges_par_c2 = read_h5_arrays(fields[0] + '_map_signal_2D_arrays.h5', two_dim=True)
+      k_c6, xs_mean_c6, xs_sigma_c6, k_edges_perp_c6, k_edges_par_c6 = read_h5_arrays(fields[1] + '_map_signal_2D_arrays.h5', two_dim=True)
+      k_c7, xs_mean_c7, xs_sigma_c7, k_edges_perp_c7, k_edges_par_c7 = read_h5_arrays(fields[2] + '_map_signal_2D_arrays.h5', two_dim=True)
+      k = k_c2[0] #these are all the same
+      k_bin_edges_perp = k_edges_perp_c2[0] #these are all the same
+      k_bin_edges_par = k_edges_par_c2[0] #these are all the same
+      xs_mean2 = xs_mean_c2[index]   
+      xs_mean6 = xs_mean_c6[index]
+      xs_mean7 = xs_mean_c7[index]
+      xs_sigma2 = xs_sigma_c2[index]   
+      xs_sigma6 = xs_sigma_c6[index]
+      xs_sigma7 = xs_sigma_c7[index]
+      if scan_type == 'liss':
+         TF = TF_liss_2D
+         first_label = r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$], Liss'
+         second_label = r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)/\sigma_{\tilde{C}}$, Liss'
+      if scan_type == 'CES':
+         TF = TF_CES_2D
+         first_label = r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$], CES'
+         second_label = r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)/\sigma_{\tilde{C}}$, CES'
+
+
+      
+
+
+
+
       
       fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(15.5,8))
    
@@ -283,21 +312,21 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mea
       norm1 = mpl.colors.Normalize(vmin=-5, vmax=5) 
 
     
-      img1 = ax[0][0].imshow(xs_mean2/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])*pix_wind(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
-      fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.04)
+      img1 = ax[0][0].imshow(xs_mean2/TF(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.1, orientation='horizontal').set_label(first_label, size=18)
   
-      img2 = ax[0][1].imshow(xs_mean6/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])*pix_wind(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
-      fig.colorbar(img2, ax=ax[0][1], fraction=0.046, pad=0.04)
-      img3 = ax[0][2].imshow(xs_mean7/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])*pix_wind(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
-      fig.colorbar(img3, ax=ax[0][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=14)
-      #this said fig.colorbar(img2 before, was something wrong because of that?
+      img2 = ax[0][1].imshow(xs_mean6/TF(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img2, ax=ax[0][1], fraction=0.046, pad=0.1, orientation='horizontal').set_label(first_label, size=18)
+      img3 = ax[0][2].imshow(xs_mean7/TF(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img3, ax=ax[0][2], fraction=0.046, pad=0.1, orientation='horizontal').set_label(first_label, size=18)
+     
       img4 = ax[1][0].imshow(xs_mean2/xs_sigma2, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
-      fig.colorbar(img4, ax=ax[1][0],fraction=0.046, pad=0.04)
+      fig.colorbar(img4, ax=ax[1][0],fraction=0.046, pad=0.1, orientation='horizontal').set_label(second_label, size=18)
   
       img5 = ax[1][1].imshow(xs_mean6/xs_sigma6, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
-      fig.colorbar(img5, ax=ax[1][1], fraction=0.046, pad=0.04)
+      fig.colorbar(img5, ax=ax[1][1], fraction=0.046, pad=0.1, orientation='horizontal').set_label(second_label, size=18)
       img6 = ax[1][2].imshow(xs_mean7/xs_sigma7, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
-      fig.colorbar(img6, ax=ax[1][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)/\sigma_{\tilde{C}}$', size=14)
+      fig.colorbar(img6, ax=ax[1][2], fraction=0.046,pad=0.1, orientation='horizontal').set_label(second_label, size=18)
       
      
       ticks = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,0.1,
@@ -317,32 +346,33 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mea
       ticklist_y = log2lin(ticks, ybins)
       majorlist_y = log2lin(majorticks, ybins)
       
-      ax[0][0].set_title(r'CO2', fontsize=16)
-      ax[0][1].set_title(r'CO6', fontsize=16)
-      ax[0][2].set_title(r'CO7', fontsize=16)
+      ax[0][0].set_title(r'CO2', fontsize=20)
+      ax[0][1].set_title(r'CO6', fontsize=20)
+      ax[0][2].set_title(r'CO7', fontsize=20)
 
       for i in range(3):
          for j in range(2):
             ax[j][i].set_xticks(ticklist_x, minor=True)
             ax[j][i].set_xticks(majorlist_x, minor=False)
-            ax[j][i].set_xticklabels(majorlabels, minor=False, fontsize=12)
+            ax[j][i].set_xticklabels(majorlabels, minor=False, fontsize=16)
             ax[j][i].set_yticks(ticklist_y, minor=True)
             ax[j][i].set_yticks(majorlist_y, minor=False)
-            ax[j][i].set_yticklabels(majorlabels, minor=False, fontsize=12)
-            ax[j][i].tick_params(labelsize=12)
+            ax[j][i].set_yticklabels(majorlabels, minor=False, fontsize=16)
+            ax[j][i].tick_params(labelsize=16)
+            ax[j][i].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=18)
       
-      ax[1][0].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]',fontsize=14)
-      ax[0][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=14)
-      ax[1][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=14)
-      ax[1][1].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=14)
-      ax[1][2].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=14)
+      #ax[1][0].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]',fontsize=14)
+      ax[0][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=18)
+      ax[1][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=18)
+      #ax[1][1].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=14)
+      #ax[1][2].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=14)
       
       plt.tight_layout()
       plt.savefig(figure_name) 
 
 
-
-
+xs_2D_plot('liss_2d.png', 0, 'liss')
+xs_2D_plot('ces_2d.png', 1, 'CES')
 
 
 
