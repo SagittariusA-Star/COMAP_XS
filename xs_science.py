@@ -192,7 +192,7 @@ def xs_2D_plot_null(index_liss, index_ces, figure_name):
       xs_mean5 = xs_mean_c6[index_ces]
       xs_mean6 = xs_mean_c7[index_ces]
 
-      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,12))
+      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,16))
       #fig.tight_layout(h_pad=0.005, w_pad=1)
       fig.subplots_adjust(hspace=-0.5, wspace=0.0)
       #fig.suptitle(titlename, fontsize=16)
@@ -241,9 +241,9 @@ def xs_2D_plot_null(index_liss, index_ces, figure_name):
       ticklist_y = log2lin(ticks, ybins)
       majorlist_y = log2lin(majorticks, ybins)
       
-      ax[0][0].set_title('CO2', fontsize=18)
-      ax[0][1].set_title('CO6', fontsize=18)
-      ax[0][2].set_title('CO7', fontsize=18)
+      ax[0][0].set_title('CO2', fontsize=20)
+      ax[0][1].set_title('CO6', fontsize=20)
+      ax[0][2].set_title('CO7', fontsize=20)
 
       for i in range(3):
          for j in range(2):
