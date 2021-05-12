@@ -313,7 +313,7 @@ def xs_2D_plot(figure_name, index, scan_type):
 
     
       img1 = ax[0][0].imshow(xs_mean2/TF(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
-      fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.1, orientation='horizontal').set_label(first_label, size=18)
+      fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.1, orientation='horizontal', ticks=[-800000, -400000, 0, 400000, 800000]).set_label(first_label, size=18)
   
       img2 = ax[0][1].imshow(xs_mean6/TF(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img2, ax=ax[0][1], fraction=0.046, pad=0.1, orientation='horizontal').set_label(first_label, size=18)
