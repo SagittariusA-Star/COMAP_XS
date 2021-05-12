@@ -104,7 +104,7 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax, TF, scan):
 
 
    
-   ax[ax_i].set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=20)
+   ax[ax_i].set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=22)
 
    if cesc == '1':
       ax[ax_i].set_ylim(-lim*6, lim*6)          
@@ -119,14 +119,14 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax, TF, scan):
 )
       if cesc == '1':
          ax[ax_i].set_title('CES scans', fontsize=22, pad=50)  
-   ax[ax_i].text(.5,.9,field,horizontalalignment='center',transform=ax[ax_i].transAxes, fontsize=20)     
+   ax[ax_i].text(.5,.9,field,horizontalalignment='center',transform=ax[ax_i].transAxes, fontsize=22)     
    ax[ax_i].set_xlim(0.04,0.7)
    ax[ax_i].set_xscale('log')
    #ax[ax_i].set_title(field, fontsize=16)
    ax[ax_i].grid()
-   ax[ax_i].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=20)
+   ax[ax_i].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=22)
    labnums = [0.05,0.1, 0.2, 0.5]
-   ax[ax_i].tick_params(labelsize=20)
+   ax[ax_i].tick_params(labelsize=22)
    ax[ax_i].set_xticks(labnums)
    ax[ax_i].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    #plt.legend(bbox_to_anchor=(0, 0.61))
@@ -148,7 +148,7 @@ def plot_nulltest(cesc):
       scan = 'CES'
 
 
-   fig, ax = plt.subplots(nrows=3,ncols=1,figsize=(10.5,19))
+   fig, ax = plt.subplots(nrows=3,ncols=1,figsize=(11,19))
    
   
    l1,l2,l3,l4, l5, l6 = plot_sub_fig('CO2',jk_we_want,0,lim,cesc,ax, TF,scan)
@@ -156,7 +156,7 @@ def plot_nulltest(cesc):
    l1,l2,l3,l4, l5, l6 = plot_sub_fig('CO6',jk_we_want,1,lim,cesc,ax, TF, scan)
   
    l1,l2,l3,l4, l5, l6 = plot_sub_fig('CO7',jk_we_want,2,lim,cesc,ax, TF, scan)
-   plt.figlegend((l1,l2,l3,l4, l5, l6), ('Winter/Summer', 'Half-mission', 'Odd/Even ObsID', 'Day/Night', 'Ambient temperature', 'Wind speed'),loc='upper center',bbox_to_anchor=(0.52,0.987), ncol=6, fontsize=22)
+   plt.figlegend((l1,l2,l3,l4, l5, l6), ('Winter/Summer', 'Half-mission', 'Odd/Even ObsID', 'Day/Night', 'Ambient temperature', 'Wind speed'),loc='upper center',bbox_to_anchor=(0.52,0.987), ncol=6, fontsize=24)
    plt.tight_layout()
    if cesc == '0':
       #plt.title('Lissajous scans', fontsize=16, loc='right')
@@ -266,10 +266,79 @@ def xs_2D_plot_null(index_liss, index_ces, figure_name):
       plt.savefig(figure_name) 
 
 
-xs_2D_plot_null(14,15, 'dayn_2d.png') #dayn
+#xs_2D_plot_null(14,15, 'dayn_2d.png') #dayn
 
 
+#Main results  -  mean from FPXS
 
+def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean2,xs_mean6,xs_mean7, xs_sigma2,xs_sigma6,xs_sigma7, titlename):
+      
+      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(15.5,8))
+   
+      fig.subplots_adjust(hspace=-0.5, wspace=0.0)
+
+     
+     
+      norm = mpl.colors.Normalize(vmin=-800000, vmax=800000)  #here it was 800000
+      norm1 = mpl.colors.Normalize(vmin=-5, vmax=5) 
+
+    
+      img1 = ax[0][0].imshow(xs_mean2/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])*pix_wind(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.04)
+  
+      img2 = ax[0][1].imshow(xs_mean6/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])*pix_wind(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img2, ax=ax[0][1], fraction=0.046, pad=0.04)
+      img3 = ax[0][2].imshow(xs_mean7/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])*pix_wind(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img3, ax=ax[0][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=14)
+      #this said fig.colorbar(img2 before, was something wrong because of that?
+      img4 = ax[1][0].imshow(xs_mean2/xs_sigma2, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
+      fig.colorbar(img4, ax=ax[1][0],fraction=0.046, pad=0.04)
+  
+      img5 = ax[1][1].imshow(xs_mean6/xs_sigma6, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
+      fig.colorbar(img5, ax=ax[1][1], fraction=0.046, pad=0.04)
+      img6 = ax[1][2].imshow(xs_mean7/xs_sigma7, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
+      fig.colorbar(img6, ax=ax[1][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)/\sigma_{\tilde{C}}$', size=14)
+      
+     
+      ticks = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,0.1,
+              0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,1., 1.1, 1.2, 1.3]
+
+      majorticks = [ 0.03,0.1, 0.3,1]
+      majorlabels = [ '0.03','0.1', '0.3','1']
+
+      xbins = k_bin_edges_par
+
+
+      ticklist_x = log2lin(ticks[:-3], xbins)
+      majorlist_x = log2lin(majorticks, xbins)
+
+      ybins = k_bin_edges_perp
+
+      ticklist_y = log2lin(ticks, ybins)
+      majorlist_y = log2lin(majorticks, ybins)
+      
+      ax[0][0].set_title(r'CO2', fontsize=16)
+      ax[0][1].set_title(r'CO6', fontsize=16)
+      ax[0][2].set_title(r'CO7', fontsize=16)
+
+      for i in range(3):
+         for j in range(2):
+            ax[j][i].set_xticks(ticklist_x, minor=True)
+            ax[j][i].set_xticks(majorlist_x, minor=False)
+            ax[j][i].set_xticklabels(majorlabels, minor=False, fontsize=12)
+            ax[j][i].set_yticks(ticklist_y, minor=True)
+            ax[j][i].set_yticks(majorlist_y, minor=False)
+            ax[j][i].set_yticklabels(majorlabels, minor=False, fontsize=12)
+            ax[j][i].tick_params(labelsize=12)
+      
+      ax[1][0].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]',fontsize=14)
+      ax[0][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=14)
+      ax[1][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=14)
+      ax[1][1].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=14)
+      ax[1][2].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=14)
+      
+      plt.tight_layout()
+      plt.savefig(figure_name) 
 
 
 
