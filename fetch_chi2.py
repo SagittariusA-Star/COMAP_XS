@@ -106,12 +106,19 @@ def xs_feed_feed_grid(map_file):
       
       #plt.show()
       #print ("xs_div:", xs_div)
-   return k, xs_sum / xs_div, 1. / np.sqrt(xs_div), field, ff_jk, split_names, split_numbers, went_through_first_cut, went_through_sigma_cut
+   return chi2
 
-#map_file = 'co6_map_elev_cesc_0.h5' 
-#figure_name = 'grid6liss.png'
-#k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = xs_feed_feed_grid(map_file, figure_name)
+map_files = ['co2_map_elev_cesc_1.h5', 'co2_map_elev_cesc_0.h5', 'co6_map_elev_cesc_1.h5', 'co6_map_elev_cesc_0.h5', 'co7_map_elev_cesc_1.h5','co7_map_elev_cesc_0.h5']
+chi2_array = []
+for map_file in map_files:
+   chi2 = xs_feed_feed_grid(map_file)
+   chi2_array.append(chi2)
 
+chi2_array = np.array(chi2_array)
+np.save('chi2_array.npy', chi2_array)
+
+
+'''
 def check_sigma_cut(map_file):
    k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers, went1, went2 = xs_feed_feed_grid(map_file)
    print ('Mapfile:', map_file)
@@ -130,5 +137,42 @@ check_sigma_cut('co6_map_elev_cesc_0.h5')
 check_sigma_cut('co7_map_elev_cesc_1.h5')
 check_sigma_cut('co7_map_elev_cesc_0.h5')
 
+Mapfile: co2_map_elev_cesc_1.h5
+Went through first cut: 240
+Went through 5 sigma cut: 232
+Difference: 8
+Surviving fraction: 96.66666666666667
+---------------------------
+Mapfile: co2_map_elev_cesc_0.h5
+Went through first cut: 240
+Went through 5 sigma cut: 190
+Difference: 50
+Surviving fraction: 79.16666666666667
+---------------------------
+Mapfile: co6_map_elev_cesc_1.h5
+Went through first cut: 240
+Went through 5 sigma cut: 216
+Difference: 24
+Surviving fraction: 90.0
+---------------------------
+Mapfile: co6_map_elev_cesc_0.h5
+Went through first cut: 240
+Went through 5 sigma cut: 200
+Difference: 40
+Surviving fraction: 83.33333333333333
+---------------------------
+Mapfile: co7_map_elev_cesc_1.h5
+Went through first cut: 240
+Went through 5 sigma cut: 219
+Difference: 21
+Surviving fraction: 91.25
+---------------------------
+Mapfile: co7_map_elev_cesc_0.h5
+Went through first cut: 240
+Went through 5 sigma cut: 207
+Difference: 33
+Surviving fraction: 86.25
+---------------------------
+'''
 
 
