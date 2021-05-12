@@ -178,8 +178,8 @@ def xs_2D_plot_null(index_liss, index_ces, figure_name):
       k_c6, xs_mean_c6, xs_sigma_c6, k_edges_perp_c6, k_edges_par_c6 = read_h5_arrays(fields[1] + '_map_null_2D_arrays.h5', two_dim=True)
       k_c7, xs_mean_c7, xs_sigma_c7, k_edges_perp_c7, k_edges_par_c7 = read_h5_arrays(fields[2] + '_map_null_2D_arrays.h5', two_dim=True)
       k = k_c2[0] #these are all the same
-      k_edges_perp = k_edges_perp_c2[0] #these are all the same
-      k_edges_par = k_edges_par_c2[0] #these are all the same
+      k_bin_edges_perp = k_edges_perp_c2[0] #these are all the same
+      k_bin_edges_par = k_edges_par_c2[0] #these are all the same
       xs_mean1 = xs_mean_c2[index_liss]   
       xs_mean2 = xs_mean_c6[index_liss]
       xs_mean3 = xs_mean_c7[index_liss]
