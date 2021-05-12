@@ -192,7 +192,7 @@ def xs_2D_plot_null(index_liss, index_ces, figure_name):
       xs_mean5 = xs_mean_c6[index_ces]
       xs_mean6 = xs_mean_c7[index_ces]
 
-      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,11))
+      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,12))
       #fig.tight_layout(h_pad=0.005, w_pad=1)
       fig.subplots_adjust(hspace=-0.5, wspace=0.0)
       #fig.suptitle(titlename, fontsize=16)
@@ -218,7 +218,7 @@ def xs_2D_plot_null(index_liss, index_ces, figure_name):
       img5 = ax[1][1].imshow(xs_mean5/TF_CES_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       #fig.colorbar(img5, ax=ax[1][1], fraction=0.046, pad=0.13, orientation='horizontal')
       img6 = ax[1][2].imshow(xs_mean6/TF_CES_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
-      fig.colorbar(img6, ax=ax[1][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$], CES', size=18)
+      fig.colorbar(img6, ax=ax[1][2], fraction=0.046, pad=0.13, orientation='horizontal').set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$], CES', size=18)
       
      
      
