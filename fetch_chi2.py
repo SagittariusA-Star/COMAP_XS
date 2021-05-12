@@ -118,7 +118,7 @@ def check_sigma_cut(map_file):
    print ('Went through first cut:', went1)
    print ('Went through 5 sigma cut:', went2)
    print ('Difference:', went1-went2)
-   print ('Surviving fraction:', 100*(went1-went2)/went1)
+   print ('Surviving fraction:', 100-(100*(went1-went2)/went1))
    print ('---------------------------')
   
 check_sigma_cut('co2_map_elev_cesc_1.h5')
