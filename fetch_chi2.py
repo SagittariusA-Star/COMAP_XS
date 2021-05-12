@@ -103,7 +103,7 @@ def xs_feed_feed_grid(map_file):
       plt.ylabel('Feed of ' + ff_jk + ' ' + split2 + '-split')
       cbar = plt.colorbar()
       cbar.set_label(r'$|\chi^2| \times$ sign($\chi^3$)')
-      #plt.savefig(figure_name, bbox_inches='tight')
+      plt.savefig(figure_name, bbox_inches='tight')
       
       #plt.show()
       #print ("xs_div:", xs_div)
