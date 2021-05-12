@@ -192,7 +192,7 @@ def xs_2D_plot_null(index_liss, index_ces, figure_name):
       xs_mean5 = xs_mean_c6[index_ces]
       xs_mean6 = xs_mean_c7[index_ces]
 
-      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(14,12))
+      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,11))
       #fig.tight_layout(h_pad=0.005, w_pad=1)
       fig.subplots_adjust(hspace=-0.5, wspace=0.0)
       #fig.suptitle(titlename, fontsize=16)
@@ -203,22 +203,22 @@ def xs_2D_plot_null(index_liss, index_ces, figure_name):
 
     
       img1 = ax[0][0].imshow(xs_mean1/TF_liss_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
-      fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.13, orientation='horizontal')
+      #fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.13, orientation='horizontal')
   
       img2 = ax[0][1].imshow(xs_mean2/TF_liss_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
-      fig.colorbar(img2, ax=ax[0][1], fraction=0.046, pad=0.13, orientation='horizontal')
+      #fig.colorbar(img2, ax=ax[0][1], fraction=0.046, pad=0.13, orientation='horizontal')
       img3 = ax[0][2].imshow(xs_mean3/TF_liss_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
-      fig.colorbar(img3, ax=ax[0][2], fraction=0.046, pad=0.13, orientation='horizontal').set_label(r'$\tilde{C}^{\mathrm{Liss}}_{k_{\bot}, k_{\parallel}}$', size=18)
+      fig.colorbar(img3, ax=ax[0][2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}^{\mathrm{Liss}}_{k_{\bot}, k_{\parallel}}$', size=18)
       
 
  
       img4 = ax[1][0].imshow(xs_mean4/TF_CES_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
-      fig.colorbar(img4, ax=ax[1][0],fraction=0.046, pad=0.13, orientation='horizontal')
+      #fig.colorbar(img4, ax=ax[1][0],fraction=0.046, pad=0.13, orientation='horizontal')
   
       img5 = ax[1][1].imshow(xs_mean5/TF_CES_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
-      fig.colorbar(img5, ax=ax[1][1], fraction=0.046, pad=0.13, orientation='horizontal')
+      #fig.colorbar(img5, ax=ax[1][1], fraction=0.046, pad=0.13, orientation='horizontal')
       img6 = ax[1][2].imshow(xs_mean6/TF_CES_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
-      fig.colorbar(img6, ax=ax[1][2], fraction=0.046, pad=0.13, orientation='horizontal').set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$], CES', size=18)
+      fig.colorbar(img6, ax=ax[1][2], fraction=0.046, pad=0.04, orientation='horizontal').set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$], CES', size=18)
       
       
      
