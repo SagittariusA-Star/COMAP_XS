@@ -79,7 +79,7 @@ def xs_feed_feed_grid(map_file):
               chi3 = np.sum((xs[i,j] / rms_xs_std[i,j]) ** 3) #we need chi3 to take the sign into account - positive or negative correlation
 
               chi2[i, j] = np.sign(chi3) * abs((np.sum((xs[i,j] / rms_xs_std[i,j]) ** 2) - n_k) / np.sqrt(2 * n_k))      
-              print (abs(chi2[i,j]))
+              #print (abs(chi2[i,j]))
               #if abs(chi2[i,j]) < 5. and not np.isnan(chi2[i,j]) and i != j:  #if excess power is smaller than 5 sigma, chi2 is not nan, not on diagonal
               if not np.isnan(chi2[i,j]) and i != j:
                   went_through_first_cut += 1
