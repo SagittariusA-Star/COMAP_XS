@@ -170,4 +170,107 @@ plot_nulltest('0')
 plot_nulltest('1')
 
 
+#now plot one of these in 2D
+#def xs_2D_plot_null(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean1,xs_mean2,xs_mean3,xs_mean4, xs_mean5,xs_mean6, titlename, test1, test2, test3, field):
+def xs_2D_plot_null(index_liss, index_ces, figure_name):
+      fields = ['co2', 'co6', 'co7']
+      k_c2, xs_mean_c2, xs_sigma_c2, k_edges_perp_c2, k_edges_par_c2 = read_h5_arrays(fields[0] + '_map_null_2D_arrays.h5', two_dim=True)
+      k_c6, xs_mean_c6, xs_sigma_c6, k_edges_perp_c6, k_edges_par_c6 = read_h5_arrays(fields[1] + '_map_null_2D_arrays.h5', two_dim=True)
+      k_c7, xs_mean_c7, xs_sigma_c7, k_edges_perp_c7, k_edges_par_c7 = read_h5_arrays(fields[2] + '_map_null_2D_arrays.h5', two_dim=True)
+      k = k_c2[0] #these are all the same
+      k_edges_perp = k_edges_perp_c2[0] #these are all the same
+      k_edges_par = k_edges_par_c2[0] #these are all the same
+      xs_mean1 = xs_mean_c2[index_liss]   
+      xs_mean2 = xs_mean_c6[index_liss]
+      xs_mean3 = xs_mean_c7[index_liss]
+      xs_mean1 = xs_mean_c2[index_ces]   
+      xs_mean2 = xs_mean_c6[index_ces]
+      xs_mean3 = xs_mean_c7[index_ces]
+
+      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(14,12))
+      #fig.tight_layout(h_pad=0.005, w_pad=1)
+      fig.subplots_adjust(hspace=-0.5, wspace=0.0)
+      #fig.suptitle(titlename, fontsize=16)
+      #norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7), vmax=-1.3*np.amin(xs_mean7))  
+      #norm1 = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean7/xs_sigma7), vmax=-1.3*np.amin(xs_mean7/xs_sigma7)) 
+      norm = mpl.colors.Normalize(vmin=-3e6, vmax=3e6)  #here it was 800000
+      norm1 = mpl.colors.Normalize(vmin=-5, vmax=5) 
+
+    
+      img1 = ax[0][0].imshow(xs_mean1/TF_liss_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.13, orientation='horizontal')
+  
+      img2 = ax[0][1].imshow(xs_mean2/TF_liss_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img2, ax=ax[0][1], fraction=0.046, pad=0.13, orientation='horizontal')
+      img3 = ax[0][2].imshow(xs_mean3/TF_liss_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img3, ax=ax[0][2], fraction=0.046, pad=0.13, orientation='horizontal').set_label(r'$\tilde{C}^{\mathrm{Liss}}_{k_{\bot}, k_{\parallel}}$', size=18)
+      
+
+ 
+      img4 = ax[1][0].imshow(xs_mean4/TF_ces_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img4, ax=ax[1][0],fraction=0.046, pad=0.13, orientation='horizontal')
+  
+      img5 = ax[1][1].imshow(xs_mean5/TF_ces_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img5, ax=ax[1][1], fraction=0.046, pad=0.13, orientation='horizontal')
+      img6 = ax[1][2].imshow(xs_mean6/TF_ces_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
+      fig.colorbar(img6, ax=ax[1][2], fraction=0.046, pad=0.13, orientation='horizontal').set_label(r'$\tilde{C}^{\mathrm{CES}}_{k_{\bot}, k_{\parallel}}$', size=18)
+      
+      
+     
+      ticks = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,0.1,
+              0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,1., 1.1, 1.2, 1.3]
+
+      majorticks = [ 0.03,0.1, 0.3,1]
+      majorlabels = [ '0.03','0.1', '0.3','1']
+
+      xbins = k_bin_edges_par
+
+
+      ticklist_x = log2lin(ticks[:-3], xbins)
+      majorlist_x = log2lin(majorticks, xbins)
+
+      ybins = k_bin_edges_perp
+
+      ticklist_y = log2lin(ticks, ybins)
+      majorlist_y = log2lin(majorticks, ybins)
+      
+      ax[0][0].set_title('CO2', fontsize=18)
+      ax[0][1].set_title('CO6', fontsize=18)
+      ax[0][2].set_title('CO7', fontsize=18)
+
+      for i in range(3):
+         for j in range(2):
+            ax[j][i].set_xticks(ticklist_x, minor=True)
+            ax[j][i].set_xticks(majorlist_x, minor=False)
+            ax[j][i].set_xticklabels(majorlabels, minor=False, fontsize=16)
+            ax[j][i].set_yticks(ticklist_y, minor=True)
+            ax[j][i].set_yticks(majorlist_y, minor=False)
+            ax[j][i].set_yticklabels(majorlabels, minor=False, fontsize=16)
+            ax[j][i].tick_params(labelsize=16)
+      
+      ax[1][0].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]',fontsize=18)
+      ax[0][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=18)
+      ax[1][0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=18)
+      ax[1][1].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=18)
+      ax[1][2].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=18)
+      
+      plt.tight_layout()
+      plt.savefig(figure_name) 
+
+
+xs_2D_plot_null(14,15, 'dayn_2d.png') #dayn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
