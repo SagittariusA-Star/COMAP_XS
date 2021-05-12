@@ -91,7 +91,8 @@ def xs_feed_feed_grid(map_file):
                      n_sum += 1
 
       #tools.ensure_dir_exists('chi2_grids')
-      #figure_name = 'chi2_grids/xs_grid_' + name_of_map + '_splits' + split1 + split2 + '.pdf'
+      figure_name = 'xs_grid_' + name_of_map + '_splits' + split1 + split2 + '.png'
+      print (figure_name)
       plt.figure()
       vmax = 15
       plt.imshow(chi2, interpolation='none', vmin=-vmax, vmax=vmax, extent=(0.5, n_feed + 0.5, n_feed + 0.5, 0.5))
