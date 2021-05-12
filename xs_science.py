@@ -371,11 +371,93 @@ def xs_2D_plot(figure_name, index, scan_type):
       plt.savefig(figure_name) 
 
 
-xs_2D_plot('liss_2d.png', 0, 'liss')
-xs_2D_plot('ces_2d.png', 1, 'CES')
+#xs_2D_plot('liss_2d.png', 0, 'liss')
+#xs_2D_plot('ces_2d.png', 1, 'CES')
+
+def xs_1D_3fields(figure_name, scan_strategy, index):  
+   k2, xs_mean2, xs_sigma2 = read_h5_arrays('co2_map_signal_1D_arrays.h5')
+   k6, xs_mean6, xs_sigma6 = read_h5_arrays('co6_map_signal_1D_arrays.h5')
+   k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_signal_1D_arrays.h5')
+   k = k2[0] 
+   xs_mean2 = xs_mean2[index]
+   xs_mean6 = xs_mean6[index]
+   xs_mean7 = xs_mean7[index]
+   xs_sigma2 = xs_sigma2[index]
+   xs_sigma6 = xs_sigma6[index]
+   xs_sigma7 = xs_sigma7[index]
+
+
+   if scan_strategy == 'ces':
+      titlename = 'CES scans'
+      TF = TF_CES_1D
+   if scan_strategy == 'liss':
+      titlename = 'Lissajous scans'
+      TF = TF_liss_1D
+   
+   k_offset = k*0.025
+   k6 = k - k_offset
+   k7 = k + k_offset
+   k_combo = k + k_offset*2
+   lim = np.mean(np.abs(xs_mean2[4:-2] * k[4:-2])) * 8
+   fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(8,9))
+   #fig.set_figwidth(8)
+   
+  
+   ax[0].errorbar(k6, k * xs_mean6 / TF(k), k * xs_sigma6 / TF(k), fmt='o', label=r'CO6', color='teal', zorder=3)
+   ax[0].errorbar(k7, k * xs_mean7 / TF(k), k * xs_sigma7 / TF(k), fmt='o', label=r'CO7', color='purple', zorder=2)
+   ax[0].errorbar(k, k * xs_mean2 / TF(k), k * xs_sigma2 / TF(k), fmt='o', label=r'CO2', color='indianred', zorder=4)
+   #ax1.errorbar(k_combo, k * mean_combo / (transfer(k)*transfer_filt(k)), k * sigma_combo / (transfer(k)*transfer_filt(k)), fmt='o', label=r'combo', color='black', zorder=5)
+   #ax1.errorbar(k, k * xs_mean, k * xs_sigma, fmt='o', label=r'$k\tilde{C}_{data}(k)$')
+   ax[0].plot(k, 0 * xs_mean2, 'k', alpha=0.4, zorder=1)
+   #ax1.plot(k, k*PS_function.PS_f(k)/ transfer(k), label='k*PS of the input signal')
+   #ax1.plot(k, k*PS_function.PS_f(k), label='k*PS of the input signal')
+   #ax1.plot(k_th, k_th * ps_th_nobeam * 10, '--', label=r'$10\times kP_{Theory}(k)$', color='dodgerblue')
+   #ax1.plot(k_th, k_th * ps_copps_nobeam * 5, 'g--', label=r'$5 \times kP_{COPPS}$ (shot)')
+   ax[0].set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
+   if scan_strategy == 'ces':
+      ax[0].set_ylim(-lim*3, lim*3)              # ax1.set_ylim(0, 0.1)
+   if scan_strategy == 'liss':
+      ax[0].set_ylim(-lim, lim)              # ax1.set_ylim(0, 0.1)
+   ax[0].set_xlim(0.04,0.7)
+   ax[0].set_xscale('log')
+   #ax1.set_title(titlename, fontsize=16)
+   ax[0].grid()
+   #ax1.set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=14)
+   labnums = [0.05,0.1, 0.2, 0.5]
+   ax[0].set_xticks(labnums)
+   ax[0].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+   #plt.legend(bbox_to_anchor=(0, 0.61))
+   ax[0].legend(ncol=4, fontsize=18)
+   
+   
+   #ax2.plot(k, diff_mean / error, fmt='o', label=r'$\tilde{C}_{diff}(k)$', color='black')
+   
+   ax[1].errorbar(k6, xs_mean6 / xs_sigma6, xs_sigma6/xs_sigma6, fmt='o', label=r'CO6', color='teal', zorder=3)
+   ax[1].errorbar(k7, xs_mean7 / xs_sigma7, xs_sigma7/xs_sigma7, fmt='o', label=r'CO7', color='purple', zorder=2)
+   ax[1].errorbar(k, xs_mean2 / xs_sigma2, xs_sigma2/xs_sigma2, fmt='o', label=r'CO2', color='indianred', zorder=4)
+   #ax2.errorbar(k_combo, mean_combo / sigma_combo, sigma_combo/sigma_combo, fmt='o', label=r'combo', color='black', zorder=5)
+   #ax2.errorbar(k, sum_mean / error, error /error, fmt='o', label=r'$\tilde{C}_{sum}(k)$', color='mediumorchid')
+   ax[1].plot(k, 0 * xs_mean2, 'k', alpha=0.4, zorder=1)
+   #ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$')
+   ax[1].set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$', fontsize=18)
+   ax[1].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
+   ax[1].set_ylim(-5, 5)
+   ax[1].set_xlim(0.04,0.7)
+   ax[1].set_xscale('log')
+   ax[1].grid()
+   ax[1].legend(ncol=4, fontsize=18)
+   ax[1].set_xticks(labnums)
+   ax[1].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+   
+   plt.tight_layout()
+   #plt.legend()
+   plt.savefig(figure_name, bbox_inches='tight')
+   #plt.show()
 
 
 
+xs_1D_3fields('liss_1d.png', 'liss', 0)
+xs_1D_3fields('ces_1d.png', 'ces', 1)
 
 
 
