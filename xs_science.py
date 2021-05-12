@@ -427,7 +427,7 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
    ax[0].set_xticks(labnums)
    ax[0].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    #plt.legend(bbox_to_anchor=(0, 0.61))
-   ax[0].legend(ncol=4, fontsize=18, loc='upper center',bbox_to_anchor=(0.52,1.15))
+   ax[0].legend(ncol=4, fontsize=18, loc='upper center',bbox_to_anchor=(0.52,1.17))
    
    
    #ax2.plot(k, diff_mean / error, fmt='o', label=r'$\tilde{C}_{diff}(k)$', color='black')
@@ -445,7 +445,7 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
    ax[1].set_xlim(0.04,0.7)
    ax[1].set_xscale('log')
    ax[1].grid()
-   ax[1].legend(ncol=4, fontsize=18)
+   #ax[1].legend(ncol=4, fontsize=18)
    ax[1].set_xticks(labnums)
    ax[1].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    ax[1].tick_params(labelsize=18)
