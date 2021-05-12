@@ -14,10 +14,12 @@ from scipy.optimize import curve_fit
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
-
-
-
-
+def read_number_of_splits(mapfile, jk):
+   with h5py.File(mapfile, mode="r") as my_file:
+       my_map = np.array(my_file['/jackknives/map_' + jk])
+       sh = my_map.shape   
+       number_of_splits = sh[0]   
+   return number_of_splits
 
 def xs_feed_feed_grid(map_file, figure_name):
    went_through_first_cut = 0
