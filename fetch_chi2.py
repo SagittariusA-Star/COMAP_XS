@@ -21,7 +21,7 @@ def read_number_of_splits(mapfile, jk):
        number_of_splits = sh[0]   
    return number_of_splits
 
-def xs_feed_feed_grid(map_file, figure_name):
+def xs_feed_feed_grid(map_file):
    went_through_first_cut = 0
    went_through_sigma_cut = 0
    #n_sim = 100
@@ -102,7 +102,7 @@ def xs_feed_feed_grid(map_file, figure_name):
       plt.ylabel('Feed of ' + ff_jk + ' ' + split2 + '-split')
       cbar = plt.colorbar()
       cbar.set_label(r'$|\chi^2| \times$ sign($\chi^3$)')
-      plt.savefig(figure_name, bbox_inches='tight')
+      #plt.savefig(figure_name, bbox_inches='tight')
       
       #plt.show()
       #print ("xs_div:", xs_div)
