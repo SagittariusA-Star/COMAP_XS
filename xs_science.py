@@ -183,9 +183,9 @@ def xs_2D_plot_null(index_liss, index_ces, figure_name):
       xs_mean1 = xs_mean_c2[index_liss]   
       xs_mean2 = xs_mean_c6[index_liss]
       xs_mean3 = xs_mean_c7[index_liss]
-      xs_mean1 = xs_mean_c2[index_ces]   
-      xs_mean2 = xs_mean_c6[index_ces]
-      xs_mean3 = xs_mean_c7[index_ces]
+      xs_mean4 = xs_mean_c2[index_ces]   
+      xs_mean5 = xs_mean_c6[index_ces]
+      xs_mean6 = xs_mean_c7[index_ces]
 
       fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(14,12))
       #fig.tight_layout(h_pad=0.005, w_pad=1)
