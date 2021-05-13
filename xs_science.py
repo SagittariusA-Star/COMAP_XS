@@ -502,7 +502,7 @@ def plot_combined_and_model(figure_name):
    fig, ax = plt.subplots(nrows=1,ncols=1,figsize=(8,5))
    ax.errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'Combined CES', color='black', zorder=4)
    ax.plot(k_th, k_th * P_theory_old * 10, '--', label=r'$10\times kP_{Theory, old}(k)$', color='dodgerblue')
-   ax.plot(k, k * P_theory_new * 1e-16, '--', label=r'$10**{-16}\times kP_{Theory, new}(k)$', color='red')
+   ax.plot(k, k * P_theory_new * 1e-11, '--', label=r'$10^{-11}\times kP_{Theory, new}(k)$', color='red')
    #ax.plot(k, k * P_notsmooth * 10, '--', label=r'$10\times kP_{Theory,original}(k)$', color='green')
    #ax.set_ylim(-lim*3, lim*3) 
    #ax.set_ylim(-0.1*10**17, 0.25*10**17) 
