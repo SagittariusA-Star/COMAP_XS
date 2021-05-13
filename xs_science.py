@@ -506,10 +506,10 @@ def plot_combined_and_model(figure_name):
    lim = np.mean(np.abs(xs_data[4:-2] * k[4:-2])) * 8
    fig, ax = plt.subplots(nrows=1,ncols=1,figsize=(13,5))
    ax.errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'Combined CES', color='black', zorder=4)
-   ax.plot(k_th, k_th * P_theory_old * 5, '--', label=r'$5kP_{Theory, auto}(k)$', color='teal')
+   ax.plot(k_th, k_th * P_theory_old * 5, '--', label=r'$5kP_{Theory}(k)$', color='teal')
    #ax.plot(k_th, P_theory_old, '--', label=r'$\times P_{Theory, old}(k)$', color='dodgerblue')
-   ax.plot(k, k * P_theory_new  * 5, label=r'$5kP_{Theory, pseudo, smooth}(k)$', color='purple') #smoothed in z-direction
-   ax.plot(k, k * P_notsmooth  * 5, label=r'$5kP_{Theory, pseudo}(k)$', color='indianred') #not smoothed
+   ax.plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, smooth}(k)$', color='purple') #smoothed in z-direction
+   ax.plot(k, k * P_notsmooth  * 5, label=r'$5k\tilde{P}_{Theory}(k)$', color='coral') #not smoothed
    #ax.set_ylim(-lim*3, lim*3) 
    ax.set_ylim(-10000, 10000) 
    ax.plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
