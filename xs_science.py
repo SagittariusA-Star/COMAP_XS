@@ -648,7 +648,7 @@ def plot_estimates(figure_name):
    ax[0].errorbar(k[4:-3], k[4:-3] * xs_data[4:-3], k[4:-3] * sigma_data[4:-3], fmt='o', label=r'$k\tilde{C}(k)$, CO6 CES + CO7 CES + CO7 Liss', color='black', zorder=4)
    ax[0].plot(k, k*A1, label=r'$A_1k$', color='midnightblue')
    ax[0].fill_between(x=k, y1=k*A1-k*A1_error, y2=k*A1+k*A1_error, facecolor='lightsteelblue', edgecolor='lightsteelblue')
-   ax[0].plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
+   ax[0].plot(k, k * P_theory_new  * 10, label=r'$10k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
 
    #ax.set_ylim(-lim*3, lim*3) 
    ax[0].set_ylim(-40000, 30000) 
