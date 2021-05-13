@@ -508,13 +508,13 @@ def plot_combined_and_model(figure_name):
    ax.errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, combined CES', color='black', zorder=4)
    ax.plot(k_th, k_th * P_theory_old * 5, '--', label=r'$5kP_{Theory}(k)$', color='teal', zorder=3)
    #ax.plot(k_th, P_theory_old, '--', label=r'$\times P_{Theory, old}(k)$', color='dodgerblue')
-   ax.plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, z-smooth}(k)$', color='purple') #smoothed in z-direction
-   ax.plot(k, k * P_notsmooth  * 5, label=r'$5k\tilde{P}_{Theory}(k)$', color='coral') #not smoothed
+   ax.plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, smooth$_{\parallel}$}(k)$', color='purple') #smoothed in z-direction
+   ax.plot(k, k * P_notsmooth  * 5, label=r'$5k\tilde{P}_{Theory}(k)$', color='palevioletred') #not smoothed
    #ax.set_ylim(-lim*3, lim*3) 
    ax.set_ylim(-10000, 10000) 
    ax.plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
-   ax.set_ylabel(r'$[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
-   ax.legend(ncol=4, fontsize=17, loc='upper center',bbox_to_anchor=(0.52,1.2))
+   ax.set_ylabel(r'[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
+   ax.legend(ncol=4, fontsize=17, loc='upper center',bbox_to_anchor=(0.52,1.3))
    ax.set_xlim(0.04,0.7)
    ax.set_xscale('log')
    ax.set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
