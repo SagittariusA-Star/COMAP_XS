@@ -374,6 +374,35 @@ def xs_2D_plot(figure_name, index, scan_type):
 #xs_2D_plot('liss_2d.png', 0, 'liss')
 #xs_2D_plot('ces_2d.png', 1, 'CES')
 
+
+#combine all CES data
+def coadd_all_ces():
+   k2, xs_mean2, xs_sigma2 = read_h5_arrays('co2_map_signal_1D_arrays.h5')
+   k6, xs_mean6, xs_sigma6 = read_h5_arrays('co6_map_signal_1D_arrays.h5')
+   k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_signal_1D_arrays.h5')
+   k2, xs2, sigma2 = k2[1], xs_mean2[1], xs_sigma2[1] #take CES
+   k6, xs6, sigma6 = k6[1], xs_mean6[1], xs_sigma6[1] #take CES
+   k7, xs7, sigma7 = k7[1], xs_mean7[1], xs_sigma7[1] #take CES
+   xs_sigma_arr = np.array([sigma2, sigma6, sigma7])
+   xs_mean_arr = np.array([xs2,xs6,xs7])
+   k2 = np.array(k2)
+   no_k = len(k2)
+   mean_combined = np.zeros(no_k)
+   w_sum = np.zeros(no_k)
+   
+   for i in range(3): 
+      w = 1./ xs_sigma_arr[i]**2.
+      w_sum += w
+      mean_combined += w*xs_mean_arr[i]
+   mean_combined1 = mean_combined/w_sum
+   sigma_combined1 = w_sum**(-0.5)
+
+   mean_combined = mean_combined1/TF_CES_1D(k2)
+   sigma_combined = sigma_combined1/TF_CES_1D(k2)
+
+   return mean_combined1, sigma_combined1, k2
+
+
 def xs_1D_3fields(figure_name, scan_strategy, index):  
    k2, xs_mean2, xs_sigma2 = read_h5_arrays('co2_map_signal_1D_arrays.h5')
    k6, xs_mean6, xs_sigma6 = read_h5_arrays('co6_map_signal_1D_arrays.h5')
@@ -402,10 +431,11 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
    fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(8,9))
    #fig.set_figwidth(8)
    
-  
+   mean_combo, sigma_combo, k_combo = coadd_all_ces()
    ax[0].errorbar(k6, k * xs_mean6 / TF(k), k * xs_sigma6 / TF(k), fmt='o', label=r'CO6', color='teal', zorder=3)
    ax[0].errorbar(k7, k * xs_mean7 / TF(k), k * xs_sigma7 / TF(k), fmt='o', label=r'CO7', color='purple', zorder=2)
    ax[0].errorbar(k, k * xs_mean2 / TF(k), k * xs_sigma2 / TF(k), fmt='o', label=r'CO2', color='indianred', zorder=4)
+   ax[0].errorbar(k_combo, k_combo * mean_combo, k_combo * sigma_combo , fmt='o', label=r'combo', color='black', zorder=4)
    #ax1.errorbar(k_combo, k * mean_combo / (transfer(k)*transfer_filt(k)), k * sigma_combo / (transfer(k)*transfer_filt(k)), fmt='o', label=r'combo', color='black', zorder=5)
    #ax1.errorbar(k, k * xs_mean, k * xs_sigma, fmt='o', label=r'$k\tilde{C}_{data}(k)$')
    ax[0].plot(k, 0 * xs_mean2, 'k', alpha=0.4, zorder=1)
@@ -458,53 +488,28 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
 
 
 #xs_1D_3fields('liss_1d.png', 'liss', 0)
-#xs_1D_3fields('ces_1d.png', 'ces', 1)
+xs_1D_3fields('ces_1d.png', 'ces', 1)
 
  
  
-#combine all CES data
-def coadd_all_ces():
-   k2, xs_mean2, xs_sigma2 = read_h5_arrays('co2_map_signal_1D_arrays.h5')
-   k6, xs_mean6, xs_sigma6 = read_h5_arrays('co6_map_signal_1D_arrays.h5')
-   k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_signal_1D_arrays.h5')
-   k2, xs2, sigma2 = k2[1], xs_mean2[1], xs_sigma2[1] #take CES
-   k6, xs6, sigma6 = k6[1], xs_mean6[1], xs_sigma6[1] #take CES
-   k7, xs7, sigma7 = k7[1], xs_mean7[1], xs_sigma7[1] #take CES
-   xs_sigma_arr = np.array([sigma2, sigma6, sigma7])
-   xs_mean_arr = np.array([xs2,xs6,xs7])
-   k2 = np.array(k2)
-   no_k = len(k2)
-   mean_combined = np.zeros(no_k)
-   w_sum = np.zeros(no_k)
-   
-   for i in range(3): 
-      w = 1./ xs_sigma_arr[i]**2.
-      w_sum += w
-      mean_combined += w*xs_mean_arr[i]
-   mean_combined1 = mean_combined/w_sum
-   sigma_combined1 = w_sum**(-0.5)
 
-   mean_combined = mean_combined1/TF_CES_1D(k2)
-   sigma_combined = sigma_combined1/TF_CES_1D(k2)
-
-   return mean_combined1, sigma_combined1, k2
 
 def plot_combined_and_model(figure_name):
    xs_data, sigma_data, k = coadd_all_ces()
    P_theory_new = np.load('ps_theory_new_1D.npy')
-   P_theory_new = np.mean(P_theory_new, axis=0)
+   P_theory_new = 1e-12*np.mean(P_theory_new, axis=0) #this factor accounts for the fact that I wrongly converted units in the simulated maps
    k_th = np.load('k.npy')
    P_theory_old = np.load('psn.npy')
 
    beam_ps_original_1D = np.load('transfer_functions/' + 'ps_original_1D_newest.npy')
-   P_notsmooth = np.mean(beam_ps_original_1D, axis=0)
+   P_notsmooth = 1e-12*np.mean(beam_ps_original_1D, axis=0)
    lim = np.mean(np.abs(xs_data[4:-2] * k[4:-2])) * 8
    fig, ax = plt.subplots(nrows=1,ncols=1,figsize=(13,5))
    ax.errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'Combined CES', color='black', zorder=4)
    ax.plot(k_th, k_th * P_theory_old * 10, '--', label=r'$10\times kP_{Theory, old}(k)$', color='dodgerblue')
    #ax.plot(k_th, P_theory_old, '--', label=r'$\times P_{Theory, old}(k)$', color='dodgerblue')
-   ax.plot(k, k * P_theory_new * 1e-12 * 10, '--', label=r'$10\times kP_{Theory, new}(k)$', color='red') #smoothed in z-direction
-   ax.plot(k, k * P_notsmooth * 1e-12 * 10, '--', label=r'$10\times kP_{Theory,original}(k)$', color='green') #not smoothed
+   ax.plot(k, k * P_theory_new  * 10, '--', label=r'$10\times kP_{Theory, new}(k)$', color='red') #smoothed in z-direction
+   ax.plot(k, k * P_notsmooth  * 10, '--', label=r'$10\times kP_{Theory,original}(k)$', color='green') #not smoothed
    #ax.set_ylim(-lim*3, lim*3) 
    ax.set_ylim(-10000, 10000) 
    ax.plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
