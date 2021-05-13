@@ -496,7 +496,7 @@ def plot_combined_and_model(figure_name):
    k_th = np.load('k.npy')
    P_theory_old = np.load('psn.npy')
 
-   beam_ps_original_2D = np.load('transfer_functions/' + 'ps_original_newest.npy')
+   beam_ps_original_1D = np.load('transfer_functions/' + 'ps_original_1D_newest.npy')
    P_notsmooth = np.mean(beam_ps_original_1D, axis=0)
    lim = np.mean(np.abs(xs_data[4:-2] * k[4:-2])) * 8
    fig, ax = plt.subplots(nrows=1,ncols=1,figsize=(8,5))
