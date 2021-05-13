@@ -434,14 +434,14 @@ def coadd_ces_CO7liss():
    k6, xs6, sigma6 = k6[1], xs_mean6[1], xs_sigma6[1] #take CES
    k7, xs7, sigma7 = k7[1], xs_mean7[1], xs_sigma7[1] #take CES
    k_liss, xs_liss, sigma_liss = k7[0], xs_mean7[0], xs_sigma7[0] #take CO7 Liss
-   xs_sigma_arr = np.array([sigma2, sigma6, sigma7, sigma_liss])
-   xs_mean_arr = np.array([xs2,xs6,xs7, xs_liss])
+   xs_sigma_arr = np.array([ sigma6, sigma7, sigma_liss])
+   xs_mean_arr = np.array([xs6,xs7, xs_liss])
    k2 = np.array(k2)
    no_k = len(k2)
    mean_combined = np.zeros(no_k)
    w_sum = np.zeros(no_k)
    
-   for i in range(4): 
+   for i in range(3): 
       w = 1./ xs_sigma_arr[i]**2.
       w_sum += w
       mean_combined += w*xs_mean_arr[i]
