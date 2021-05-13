@@ -580,7 +580,7 @@ def plot_combined_and_model(figure_name):
    #ax2.errorbar(k, sum_mean / error, error /error, fmt='o', label=r'$\tilde{C}_{sum}(k)$', color='mediumorchid')
    ax[1].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    #ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$')
-   ax[1].set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$, CES', fontsize=18)
+   ax[1].set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$', fontsize=18)
    ax[1].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
    ax[1].set_ylim(-4, 4)
    ax[1].set_xlim(0.04,0.7)
@@ -696,5 +696,7 @@ plot_estimates('amplitudes.png')
 comment- excluding CES CO2 made the error bars larger, but at least we have an estimate that is positive (A2), CES CO2 makes whole data more negatively biased so we don't even enclose theory spectrum if we use it -- i tried CO7 Liss + CO7 CES, all CES, all CES + CO7 Liss, and finally CES CO6 + CES CO7 + Liss CO7 with the result: 
 A1: -33289.69798458218 15603.74388984571
 A2: -3.400396906629835 12.189530628784624
+
+--also I'm using only 6 k-bins in these estimates (the ones that are included on the amplitude plot)
 '''
 
