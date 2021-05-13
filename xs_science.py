@@ -502,15 +502,17 @@ def plot_combined_and_model(figure_name):
    fig, ax = plt.subplots(nrows=1,ncols=1,figsize=(13,5))
    ax.errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'Combined CES', color='black', zorder=4)
    ax.plot(k_th, k_th * P_theory_old * 10, '--', label=r'$10\times kP_{Theory, old}(k)$', color='dodgerblue')
-   ax.plot(k, k * P_theory_new * 1e-11, '--', label=r'$10^{-11}\times kP_{Theory, new}(k)$', color='red') #smoothed in z-direction
-   ax.plot(k, k * P_notsmooth * 1e-11, '--', label=r'$10^{-11}\times kP_{Theory,original}(k)$', color='green') #not smoothed
+   #ax.plot(k_th, P_theory_old, '--', label=r'$\times P_{Theory, old}(k)$', color='dodgerblue')
+   ax.plot(k, k * P_theory_new * 1e-12 * 10, '--', label=r'$10\times kP_{Theory, new}(k)$', color='red') #smoothed in z-direction
+   ax.plot(k, k * P_notsmooth * 1e-12 * 10, '--', label=r'$10\times kP_{Theory,original}(k)$', color='green') #not smoothed
    #ax.set_ylim(-lim*3, lim*3) 
-   ax.set_ylim(-10000, 12000) 
+   ax.set_ylim(-10000, 10000) 
    ax.plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    ax.set_ylabel(r'$k\tilde{C}(k) /k\tilde{P}(k) $ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
    ax.legend(ncol=4, fontsize=18, loc='upper center',bbox_to_anchor=(0.52,1.2))
    ax.set_xlim(0.04,0.7)
    ax.set_xscale('log')
+   ax.set_yscale('log')
    ax.grid()
    labnums = [0.05,0.1, 0.2, 0.5]
    ax.set_xticks(labnums)
@@ -520,8 +522,11 @@ def plot_combined_and_model(figure_name):
    plt.savefig(figure_name, bbox_inches='tight')
 
 
-plot_combined_and_model('combo_models3.png')
+plot_combined_and_model('theoryp.png')
 
+'''
+just a little update on that - so the new (green) one from unsmoothed maps has similar shape to the old one, which I would expect (the only difference is for small k, but this is because I'm using pseudo spectra). But there is a 10^-12 factor difference in magnitude. send combo_models3.png
+'''
 
 
 
