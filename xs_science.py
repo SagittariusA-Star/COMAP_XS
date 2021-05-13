@@ -17,6 +17,7 @@ from transfer_functions import TF_beam_freq_liss_1D as TF_liss_1D
 from transfer_functions import TF_beam_freq_CES_1D as TF_CES_1D
 from transfer_functions import TF_beam_freq_liss_2D as TF_liss_2D
 from transfer_functions import TF_beam_freq_CES_2D as TF_CES_2D
+from transfer_functions import TF_beam_freq_mix_1D as TF_mix_1D
 
 #the function to extract data from pre-computed mean pseudo cross spectra
 def read_h5_arrays(filename, two_dim=False):
@@ -400,7 +401,30 @@ def coadd_all_ces():
    mean_combined = mean_combined1/TF_CES_1D(k2)
    sigma_combined = sigma_combined1/TF_CES_1D(k2)
 
-   return mean_combined1, sigma_combined1, k2
+   return mean_combined, sigma_combined, k2
+
+def coadd_CO7():
+   k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_signal_1D_arrays.h5')
+   k_liss, xs_liss, sigma_liss = k7[0], xs_mean7[0], xs_sigma7[0] #take Liss
+   k_ces, xs_ces, sigma_ces = k7[1], xs_mean7[1], xs_sigma7[1] #take CES
+   xs_sigma_arr = np.array([sigma_liss, sigma_ces])
+   xs_mean_arr = np.array([xs_liss, xs_ces])
+   k_liss = np.array(k_liss)
+   no_k = len(k_liss)
+   mean_combined = np.zeros(no_k)
+   w_sum = np.zeros(no_k)
+   
+   for i in range(2): 
+      w = 1./ xs_sigma_arr[i]**2.
+      w_sum += w
+      mean_combined += w*xs_mean_arr[i]
+   mean_combined1 = mean_combined/w_sum
+   sigma_combined1 = w_sum**(-0.5)
+
+   mean_combined = mean_combined1/TF_mix_1D(k_liss)
+   sigma_combined = sigma_combined1/TF_mix_1D(k_liss)
+
+   return mean_combined, sigma_combined, k_liss
 
 
 def xs_1D_3fields(figure_name, scan_strategy, index):  
@@ -545,7 +569,7 @@ def plot_combined_and_model(figure_name):
    plt.savefig(figure_name, bbox_inches='tight')
 
 
-#plot_combined_and_model('theoryp3.png')
+plot_combined_and_model('theoryp3.png')
 
 def calculate_A1(k, xs_mean, xs_sigma):
    #mean and sigma already divded by TF
@@ -616,8 +640,8 @@ def plot_estimates(figure_name):
    #ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$')
    ax[1].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, CES', color='black', zorder=4)
    ax[1].plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
-   ax[1].plot(k, k*A2*P_theory_new_func(k), label=r'$A_2k\tilde{P}_{Theory, \parallel smooth}(k)$', color='teal')
-   ax[1].fill_between(x=k, y1=k*A2*P_theory_new_func(k)-k*A2_error*P_theory_new_func(k), y2=k*A2*P_theory_new_func(k)+k*A2_error*P_theory_new_func(k), facecolor='paleturquoise', edgecolor='paleturquoise')
+   ax[1].plot(k, k*A2*P_theory_new_func(k), label=r'$A_2k\tilde{P}_{Theory, \parallel smooth}(k)$', color='midnightblue')
+   ax[1].fill_between(x=k, y1=k*A2*P_theory_new_func(k)-k*A2_error*P_theory_new_func(k), y2=k*A2*P_theory_new_func(k)+k*A2_error*P_theory_new_func(k), facecolor='lightsteelblue', edgecolor='lightsteelblue')
 
    ax[1].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
    
