@@ -501,7 +501,7 @@ def plot_combined_and_model(figure_name):
    ax.errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'Combined CES', color='black', zorder=4)
    #ax.plot(k_th, k_th * P_theory_old * 10, '--', label=r'$10\times kP_{Theory, old}(k)$', color='dodgerblue')
    ax.plot(k, k * P_theory_new * 10, '--', label=r'$10\times kP_{Theory, new}(k)$', color='red')
-   ax.set_ylim(-lim*3, lim*3) 
+   #ax.set_ylim(-lim*3, lim*3) 
    ax.plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    ax.set_ylabel(r'$k\tilde{C}(k) /k\tilde{P}(k) $ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
    ax.legend(ncol=3, fontsize=18, loc='upper center',bbox_to_anchor=(0.52,1.17))
