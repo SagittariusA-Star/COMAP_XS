@@ -504,31 +504,48 @@ def plot_combined_and_model(figure_name):
    beam_ps_original_1D = np.load('transfer_functions/' + 'ps_original_1D_newest.npy')
    P_notsmooth = 1e-12*np.mean(beam_ps_original_1D, axis=0)
    lim = np.mean(np.abs(xs_data[4:-2] * k[4:-2])) * 8
-   fig, ax = plt.subplots(nrows=1,ncols=1,figsize=(13,5))
-   ax.errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, combined CES', color='black', zorder=4)
-   ax.plot(k_th, k_th * P_theory_old * 5, '--', label=r'$5kP_{Theory}(k)$', color='teal', zorder=3)
+   fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(15,10))
+   ax[0].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, combined CES', color='black', zorder=4)
+   ax[0].plot(k_th, k_th * P_theory_old * 5, '--', label=r'$5kP_{Theory}(k)$', color='teal', zorder=3)
    #ax.plot(k_th, P_theory_old, '--', label=r'$\times P_{Theory, old}(k)$', color='dodgerblue')
-   ax.plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, \parallel \: smooth}(k)$', color='purple') #smoothed in z-direction
-   ax.plot(k, k * P_notsmooth  * 5, label=r'$5k\tilde{P}_{Theory}(k)$', color='palevioletred') #not smoothed
+   ax[0].plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
+   ax[0].plot(k, k * P_notsmooth  * 5, label=r'$5k\tilde{P}_{Theory}(k)$', color='mediumvioletred') #not smoothed
    #ax.set_ylim(-lim*3, lim*3) 
-   ax.set_ylim(-10000, 10000) 
-   ax.plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
-   ax.set_ylabel(r'[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
-   ax.legend(ncol=4, fontsize=17, loc='upper center',bbox_to_anchor=(0.52,1.3))
-   ax.set_xlim(0.04,0.7)
-   ax.set_xscale('log')
-   ax.set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
+   ax[0].set_ylim(-10000, 10000) 
+   ax[0].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
+   ax[0].set_ylabel(r'[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
+   ax[0].legend(ncol=4, fontsize=17, loc='upper center',bbox_to_anchor=(0.52,1.3))
+   ax[0].set_xlim(0.04,0.7)
+   ax[0].set_xscale('log')
+   #ax[0].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
    #ax.set_yscale('log')
-   ax.grid()
+   ax[0].grid()
    labnums = [0.05,0.1, 0.2, 0.5]
-   ax.set_xticks(labnums)
-   ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
-   ax.tick_params(labelsize=16)
+   ax[0].set_xticks(labnums)
+   ax[0].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+   ax[0].tick_params(labelsize=16)
+   ax[1].errorbar(k, xs_data / sigma_data, sigma_data/sigma_data, fmt='o', color='black', zorder=4)
+   #ax2.errorbar(k_combo, mean_combo / sigma_combo, sigma_combo/sigma_combo, fmt='o', label=r'combo', color='black', zorder=5)
+   #ax2.errorbar(k, sum_mean / error, error /error, fmt='o', label=r'$\tilde{C}_{sum}(k)$', color='mediumorchid')
+   ax[1].plot(k, 0 * xs_mean2, 'k', alpha=0.4, zorder=1)
+   #ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$')
+   ax[1].set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$, combined CES', fontsize=18)
+   ax[1].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
+   ax[1].set_ylim(-5, 5)
+   ax[1].set_xlim(0.04,0.7)
+   ax[1].set_xscale('log')
+   ax[1].grid()
+   #ax[1].legend(ncol=4, fontsize=18)
+   ax[1].set_xticks(labnums)
+   ax[1].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+   ax[1].tick_params(labelsize=16)
+
+
    plt.tight_layout()
    plt.savefig(figure_name, bbox_inches='tight')
 
 
-plot_combined_and_model('theoryp2.png')
+plot_combined_and_model('theoryp3.png')
 
 
 
