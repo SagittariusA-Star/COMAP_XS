@@ -573,7 +573,7 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
 
 
 def plot_combined_and_model(figure_name):
-   xs_data, sigma_data, k = coadd_ces67_liss7()
+   xs_data, sigma_data, k = coadd_CO7()
    P_theory_new = np.load('ps_theory_new_1D.npy')
    P_theory_new = 1e-12*np.mean(P_theory_new, axis=0) #this factor accounts for the fact that I wrongly converted units in the simulated maps
    k_th = np.load('k.npy')
@@ -583,7 +583,7 @@ def plot_combined_and_model(figure_name):
    P_notsmooth = 1e-12*np.mean(beam_ps_original_1D, axis=0)
    lim = np.mean(np.abs(xs_data[4:-2] * k[4:-2])) * 8
    fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(10,8))
-   ax[0].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, CO6 CES + CO7 CES + CO7 Liss', color='black', zorder=4)
+   ax[0].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, CO7 CES + CO7 Liss', color='black', zorder=4)
    ax[0].plot(k_th, k_th * P_theory_old * 10, '--', label=r'$10kP_{Theory}(k)$', color='teal', zorder=3)
    #ax.plot(k_th, P_theory_old, '--', label=r'$\times P_{Theory, old}(k)$', color='dodgerblue')
    ax[0].plot(k, k * P_theory_new  * 10, label=r'$10k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
@@ -623,7 +623,7 @@ def plot_combined_and_model(figure_name):
    plt.savefig(figure_name, bbox_inches='tight')
 
 
-plot_combined_and_model('theory_ces67_liss7.png')
+plot_combined_and_model('theory_ces7_liss7.png')
 
 def calculate_A1(k, xs_mean, xs_sigma):
    #mean and sigma already divded by TF
@@ -655,7 +655,7 @@ def calculate_A2(k, xs_mean, xs_sigma, P_theory):
    return PS_estimate, PS_error
 
 def plot_estimates(figure_name):
-   xs_data, sigma_data, k = coadd_ces67_liss7()
+   xs_data, sigma_data, k = coadd_CO7()
    P_theory_new = np.load('ps_theory_new_1D.npy')
    P_theory_new = 1e-12*np.mean(P_theory_new, axis=0) #this factor accounts for the fact that I wrongly converted units in the simulated maps
    P_theory_new_func = scipy.interpolate.interp1d(k,P_theory_new)
@@ -672,7 +672,7 @@ def plot_estimates(figure_name):
   
    lim = np.mean(np.abs(xs_data[4:-2] * k[4:-2])) * 8
    fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(10,8))
-   ax[0].errorbar(k[4:-3], k[4:-3] * xs_data[4:-3], k[4:-3] * sigma_data[4:-3], fmt='o', label=r'$k\tilde{C}(k)$, CO6 CES + CO7 CES + CO7 Liss', color='black', zorder=4)
+   ax[0].errorbar(k[4:-3], k[4:-3] * xs_data[4:-3], k[4:-3] * sigma_data[4:-3], fmt='o', label=r'$k\tilde{C}(k)$, CO7 CES + CO7 Liss', color='black', zorder=4)
    ax[0].plot(k, k*A1, label=r'$A_1k$', color='midnightblue')
    ax[0].fill_between(x=k, y1=k*A1-k*A1_error, y2=k*A1+k*A1_error, facecolor='lightsteelblue', edgecolor='lightsteelblue')
    ax[0].plot(k, k * P_theory_new  * 10, label=r'$10k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
@@ -698,7 +698,7 @@ def plot_estimates(figure_name):
    #ax2.errorbar(k, sum_mean / error, error /error, fmt='o', label=r'$\tilde{C}_{sum}(k)$', color='mediumorchid')
    ax[1].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    #ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$')
-   ax[1].errorbar(k[4:-3], k[4:-3] * xs_data[4:-3], k[4:-3] * sigma_data[4:-3], fmt='o', label=r'$k\tilde{C}(k)$, CO6 CES + CO7 CES + CO7 Liss', color='black', zorder=4)
+   ax[1].errorbar(k[4:-3], k[4:-3] * xs_data[4:-3], k[4:-3] * sigma_data[4:-3], fmt='o', label=r'$k\tilde{C}(k)$, CO7 CES + CO7 Liss', color='black', zorder=4)
    ax[1].plot(k, k * P_theory_new  * 10, label=r'$10k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
    ax[1].plot(k, k*A2*P_theory_new_func(k), label=r'$A_2k\tilde{P}_{Theory, \parallel smooth}(k)$', color='midnightblue')
    ax[1].fill_between(x=k, y1=k*A2*P_theory_new_func(k)-k*A2_error*P_theory_new_func(k), y2=k*A2*P_theory_new_func(k)+k*A2_error*P_theory_new_func(k), facecolor='lightsteelblue', edgecolor='lightsteelblue')
@@ -717,7 +717,7 @@ def plot_estimates(figure_name):
    plt.tight_layout()
    plt.savefig(figure_name, bbox_inches='tight')
 
-plot_estimates('fits_ces67_liss7.png')
+plot_estimates('fits_ces7_liss7.png')
 
 '''
 comment- excluding CES CO2 made the error bars larger, but at least we have an estimate that is positive (A2), CES CO2 makes whole data more negatively biased so we don't even enclose theory spectrum if we use it -- i tried CO7 Liss + CO7 CES, all CES, all CES + CO7 Liss, and finally CES CO6 + CES CO7 + Liss CO7 with the result: 
@@ -725,5 +725,12 @@ A1: -33289.69798458218 15603.74388984571
 A2: -3.400396906629835 12.189530628784624
 
 --also I'm using only 6 k-bins in these estimates (the ones that are included on the amplitude plot)
+RESULTS:
+theory_ces67_liss7.png, fits_ces67_liss7.png
+A1: -33289.69798458218 15603.74388984571
+A2: -3.400396906629835 12.189530628784624
+
+
+
 '''
 
