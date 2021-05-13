@@ -487,13 +487,12 @@ def coadd_all_ces():
    mean_combined = mean_combined1/TF_CES_1D(k2)
    sigma_combined = sigma_combined1/TF_CES_1D(k2)
 
-   return mean_combined1, sigma_combined1
+   return mean_combined1, sigma_combined1, k2
 
 def plot_combined_and_model(figure_name):
-   xs_data, sigma_data = coadd_all_ces()
+   xs_data, sigma_data, k = coadd_all_ces()
    P_theory_new = np.load('ps_theory_new_1D.npy')
    P_theory_new = np.mean(P_theory_new, axis=0)
-   k = np.load('k_arr_theory_1D.npy')[0]
    k_th = np.load('k.npy')
    P_theory_old = np.load('psn.npy')
 
