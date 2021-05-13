@@ -508,7 +508,7 @@ def plot_combined_and_model(figure_name):
    ax.set_ylim(-10000, 12000) 
    ax.plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    ax.set_ylabel(r'$k\tilde{C}(k) /k\tilde{P}(k) $ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
-   ax.legend(ncol=3, fontsize=18, loc='upper center',bbox_to_anchor=(0.52,1.2))
+   ax.legend(ncol=4, fontsize=18, loc='upper center',bbox_to_anchor=(0.52,1.2))
    ax.set_xlim(0.04,0.7)
    ax.set_xscale('log')
    ax.grid()
