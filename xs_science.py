@@ -512,7 +512,7 @@ def plot_combined_and_model(figure_name):
    ax.legend(ncol=4, fontsize=18, loc='upper center',bbox_to_anchor=(0.52,1.2))
    ax.set_xlim(0.04,0.7)
    ax.set_xscale('log')
-   ax.set_yscale('log')
+   #ax.set_yscale('log')
    ax.grid()
    labnums = [0.05,0.1, 0.2, 0.5]
    ax.set_xticks(labnums)
