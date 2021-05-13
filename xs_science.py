@@ -431,11 +431,11 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
    fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(8,9))
    #fig.set_figwidth(8)
    
-   mean_combo, sigma_combo, k_combo = coadd_all_ces()
+   #mean_combo, sigma_combo, k_combo = coadd_all_ces()
    ax[0].errorbar(k6, k * xs_mean6 / TF(k), k * xs_sigma6 / TF(k), fmt='o', label=r'CO6', color='teal', zorder=3)
    ax[0].errorbar(k7, k * xs_mean7 / TF(k), k * xs_sigma7 / TF(k), fmt='o', label=r'CO7', color='purple', zorder=2)
    ax[0].errorbar(k, k * xs_mean2 / TF(k), k * xs_sigma2 / TF(k), fmt='o', label=r'CO2', color='indianred', zorder=4)
-   ax[0].errorbar(k_combo, k_combo * mean_combo, k_combo * sigma_combo , fmt='o', label=r'combo', color='black', zorder=4)
+   #ax[0].errorbar(k_combo, k_combo * mean_combo, k_combo * sigma_combo , fmt='o', label=r'combo', color='black', zorder=4)
    #ax1.errorbar(k_combo, k * mean_combo / (transfer(k)*transfer_filt(k)), k * sigma_combo / (transfer(k)*transfer_filt(k)), fmt='o', label=r'combo', color='black', zorder=5)
    #ax1.errorbar(k, k * xs_mean, k * xs_sigma, fmt='o', label=r'$k\tilde{C}_{data}(k)$')
    ax[0].plot(k, 0 * xs_mean2, 'k', alpha=0.4, zorder=1)
@@ -488,7 +488,7 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
 
 
 #xs_1D_3fields('liss_1d.png', 'liss', 0)
-xs_1D_3fields('ces_1d.png', 'ces', 1)
+#xs_1D_3fields('ces_1d.png', 'ces', 1)
 
  
  
@@ -506,17 +506,18 @@ def plot_combined_and_model(figure_name):
    lim = np.mean(np.abs(xs_data[4:-2] * k[4:-2])) * 8
    fig, ax = plt.subplots(nrows=1,ncols=1,figsize=(13,5))
    ax.errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'Combined CES', color='black', zorder=4)
-   ax.plot(k_th, k_th * P_theory_old * 10, '--', label=r'$10\times kP_{Theory, old}(k)$', color='dodgerblue')
+   ax.plot(k_th, k_th * P_theory_old * 5, '--', label=r'$5kP_{Theory, auto}(k)$', color='teal')
    #ax.plot(k_th, P_theory_old, '--', label=r'$\times P_{Theory, old}(k)$', color='dodgerblue')
-   ax.plot(k, k * P_theory_new  * 10, '--', label=r'$10\times kP_{Theory, new}(k)$', color='red') #smoothed in z-direction
-   ax.plot(k, k * P_notsmooth  * 10, '--', label=r'$10\times kP_{Theory,original}(k)$', color='green') #not smoothed
+   ax.plot(k, k * P_theory_new  * 5, label=r'$5kP_{Theory, pseudo, smooth}(k)$', color='purple') #smoothed in z-direction
+   ax.plot(k, k * P_notsmooth  * 5, label=r'$5kP_{Theory, pseudo}(k)$', color='indianred') #not smoothed
    #ax.set_ylim(-lim*3, lim*3) 
    ax.set_ylim(-10000, 10000) 
    ax.plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
-   ax.set_ylabel(r'$k\tilde{C}(k) /k\tilde{P}(k) $ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
+   ax.set_ylabel(r'$k\tilde{C}(k) \: /  \: k\tilde{P}(k) $ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
    ax.legend(ncol=4, fontsize=18, loc='upper center',bbox_to_anchor=(0.52,1.2))
    ax.set_xlim(0.04,0.7)
    ax.set_xscale('log')
+   ax.set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
    #ax.set_yscale('log')
    ax.grid()
    labnums = [0.05,0.1, 0.2, 0.5]
@@ -527,11 +528,8 @@ def plot_combined_and_model(figure_name):
    plt.savefig(figure_name, bbox_inches='tight')
 
 
-plot_combined_and_model('theoryp.png')
+plot_combined_and_model('theoryp2.png')
 
-'''
-just a little update on that - so the new (green) one from unsmoothed maps has similar shape to the old one, which I would expect (the only difference is for small k, but this is because I'm using pseudo spectra). But there is a 10^-12 factor difference in magnitude. send combo_models3.png
-'''
 
 
 
