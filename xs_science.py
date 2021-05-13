@@ -527,7 +527,7 @@ def plot_combined_and_model(figure_name):
    ax[1].errorbar(k, xs_data / sigma_data, sigma_data/sigma_data, fmt='o', color='black', zorder=4)
    #ax2.errorbar(k_combo, mean_combo / sigma_combo, sigma_combo/sigma_combo, fmt='o', label=r'combo', color='black', zorder=5)
    #ax2.errorbar(k, sum_mean / error, error /error, fmt='o', label=r'$\tilde{C}_{sum}(k)$', color='mediumorchid')
-   ax[1].plot(k, 0 * xs_mean2, 'k', alpha=0.4, zorder=1)
+   ax[1].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    #ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$')
    ax[1].set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$, combined CES', fontsize=18)
    ax[1].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
