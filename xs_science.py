@@ -457,10 +457,68 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
 
 
 
-xs_1D_3fields('liss_1d.png', 'liss', 0)
-xs_1D_3fields('ces_1d.png', 'ces', 1)
+#xs_1D_3fields('liss_1d.png', 'liss', 0)
+#xs_1D_3fields('ces_1d.png', 'ces', 1)
+
+ 
+ 
+#combine all CES data
+def coadd_all_ces():
+   k2, xs_mean2, xs_sigma2 = read_h5_arrays('co2_map_signal_1D_arrays.h5')
+   k6, xs_mean6, xs_sigma6 = read_h5_arrays('co6_map_signal_1D_arrays.h5')
+   k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_signal_1D_arrays.h5')
+   k2, xs2, sigma2 = k2[1], xs_mean2[1], xs_sigma2[1] #take CES
+   k6, xs6, sigma6 = k6[1], xs_mean6[1], xs_sigma6[1] #take CES
+   k7, xs7, sigma7 = k7[1], xs_mean7[1], xs_sigma7[1] #take CES
+   xs_sigma_arr = np.array([sigma2, sigma6, sigma7])
+   xs_mean_arr = np.array([xs2,xs6,xs7])
+   k2 = np.array(k2)
+   no_k = len(k2)
+   mean_combined = np.zeros(no_k)
+   w_sum = np.zeros(no_k)
+   
+   for i in range(3): 
+      w = 1./ xs_sigma_arr[i]**2.
+      w_sum += w
+      mean_combined += w*xs_mean_arr[i]
+   mean_combined1 = mean_combined/w_sum
+   sigma_combined1 = w_sum**(-0.5)
+
+   mean_combined = mean_combined1/TF_CES_1D(k2)
+   sigma_combined = sigma_combined1/TF_CES_1D(k2)
+
+   return mean_combined1, sigma_combined1
+
+def plot_combined_and_model(figure_name):
+   xs_data, sigma_data = coadd_all_ces()
+   P_theory_new = np.load('ps_theory_new_1D.npy')
+   P_theory_new = np.mean(P_theory_new, axis=0)
+   k = np.load('k_arr_theory_1D.npy')[0]
+   k_th = np.load('k.npy')
+   P_theory_old = np.load('psn.npy')
+
+   lim = np.mean(np.abs(xs_data[4:-2] * k[4:-2])) * 8
+   fig, ax = plt.subplots(nrows=1,ncols=1,figsize=(8,5))
+   ax[0].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'Combined CES', color='black', zorder=4)
+   ax[0].plot(k_th, k_th * P_theory_old * 10, '--', label=r'$10\times kP_{Theory, old}(k)$', color='dodgerblue')
+   ax[0].plot(k, k * P_theory_new * 10, '--', label=r'$10\times kP_{Theory, new}(k)$', color='red')
+   ax[0].set_ylim(-lim*3, lim*3) 
+   ax[0].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
+   ax[0].set_ylabel(r'$k\tilde{C}(k) /k\tilde{P}(k) $ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
+   ax[0].legend(ncol=3, fontsize=18, loc='upper center',bbox_to_anchor=(0.52,1.17))
+   ax[0].set_xlim(0.04,0.7)
+   ax[0].set_xscale('log')
+   ax[0].grid()
+   labnums = [0.05,0.1, 0.2, 0.5]
+   ax[0].set_xticks(labnums)
+   ax[0].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+   ax[0].tick_params(labelsize=16)
+   plt.tight_layout()
+   plt.savefig(figure_name, bbox_inches='tight')
 
 
+plot_combined_and_model('combo_models.png')
 
+  
 
 
