@@ -508,7 +508,7 @@ def plot_combined_and_model(figure_name):
    ax.errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, combined CES', color='black', zorder=4)
    ax.plot(k_th, k_th * P_theory_old * 5, '--', label=r'$5kP_{Theory}(k)$', color='teal', zorder=3)
    #ax.plot(k_th, P_theory_old, '--', label=r'$\times P_{Theory, old}(k)$', color='dodgerblue')
-   ax.plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, smooth${}_{\parallel}$}(k)$', color='purple') #smoothed in z-direction
+   ax.plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, \parallel \: smooth}(k)$', color='purple') #smoothed in z-direction
    ax.plot(k, k * P_notsmooth  * 5, label=r'$5k\tilde{P}_{Theory}(k)$', color='palevioletred') #not smoothed
    #ax.set_ylim(-lim*3, lim*3) 
    ax.set_ylim(-10000, 10000) 
