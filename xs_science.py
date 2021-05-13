@@ -545,8 +545,93 @@ def plot_combined_and_model(figure_name):
    plt.savefig(figure_name, bbox_inches='tight')
 
 
-plot_combined_and_model('theoryp3.png')
+#plot_combined_and_model('theoryp3.png')
+
+def calculate_A1(k, xs_mean, xs_sigma):
+   #mean and sigma already divded by TF
+   PS_estimate = 0
+   w_sum = 0
+   no_of_k = len(k)
+   for i in range(4,no_of_k-3): #we exclude 4 first points and 3 last points, previously excluded 2 first
+      w = 1./ xs_sigma[i]**2.
+      w_sum += w
+      PS_estimate += w*xs_mean[i]
+   PS_estimate = PS_estimate/w_sum
+   PS_error = w_sum**(-0.5)
+   return PS_estimate, PS_error
+
+def calculate_A2(k, xs_mean, xs_sigma, P_theory):
+   PS_estimate = 0
+   w_sum = 0
+   no_of_k = len(k)
+   #P_theory = scipy.interpolate.interp1d(k_th,ps_th_nobeam)
+   xs_mean = xs_mean/P_theory(k)
+   xs_sigma = xs_sigma/P_theory(k)
+   for i in range(4,no_of_k-3): #we exclude 4 first points and 3 last points, previously excluded 2 first
+      w = 1./ xs_sigma[i]**2.
+      w_sum += w
+      PS_estimate += w*xs_mean[i]
+   PS_estimate = PS_estimate/w_sum
+   PS_error = w_sum**(-0.5)
+   return PS_estimate, PS_error
+
+def plot_estimates(figure_name):
+   xs_data, sigma_data, k = coadd_all_ces()
+   P_theory_new = np.load('ps_theory_new_1D.npy')
+   P_theory_new = 1e-12*np.mean(P_theory_new, axis=0) #this factor accounts for the fact that I wrongly converted units in the simulated maps
+   P_theory_new_func = scipy.interpolate.interp1d(k,P_theory_new)
+   
+   A1, A1_error = calculate_A1(k, xs_data, sigma_data)
+   A2, A2_error = calculate_A2(k, xs_data, sigma_data, P_theory_new_func)
+   print ('A1:', A1, A1_error)
+   print ('A2:', A2, A2_error)
+  
+   lim = np.mean(np.abs(xs_data[4:-2] * k[4:-2])) * 8
+   fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(10,6))
+   ax[0].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, CES', color='black', zorder=4)
+   ax[0].plot(k, k*A1, label=r'$A_1k$', color='teal')
+   ax[0].fill_between(x=k, y1=k*A1-k*A1_error, y2=k*A1+k*A1_error, facecolor='paleturquoise', edgecolor='paleturquoise')
+   ax[0].plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
+
+   #ax.set_ylim(-lim*3, lim*3) 
+   ax[0].set_ylim(-10000, 10000) 
+   ax[1].set_ylim(-10000, 10000)
+   ax[0].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
+   ax[0].set_ylabel(r'[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
+   ax[1].set_ylabel(r'[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
+   ax[0].legend(ncol=3, fontsize=18, loc='upper center')
+   ax[0].set_xlim(0.04,0.7)
+   ax[0].set_xscale('log')
+   #ax[0].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
+   #ax.set_yscale('log')
+   ax[0].grid()
+   labnums = [0.05,0.1, 0.2, 0.5]
+   ax[0].set_xticks(labnums)
+   ax[0].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+   ax[0].tick_params(labelsize=15)
+   ax[1].errorbar(k, xs_data / sigma_data, sigma_data/sigma_data, fmt='o', color='black', zorder=4)
+   #ax2.errorbar(k_combo, mean_combo / sigma_combo, sigma_combo/sigma_combo, fmt='o', label=r'combo', color='black', zorder=5)
+   #ax2.errorbar(k, sum_mean / error, error /error, fmt='o', label=r'$\tilde{C}_{sum}(k)$', color='mediumorchid')
+   ax[1].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
+   #ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$')
+   ax[1].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, CES', color='black', zorder=4)
+   ax[1].plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
+   ax[1].plot(k, k*A2*P_theory_new_func(k), label=r'$A_2k\tilde{P}_{Theory, \parallel smooth}(k)$', color='teal')
+   ax[1].fill_between(x=k, y1=k*A2*P_theory_new_func(k)-k*A2_error*P_theory_new_func(k), y2=k*A2*P_theory_new_func(k)+k*A2_error*P_theory_new_func(k), facecolor='paleturquoise', edgecolor='paleturquoise')
+
+   ax[1].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
+   
+   ax[1].set_xlim(0.04,0.7)
+   ax[1].set_xscale('log')
+   ax[1].grid()
+   ax[1].legend(ncol=3, fontsize=18, loc='upper center')
+   ax[1].set_xticks(labnums)
+   ax[1].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+   ax[1].tick_params(labelsize=15)
 
 
+   plt.tight_layout()
+   plt.savefig(figure_name, bbox_inches='tight')
 
+plot_estimates('amplitudes.png')
 
