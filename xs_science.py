@@ -503,7 +503,7 @@ def plot_combined_and_model(figure_name):
    ax.errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'Combined CES', color='black', zorder=4)
    ax.plot(k_th, k_th * P_theory_old * 10, '--', label=r'$10\times kP_{Theory, old}(k)$', color='dodgerblue')
    ax.plot(k, k * P_theory_new * 10, '--', label=r'$10\times kP_{Theory, new}(k)$', color='red')
-   ax.plot(k, k * P_notsmooth * 10, '--', label=r'$10\times kP_{Theory,from beam}(k)$', color='green')
+   ax.plot(k, k * P_notsmooth * 10, '--', label=r'$10\times kP_{Theory,original}(k)$', color='green')
    #ax.set_ylim(-lim*3, lim*3) 
    ax.set_ylim(-0.1*10**17, 0.25*10**17) 
    ax.plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
@@ -522,6 +522,8 @@ def plot_combined_and_model(figure_name):
 
 plot_combined_and_model('combo_models.png')
 
-  
+'''
+Hello, I have a quick question (I didn't want to ask during your free days, so feel free to answer on Tuesday :D ) - How is the P_theory generated? (I mean the one which was implemented in the codes before I started working on the programs). It seems to be much lower than the power spectra I get from the simulations now. Here the blue one is the old one, the red one is from the maps smoothed in z-direction (mean from 10 realizations) and the green one is from not smoothed maps (mean from 100 realizations). 
+'''
 
 
