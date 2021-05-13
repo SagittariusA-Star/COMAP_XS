@@ -600,7 +600,7 @@ def calculate_A2(k, xs_mean, xs_sigma, P_theory):
    return PS_estimate, PS_error
 
 def plot_estimates(figure_name):
-   xs_data, sigma_data, k = coadd_CO7()
+   xs_data, sigma_data, k = coadd_all_ces()
    P_theory_new = np.load('ps_theory_new_1D.npy')
    P_theory_new = 1e-12*np.mean(P_theory_new, axis=0) #this factor accounts for the fact that I wrongly converted units in the simulated maps
    P_theory_new_func = scipy.interpolate.interp1d(k,P_theory_new)
