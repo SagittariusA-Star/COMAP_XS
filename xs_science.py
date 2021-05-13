@@ -504,8 +504,8 @@ def plot_combined_and_model(figure_name):
    beam_ps_original_1D = np.load('transfer_functions/' + 'ps_original_1D_newest.npy')
    P_notsmooth = 1e-12*np.mean(beam_ps_original_1D, axis=0)
    lim = np.mean(np.abs(xs_data[4:-2] * k[4:-2])) * 8
-   fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(13,6))
-   ax[0].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, combined CES', color='black', zorder=4)
+   fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(12,6))
+   ax[0].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, CES', color='black', zorder=4)
    ax[0].plot(k_th, k_th * P_theory_old * 5, '--', label=r'$5kP_{Theory}(k)$', color='teal', zorder=3)
    #ax.plot(k_th, P_theory_old, '--', label=r'$\times P_{Theory, old}(k)$', color='dodgerblue')
    ax[0].plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
@@ -514,7 +514,7 @@ def plot_combined_and_model(figure_name):
    ax[0].set_ylim(-10000, 10000) 
    ax[0].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    ax[0].set_ylabel(r'[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
-   ax[0].legend(ncol=4, fontsize=17, loc='upper center',bbox_to_anchor=(0.52,1.3))
+   ax[0].legend(ncol=4, fontsize=17, loc='upper center',bbox_to_anchor=(0.52,1.4))
    ax[0].set_xlim(0.04,0.7)
    ax[0].set_xscale('log')
    #ax[0].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
@@ -529,7 +529,7 @@ def plot_combined_and_model(figure_name):
    #ax2.errorbar(k, sum_mean / error, error /error, fmt='o', label=r'$\tilde{C}_{sum}(k)$', color='mediumorchid')
    ax[1].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    #ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$')
-   ax[1].set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$, combined CES', fontsize=18)
+   ax[1].set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$, CES', fontsize=18)
    ax[1].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
    ax[1].set_ylim(-5, 5)
    ax[1].set_xlim(0.04,0.7)
