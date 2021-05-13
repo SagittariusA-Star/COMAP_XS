@@ -589,8 +589,8 @@ def plot_estimates(figure_name):
    lim = np.mean(np.abs(xs_data[4:-2] * k[4:-2])) * 8
    fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(10,10))
    ax[0].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, CES', color='black', zorder=4)
-   ax[0].plot(k, k*A1, label=r'$A_1k$', color='teal')
-   ax[0].fill_between(x=k, y1=k*A1-k*A1_error, y2=k*A1+k*A1_error, facecolor='paleturquoise', edgecolor='paleturquoise')
+   ax[0].plot(k, k*A1, label=r'$A_1k$', color='midnightblue')
+   ax[0].fill_between(x=k, y1=k*A1-k*A1_error, y2=k*A1+k*A1_error, facecolor='lightsteelblue', edgecolor='lightsteelblue')
    ax[0].plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
 
    #ax.set_ylim(-lim*3, lim*3) 
