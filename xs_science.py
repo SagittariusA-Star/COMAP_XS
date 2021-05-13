@@ -671,7 +671,7 @@ def plot_estimates(figure_name):
    #ax2.errorbar(k, sum_mean / error, error /error, fmt='o', label=r'$\tilde{C}_{sum}(k)$', color='mediumorchid')
    ax[1].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    #ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$')
-   ax[1].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, CO6 CES + CO7 CES + CO7 Liss', color='black', zorder=4)
+   ax[1].errorbar(k[4:-3], k[4:-3] * xs_data[4:-3], k[4:-3] * sigma_data[4:-3], fmt='o', label=r'$k\tilde{C}(k)$, CO6 CES + CO7 CES + CO7 Liss', color='black', zorder=4)
    ax[1].plot(k, k * P_theory_new  * 10, label=r'$10k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
    ax[1].plot(k, k*A2*P_theory_new_func(k), label=r'$A_2k\tilde{P}_{Theory, \parallel smooth}(k)$', color='midnightblue')
    ax[1].fill_between(x=k, y1=k*A2*P_theory_new_func(k)-k*A2_error*P_theory_new_func(k), y2=k*A2*P_theory_new_func(k)+k*A2_error*P_theory_new_func(k), facecolor='lightsteelblue', edgecolor='lightsteelblue')
@@ -691,4 +691,10 @@ def plot_estimates(figure_name):
    plt.savefig(figure_name, bbox_inches='tight')
 
 plot_estimates('amplitudes.png')
+
+'''
+comment- excluding CES CO2 made the error bars larger, but at least we have an estimate that is positive (A2), CES CO2 makes whole data more negatively biased so we don't even enclose theory spectrum if we use it -- i tried CO7 Liss + CO7 CES, all CES, all CES + CO7 Liss, and finally CES CO6 + CES CO7 + Liss CO7 with the result: 
+A1: -33289.69798458218 15603.74388984571
+A2: -3.400396906629835 12.189530628784624
+'''
 
