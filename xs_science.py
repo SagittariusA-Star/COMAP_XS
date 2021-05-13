@@ -565,7 +565,7 @@ def plot_combined_and_model(figure_name):
    ax[0].set_ylim(-40000, 30000) 
    ax[0].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    ax[0].set_ylabel(r'[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
-   ax[0].legend(ncol=2, fontsize=15, loc='upper center',bbox_to_anchor=(0.5,1.35))
+   ax[0].legend(ncol=2, fontsize=16, loc='upper center',bbox_to_anchor=(0.5,1.45))
    ax[0].set_xlim(0.04,0.7)
    ax[0].set_xscale('log')
    #ax[0].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
