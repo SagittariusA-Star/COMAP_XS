@@ -535,7 +535,7 @@ def plot_combined_and_model(figure_name):
    ax[0].plot(k, k * P_theory_new  * 10, label=r'$10k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
    ax[0].plot(k, k * P_notsmooth  * 10, label=r'$10k\tilde{P}_{Theory}(k)$', color='salmon') #not smoothed
    #ax.set_ylim(-lim*3, lim*3) 
-   ax[0].set_ylim(-30000, 30000) 
+   ax[0].set_ylim(-40000, 30000) 
    ax[0].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    ax[0].set_ylabel(r'[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
    ax[0].legend(ncol=4, fontsize=15, loc='upper center',bbox_to_anchor=(0.45,1.44))
@@ -618,8 +618,8 @@ def plot_estimates(figure_name):
    ax[0].plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
 
    #ax.set_ylim(-lim*3, lim*3) 
-   ax[0].set_ylim(-10000, 10000) 
-   ax[1].set_ylim(-10000, 10000)
+   ax[0].set_ylim(-40000, 30000) 
+   ax[1].set_ylim(-40000, 30000)
    ax[0].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    ax[0].set_ylabel(r'[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
    ax[1].set_ylabel(r'[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
