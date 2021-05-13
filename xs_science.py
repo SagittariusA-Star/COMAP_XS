@@ -576,7 +576,7 @@ def calculate_A1(k, xs_mean, xs_sigma):
    PS_estimate = 0
    w_sum = 0
    no_of_k = len(k)
-   for i in range(4,no_of_k-3): #we exclude 4 first points and 3 last points, previously excluded 2 first
+   for i in range(5,no_of_k-3): #we exclude 4 first points and 3 last points, previously excluded 2 first, i excluded one more extra now
       w = 1./ xs_sigma[i]**2.
       w_sum += w
       PS_estimate += w*xs_mean[i]
@@ -591,7 +591,7 @@ def calculate_A2(k, xs_mean, xs_sigma, P_theory):
    #P_theory = scipy.interpolate.interp1d(k_th,ps_th_nobeam)
    xs_mean = xs_mean/P_theory(k)
    xs_sigma = xs_sigma/P_theory(k)
-   for i in range(4,no_of_k-3): #we exclude 4 first points and 3 last points, previously excluded 2 first
+   for i in range(5,no_of_k-3): #we exclude 4 first points and 3 last points, previously excluded 2 first, i excluded one more extra now
       w = 1./ xs_sigma[i]**2.
       w_sum += w
       PS_estimate += w*xs_mean[i]
