@@ -604,9 +604,14 @@ def plot_estimates(figure_name):
    P_theory_new = np.load('ps_theory_new_1D.npy')
    P_theory_new = 1e-12*np.mean(P_theory_new, axis=0) #this factor accounts for the fact that I wrongly converted units in the simulated maps
    P_theory_new_func = scipy.interpolate.interp1d(k,P_theory_new)
+   beam_ps_original_1D = np.load('transfer_functions/' + 'ps_original_1D_newest.npy')
+   P_notsmooth = 1e-12*np.mean(beam_ps_original_1D, axis=0)
+   P_notsmooth_func = scipy.interpolate.interp1d(k, P_notsmooth)
+
+
    
    A1, A1_error = calculate_A1(k, xs_data, sigma_data)
-   A2, A2_error = calculate_A2(k, xs_data, sigma_data, P_theory_new_func)
+   A2, A2_error = calculate_A2(k, xs_data, sigma_data, P_notsmooth_func)
    print ('A1:', A1, A1_error)
    print ('A2:', A2, A2_error)
   
