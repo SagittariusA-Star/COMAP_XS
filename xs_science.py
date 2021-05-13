@@ -565,7 +565,7 @@ def plot_combined_and_model(figure_name):
    ax[0].set_ylim(-40000, 30000) 
    ax[0].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    ax[0].set_ylabel(r'[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
-   ax[0].legend(ncol=2, fontsize=14, loc='upper center',bbox_to_anchor=(0.5,1.44))
+   ax[0].legend(ncol=2, fontsize=14, loc='upper center',bbox_to_anchor=(0.5,1.35))
    ax[0].set_xlim(0.04,0.7)
    ax[0].set_xscale('log')
    #ax[0].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
@@ -645,7 +645,7 @@ def plot_estimates(figure_name):
   
    lim = np.mean(np.abs(xs_data[4:-2] * k[4:-2])) * 8
    fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(10,8))
-   ax[0].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, CO6 CES + CO7 CES + CO7 Liss', color='black', zorder=4)
+   ax[0].errorbar(k[4:-2], k[4:-2] * xs_data[4:-2], k[4:-2] * sigma_data[4:-2], fmt='o', label=r'$k\tilde{C}(k)$, CO6 CES + CO7 CES + CO7 Liss', color='black', zorder=4)
    ax[0].plot(k, k*A1, label=r'$A_1k$', color='midnightblue')
    ax[0].fill_between(x=k, y1=k*A1-k*A1_error, y2=k*A1+k*A1_error, facecolor='lightsteelblue', edgecolor='lightsteelblue')
    ax[0].plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
@@ -656,7 +656,7 @@ def plot_estimates(figure_name):
    ax[0].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    ax[0].set_ylabel(r'[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
    ax[1].set_ylabel(r'[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
-   ax[0].legend(ncol=3, fontsize=14, loc='upper center', bbox_to_anchor=(0.45,1.1))
+   ax[0].legend(ncol=3, fontsize=14, loc='upper center', bbox_to_anchor=(0.45,1.25))
    ax[0].set_xlim(0.04,0.7)
    ax[0].set_xscale('log')
    #ax[0].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
@@ -681,7 +681,7 @@ def plot_estimates(figure_name):
    ax[1].set_xlim(0.04,0.7)
    ax[1].set_xscale('log')
    ax[1].grid()
-   ax[1].legend(ncol=3, fontsize=14, loc='upper center', bbox_to_anchor=(0.45,1.1))
+   ax[1].legend(ncol=3, fontsize=14, loc='upper center', bbox_to_anchor=(0.45,1.25))
    ax[1].set_xticks(labnums)
    ax[1].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    ax[1].tick_params(labelsize=15)
