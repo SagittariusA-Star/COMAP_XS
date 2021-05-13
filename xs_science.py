@@ -426,6 +426,33 @@ def coadd_CO7():
 
    return mean_combined, sigma_combined, k_liss
 
+def coadd_ces_CO7liss():
+   k2, xs_mean2, xs_sigma2 = read_h5_arrays('co2_map_signal_1D_arrays.h5')
+   k6, xs_mean6, xs_sigma6 = read_h5_arrays('co6_map_signal_1D_arrays.h5')
+   k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_signal_1D_arrays.h5')
+   k2, xs2, sigma2 = k2[1], xs_mean2[1], xs_sigma2[1] #take CES
+   k6, xs6, sigma6 = k6[1], xs_mean6[1], xs_sigma6[1] #take CES
+   k7, xs7, sigma7 = k7[1], xs_mean7[1], xs_sigma7[1] #take CES
+   k_liss, xs_liss, sigma_liss = k7[0], xs_mean7[0], xs_sigma7[0] #take CO7 Liss
+   xs_sigma_arr = np.array([sigma2, sigma6, sigma7, sigma_liss])
+   xs_mean_arr = np.array([xs2,xs6,xs7, xs_liss])
+   k2 = np.array(k2)
+   no_k = len(k2)
+   mean_combined = np.zeros(no_k)
+   w_sum = np.zeros(no_k)
+   
+   for i in range(4): 
+      w = 1./ xs_sigma_arr[i]**2.
+      w_sum += w
+      mean_combined += w*xs_mean_arr[i]
+   mean_combined1 = mean_combined/w_sum
+   sigma_combined1 = w_sum**(-0.5)
+
+   mean_combined = mean_combined1/TF_CES_1D(k2)
+   sigma_combined = sigma_combined1/TF_CES_1D(k2)
+
+   return mean_combined, sigma_combined, k2
+
 
 def xs_1D_3fields(figure_name, scan_strategy, index):  
    k2, xs_mean2, xs_sigma2 = read_h5_arrays('co2_map_signal_1D_arrays.h5')
@@ -519,7 +546,7 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
 
 
 def plot_combined_and_model(figure_name):
-   xs_data, sigma_data, k = coadd_CO7()
+   xs_data, sigma_data, k = coadd_ces_CO7liss()
    P_theory_new = np.load('ps_theory_new_1D.npy')
    P_theory_new = 1e-12*np.mean(P_theory_new, axis=0) #this factor accounts for the fact that I wrongly converted units in the simulated maps
    k_th = np.load('k.npy')
@@ -529,7 +556,7 @@ def plot_combined_and_model(figure_name):
    P_notsmooth = 1e-12*np.mean(beam_ps_original_1D, axis=0)
    lim = np.mean(np.abs(xs_data[4:-2] * k[4:-2])) * 8
    fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(10,6))
-   ax[0].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, CES', color='black', zorder=4)
+   ax[0].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, CES + CO7 Liss', color='black', zorder=4)
    ax[0].plot(k_th, k_th * P_theory_old * 10, '--', label=r'$10kP_{Theory}(k)$', color='teal', zorder=3)
    #ax.plot(k_th, P_theory_old, '--', label=r'$\times P_{Theory, old}(k)$', color='dodgerblue')
    ax[0].plot(k, k * P_theory_new  * 10, label=r'$10k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
@@ -538,7 +565,7 @@ def plot_combined_and_model(figure_name):
    ax[0].set_ylim(-40000, 30000) 
    ax[0].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    ax[0].set_ylabel(r'[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
-   ax[0].legend(ncol=4, fontsize=15, loc='upper center',bbox_to_anchor=(0.45,1.44))
+   ax[0].legend(ncol=4, fontsize=14, loc='upper center',bbox_to_anchor=(0.45,1.44))
    ax[0].set_xlim(0.04,0.7)
    ax[0].set_xscale('log')
    #ax[0].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
@@ -600,24 +627,24 @@ def calculate_A2(k, xs_mean, xs_sigma, P_theory):
    return PS_estimate, PS_error
 
 def plot_estimates(figure_name):
-   xs_data, sigma_data, k = coadd_all_ces()
+   xs_data, sigma_data, k = coadd_ces_CO7liss()
    P_theory_new = np.load('ps_theory_new_1D.npy')
    P_theory_new = 1e-12*np.mean(P_theory_new, axis=0) #this factor accounts for the fact that I wrongly converted units in the simulated maps
    P_theory_new_func = scipy.interpolate.interp1d(k,P_theory_new)
-   beam_ps_original_1D = np.load('transfer_functions/' + 'ps_original_1D_newest.npy')
-   P_notsmooth = 1e-12*np.mean(beam_ps_original_1D, axis=0)
-   P_notsmooth_func = scipy.interpolate.interp1d(k, P_notsmooth)
+   #beam_ps_original_1D = np.load('transfer_functions/' + 'ps_original_1D_newest.npy')
+   #P_notsmooth = 1e-12*np.mean(beam_ps_original_1D, axis=0)
+   #P_notsmooth_func = scipy.interpolate.interp1d(k, P_notsmooth)
 
 
    
    A1, A1_error = calculate_A1(k, xs_data, sigma_data)
-   A2, A2_error = calculate_A2(k, xs_data, sigma_data, P_notsmooth_func)
+   A2, A2_error = calculate_A2(k, xs_data, sigma_data, P_theory_new_func)
    print ('A1:', A1, A1_error)
    print ('A2:', A2, A2_error)
   
    lim = np.mean(np.abs(xs_data[4:-2] * k[4:-2])) * 8
-   fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(10,10))
-   ax[0].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, CES', color='black', zorder=4)
+   fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(10,7))
+   ax[0].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, CES + CO7 Liss', color='black', zorder=4)
    ax[0].plot(k, k*A1, label=r'$A_1k$', color='midnightblue')
    ax[0].fill_between(x=k, y1=k*A1-k*A1_error, y2=k*A1+k*A1_error, facecolor='lightsteelblue', edgecolor='lightsteelblue')
    ax[0].plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
@@ -628,7 +655,7 @@ def plot_estimates(figure_name):
    ax[0].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    ax[0].set_ylabel(r'[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
    ax[1].set_ylabel(r'[$\mu$K${}^2$ Mpc${}^2$]', fontsize=18)
-   ax[0].legend(ncol=3, fontsize=18, loc='upper center')
+   ax[0].legend(ncol=3, fontsize=14, loc='upper center')
    ax[0].set_xlim(0.04,0.7)
    ax[0].set_xscale('log')
    #ax[0].set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=18)
@@ -643,7 +670,7 @@ def plot_estimates(figure_name):
    #ax2.errorbar(k, sum_mean / error, error /error, fmt='o', label=r'$\tilde{C}_{sum}(k)$', color='mediumorchid')
    ax[1].plot(k, 0 * xs_data, 'k', alpha=0.4, zorder=1)
    #ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$')
-   ax[1].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, CES', color='black', zorder=4)
+   ax[1].errorbar(k, k * xs_data, k * sigma_data, fmt='o', label=r'$k\tilde{C}(k)$, CES + CO7 Liss', color='black', zorder=4)
    ax[1].plot(k, k * P_theory_new  * 5, label=r'$5k\tilde{P}_{Theory, \parallel smooth}(k)$', color='purple') #smoothed in z-direction
    ax[1].plot(k, k*A2*P_theory_new_func(k), label=r'$A_2k\tilde{P}_{Theory, \parallel smooth}(k)$', color='midnightblue')
    ax[1].fill_between(x=k, y1=k*A2*P_theory_new_func(k)-k*A2_error*P_theory_new_func(k), y2=k*A2*P_theory_new_func(k)+k*A2_error*P_theory_new_func(k), facecolor='lightsteelblue', edgecolor='lightsteelblue')
@@ -653,7 +680,7 @@ def plot_estimates(figure_name):
    ax[1].set_xlim(0.04,0.7)
    ax[1].set_xscale('log')
    ax[1].grid()
-   ax[1].legend(ncol=3, fontsize=18, loc='upper center')
+   ax[1].legend(ncol=3, fontsize=14, loc='upper center')
    ax[1].set_xticks(labnums)
    ax[1].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    ax[1].tick_params(labelsize=15)
