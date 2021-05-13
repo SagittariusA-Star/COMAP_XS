@@ -519,7 +519,7 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
 
 
 def plot_combined_and_model(figure_name):
-   xs_data, sigma_data, k = coadd_CO7()
+   xs_data, sigma_data, k = coadd_all_ces()
    P_theory_new = np.load('ps_theory_new_1D.npy')
    P_theory_new = 1e-12*np.mean(P_theory_new, axis=0) #this factor accounts for the fact that I wrongly converted units in the simulated maps
    k_th = np.load('k.npy')
