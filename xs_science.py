@@ -434,7 +434,34 @@ def coadd_ces_CO7liss():
    k6, xs6, sigma6 = k6[1], xs_mean6[1], xs_sigma6[1] #take CES
    k7, xs7, sigma7 = k7[1], xs_mean7[1], xs_sigma7[1] #take CES
    k_liss, xs_liss, sigma_liss = k7[0], xs_mean7[0], xs_sigma7[0] #take CO7 Liss
-   xs_sigma_arr = np.array([ sigma6, sigma7, sigma_liss])
+   xs_sigma_arr = np.array([sigma2, sigma6, sigma7, sigma_liss])
+   xs_mean_arr = np.array([xs2, xs6,xs7, xs_liss])
+   k2 = np.array(k2)
+   no_k = len(k2)
+   mean_combined = np.zeros(no_k)
+   w_sum = np.zeros(no_k)
+   
+   for i in range(3): 
+      w = 1./ xs_sigma_arr[i]**2.
+      w_sum += w
+      mean_combined += w*xs_mean_arr[i]
+   mean_combined1 = mean_combined/w_sum
+   sigma_combined1 = w_sum**(-0.5)
+
+   mean_combined = mean_combined1/TF_CES_1D(k2)
+   sigma_combined = sigma_combined1/TF_CES_1D(k2)
+
+   return mean_combined, sigma_combined, k2
+
+def coadd_ces67_liss7():
+   k2, xs_mean2, xs_sigma2 = read_h5_arrays('co2_map_signal_1D_arrays.h5')
+   k6, xs_mean6, xs_sigma6 = read_h5_arrays('co6_map_signal_1D_arrays.h5')
+   k7, xs_mean7, xs_sigma7 = read_h5_arrays('co7_map_signal_1D_arrays.h5')
+   k2, xs2, sigma2 = k2[1], xs_mean2[1], xs_sigma2[1] #take CES
+   k6, xs6, sigma6 = k6[1], xs_mean6[1], xs_sigma6[1] #take CES
+   k7, xs7, sigma7 = k7[1], xs_mean7[1], xs_sigma7[1] #take CES
+   k_liss, xs_liss, sigma_liss = k7[0], xs_mean7[0], xs_sigma7[0] #take CO7 Liss
+   xs_sigma_arr = np.array([sigma6, sigma7, sigma_liss])
    xs_mean_arr = np.array([xs6,xs7, xs_liss])
    k2 = np.array(k2)
    no_k = len(k2)
@@ -546,7 +573,7 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
 
 
 def plot_combined_and_model(figure_name):
-   xs_data, sigma_data, k = coadd_ces_CO7liss()
+   xs_data, sigma_data, k = coadd_ces67_liss7()
    P_theory_new = np.load('ps_theory_new_1D.npy')
    P_theory_new = 1e-12*np.mean(P_theory_new, axis=0) #this factor accounts for the fact that I wrongly converted units in the simulated maps
    k_th = np.load('k.npy')
@@ -596,7 +623,7 @@ def plot_combined_and_model(figure_name):
    plt.savefig(figure_name, bbox_inches='tight')
 
 
-plot_combined_and_model('theoryp3.png')
+plot_combined_and_model('theory_ces67_liss7.png')
 
 def calculate_A1(k, xs_mean, xs_sigma):
    #mean and sigma already divded by TF
@@ -628,7 +655,7 @@ def calculate_A2(k, xs_mean, xs_sigma, P_theory):
    return PS_estimate, PS_error
 
 def plot_estimates(figure_name):
-   xs_data, sigma_data, k = coadd_ces_CO7liss()
+   xs_data, sigma_data, k = coadd_ces67_liss7()
    P_theory_new = np.load('ps_theory_new_1D.npy')
    P_theory_new = 1e-12*np.mean(P_theory_new, axis=0) #this factor accounts for the fact that I wrongly converted units in the simulated maps
    P_theory_new_func = scipy.interpolate.interp1d(k,P_theory_new)
@@ -690,7 +717,7 @@ def plot_estimates(figure_name):
    plt.tight_layout()
    plt.savefig(figure_name, bbox_inches='tight')
 
-plot_estimates('amplitudes.png')
+plot_estimates('fits_ces67_liss7.png')
 
 '''
 comment- excluding CES CO2 made the error bars larger, but at least we have an estimate that is positive (A2), CES CO2 makes whole data more negatively biased so we don't even enclose theory spectrum if we use it -- i tried CO7 Liss + CO7 CES, all CES, all CES + CO7 Liss, and finally CES CO6 + CES CO7 + Liss CO7 with the result: 
