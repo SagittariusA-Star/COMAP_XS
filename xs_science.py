@@ -302,7 +302,7 @@ def xs_2D_plot(figure_name, index, scan_type):
 
 
       
-      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,16))
+      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,10))
    
       fig.subplots_adjust(hspace=-0.5, wspace=0.0)
 
