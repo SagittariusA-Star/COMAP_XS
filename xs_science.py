@@ -116,8 +116,7 @@ def plot_sub_fig(field,jk_we_want,ax_i,lim,cesc,ax, TF, scan):
       #ax[ax_i].xaxis.set_label_position('top')
       #ax[ax_i].xaxis.tick_top()
       if cesc == '0':
-         ax[ax_i].set_title('Lissajous scans', fontsize=22, pad=50
-)
+         ax[ax_i].set_title('Lissajous scans', fontsize=22, pad=50)
       if cesc == '1':
          ax[ax_i].set_title('CES scans', fontsize=22, pad=50)  
    ax[ax_i].text(.5,.9,field,horizontalalignment='center',transform=ax[ax_i].transAxes, fontsize=22)     
@@ -496,11 +495,12 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
 
    if scan_strategy == 'ces':
       titlename = 'CES scans'
+      
       TF = TF_CES_1D
    if scan_strategy == 'liss':
       titlename = 'Lissajous scans'
       TF = TF_liss_1D
-   
+   ax[0].set_title(titlename, fontsize=22, pad=50)
    k_offset = k*0.025
    k6 = k - k_offset
    k7 = k + k_offset
@@ -535,7 +535,7 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
    ax[0].set_xticks(labnums)
    ax[0].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    #plt.legend(bbox_to_anchor=(0, 0.61))
-   ax[0].legend(ncol=4, fontsize=18, loc='upper center',bbox_to_anchor=(0.52,1.2))
+   ax[0].legend(ncol=4, fontsize=18, loc='upper center',bbox_to_anchor=(0.5,1.2))
    
    
    #ax2.plot(k, diff_mean / error, fmt='o', label=r'$\tilde{C}_{diff}(k)$', color='black')
