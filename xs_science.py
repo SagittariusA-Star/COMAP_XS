@@ -494,7 +494,7 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
 
 
    if scan_strategy == 'ces':
-      titlename = 'CES scans'
+      titlename = 'CES'
       
       TF = TF_CES_1D
    if scan_strategy == 'liss':
