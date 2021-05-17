@@ -510,9 +510,10 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
    #fig.set_figwidth(8)
    ax[0].set_title(titlename, fontsize=22, pad=44)
    #mean_combo, sigma_combo, k_combo = coadd_all_ces()
+   ax[0].errorbar(k, k * xs_mean2 / TF(k), k * xs_sigma2 / TF(k), fmt='o', label=r'CO2', color='indianred', zorder=4)
    ax[0].errorbar(k6, k * xs_mean6 / TF(k), k * xs_sigma6 / TF(k), fmt='o', label=r'CO6', color='teal', zorder=3)
    ax[0].errorbar(k7, k * xs_mean7 / TF(k), k * xs_sigma7 / TF(k), fmt='o', label=r'CO7', color='purple', zorder=2)
-   ax[0].errorbar(k, k * xs_mean2 / TF(k), k * xs_sigma2 / TF(k), fmt='o', label=r'CO2', color='indianred', zorder=4)
+   
    #ax[0].errorbar(k_combo, k_combo * mean_combo, k_combo * sigma_combo , fmt='o', label=r'combo', color='black', zorder=4)
    #ax1.errorbar(k_combo, k * mean_combo / (transfer(k)*transfer_filt(k)), k * sigma_combo / (transfer(k)*transfer_filt(k)), fmt='o', label=r'combo', color='black', zorder=5)
    #ax1.errorbar(k, k * xs_mean, k * xs_sigma, fmt='o', label=r'$k\tilde{C}_{data}(k)$')
