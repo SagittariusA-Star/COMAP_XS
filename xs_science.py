@@ -506,7 +506,7 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
    k7 = k + k_offset
    k_combo = k + k_offset*2
    lim = np.mean(np.abs(xs_mean2[4:-2] * k[4:-2])) * 8
-   fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(10,8))
+   fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(10.5,8))
    #fig.set_figwidth(8)
    
    #mean_combo, sigma_combo, k_combo = coadd_all_ces()
@@ -535,7 +535,7 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
    ax[0].set_xticks(labnums)
    ax[0].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    #plt.legend(bbox_to_anchor=(0, 0.61))
-   ax[0].legend(ncol=4, fontsize=18, loc='upper center',bbox_to_anchor=(0.52,1.17))
+   ax[0].legend(ncol=4, fontsize=18, loc='upper center',bbox_to_anchor=(0.52,1.2))
    
    
    #ax2.plot(k, diff_mean / error, fmt='o', label=r'$\tilde{C}_{diff}(k)$', color='black')
