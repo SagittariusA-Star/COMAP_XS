@@ -313,18 +313,18 @@ def xs_2D_plot(figure_name, index, scan_type):
 
     
       img1 = ax[0][0].imshow(xs_mean2/TF(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
-      fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.04, ticks=[-800000, -400000, 0, 400000, 800000])
+      #fig.colorbar(img1, ax=ax[0][0],fraction=0.046, pad=0.04, ticks=[-800000, -400000, 0, 400000, 800000])
   
       img2 = ax[0][1].imshow(xs_mean6/TF(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
-      fig.colorbar(img2, ax=ax[0][1], fraction=0.046, pad=0.04,  ticks=[-800000, -400000, 0, 400000, 800000])
+      #fig.colorbar(img2, ax=ax[0][1], fraction=0.046, pad=0.04,  ticks=[-800000, -400000, 0, 400000, 800000])
       img3 = ax[0][2].imshow(xs_mean7/TF(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm)
       fig.colorbar(img3, ax=ax[0][2], fraction=0.046, pad=0.04,  ticks=[-800000, -400000, 0, 400000, 800000]).set_label(first_label, size=18)
      
       img4 = ax[1][0].imshow(xs_mean2/xs_sigma2, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
-      fig.colorbar(img4, ax=ax[1][0],fraction=0.046, pad=0.04)
+      #fig.colorbar(img4, ax=ax[1][0],fraction=0.046, pad=0.04)
   
       img5 = ax[1][1].imshow(xs_mean6/xs_sigma6, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
-      fig.colorbar(img5, ax=ax[1][1], fraction=0.046, pad=0.04)
+      #fig.colorbar(img5, ax=ax[1][1], fraction=0.046, pad=0.04)
       img6 = ax[1][2].imshow(xs_mean7/xs_sigma7, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm1)
       fig.colorbar(img6, ax=ax[1][2], fraction=0.046,pad=0.04).set_label(second_label, size=18)
       
