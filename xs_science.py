@@ -506,7 +506,7 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
    k7 = k + k_offset
    k_combo = k + k_offset*2
    lim = np.mean(np.abs(xs_mean2[4:-2] * k[4:-2])) * 8
-   fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(8,9))
+   fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(10,8))
    #fig.set_figwidth(8)
    
    #mean_combo, sigma_combo, k_combo = coadd_all_ces()
@@ -565,8 +565,8 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
 
 
 
-#xs_1D_3fields('liss_1d.png', 'liss', 0)
-#xs_1D_3fields('ces_1d.png', 'ces', 1)
+xs_1D_3fields('liss_1d.png', 'liss', 0)
+xs_1D_3fields('ces_1d.png', 'ces', 1)
 
  
  
