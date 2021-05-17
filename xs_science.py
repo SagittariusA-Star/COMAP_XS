@@ -508,7 +508,7 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
    lim = np.mean(np.abs(xs_mean2[4:-2] * k[4:-2])) * 8
    fig, ax = plt.subplots(nrows=2,ncols=1,figsize=(10.5,8))
    #fig.set_figwidth(8)
-   ax[0].set_title(titlename, fontsize=22, pad=50)
+   ax[0].set_title(titlename, fontsize=22, pad=39)
    #mean_combo, sigma_combo, k_combo = coadd_all_ces()
    ax[0].errorbar(k6, k * xs_mean6 / TF(k), k * xs_sigma6 / TF(k), fmt='o', label=r'CO6', color='teal', zorder=3)
    ax[0].errorbar(k7, k * xs_mean7 / TF(k), k * xs_sigma7 / TF(k), fmt='o', label=r'CO7', color='purple', zorder=2)
@@ -535,7 +535,7 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
    ax[0].set_xticks(labnums)
    ax[0].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    #plt.legend(bbox_to_anchor=(0, 0.61))
-   ax[0].legend(ncol=4, fontsize=18, loc='upper center',bbox_to_anchor=(0.5,1.2))
+   ax[0].legend(ncol=4, fontsize=18, loc='upper center',bbox_to_anchor=(0.5,1.22))
    
    
    #ax2.plot(k, diff_mean / error, fmt='o', label=r'$\tilde{C}_{diff}(k)$', color='black')
