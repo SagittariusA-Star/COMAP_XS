@@ -288,12 +288,12 @@ def xs_2D_plot(figure_name, index, scan_type):
       xs_sigma7 = xs_sigma_c7[index]
       if scan_type == 'liss':
          TF = TF_liss_2D
-         first_label = r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$], Liss'
-         second_label = r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)/\sigma_{\tilde{C}}$, Liss'
+         first_label = r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]'
+         second_label = r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)/\sigma_{\tilde{C}}$'
       if scan_type == 'CES':
          TF = TF_CES_2D
-         first_label = r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$], CES'
-         second_label = r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)/\sigma_{\tilde{C}}$, CES'
+         first_label = r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]'
+         second_label = r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)/\sigma_{\tilde{C}}$'
 
 
       
@@ -302,7 +302,7 @@ def xs_2D_plot(figure_name, index, scan_type):
 
 
       
-      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,10))
+      fig, ax = plt.subplots(nrows=2,ncols=3,figsize=(16,8))
    
       fig.subplots_adjust(hspace=-0.5, wspace=0.0)
 
