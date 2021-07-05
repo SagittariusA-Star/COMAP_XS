@@ -597,7 +597,7 @@ def total_1D_plot_whole(liss,ces,k,mix):
 #total_1D_plot_whole(TF_beam_freq_liss_1D,TF_beam_freq_CES_1D,liss_k_1D,TF_beam_freq_mix_1D)
 
 def total_2D_plot_whole(figure_name,liss, ces,mix,k_perp, k_par):
-      fig, ax = plt.subplots(nrows=1,ncols=3,figsize=(14,10))
+      fig, ax = plt.subplots(nrows=1,ncols=3,figsize=(14,6.5))
       #fig.tight_layout(h_pad=0.005, w_pad=1)
       fig.subplots_adjust(hspace=0.15, wspace=0.15)
       #cbaxes = fig.add_axes([0.072, 0.9, 0.25, 0.04]) 
