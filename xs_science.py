@@ -510,9 +510,9 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
    #fig.set_figwidth(8)
    ax[0].set_title(titlename, fontsize=22, pad=44)
    #mean_combo, sigma_combo, k_combo = coadd_all_ces()
-   ax[0].errorbar(k, k * xs_mean2 / TF(k), k * xs_sigma2 / TF(k), fmt='o', label=r'CO2', color='indianred', zorder=4)
+   #ax[0].errorbar(k, k * xs_mean2 / TF(k), k * xs_sigma2 / TF(k), fmt='o', label=r'CO2', color='indianred', zorder=4)
    ax[0].errorbar(k6, k * xs_mean6 / TF(k), k * xs_sigma6 / TF(k), fmt='o', label=r'CO6', color='teal', zorder=3)
-   ax[0].errorbar(k7, k * xs_mean7 / TF(k), k * xs_sigma7 / TF(k), fmt='o', label=r'CO7', color='purple', zorder=2)
+   #ax[0].errorbar(k7, k * xs_mean7 / TF(k), k * xs_sigma7 / TF(k), fmt='o', label=r'CO7', color='purple', zorder=2)
    
    #ax[0].errorbar(k_combo, k_combo * mean_combo, k_combo * sigma_combo , fmt='o', label=r'combo', color='black', zorder=4)
    #ax1.errorbar(k_combo, k * mean_combo / (transfer(k)*transfer_filt(k)), k * sigma_combo / (transfer(k)*transfer_filt(k)), fmt='o', label=r'combo', color='black', zorder=5)
@@ -536,14 +536,14 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
    ax[0].set_xticks(labnums)
    ax[0].get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
    #plt.legend(bbox_to_anchor=(0, 0.61))
-   ax[0].legend(ncol=4, fontsize=18, loc='upper center',bbox_to_anchor=(0.5,1.22))
+   #ax[0].legend(ncol=4, fontsize=18, loc='upper center',bbox_to_anchor=(0.5,1.22))
    
    
    #ax2.plot(k, diff_mean / error, fmt='o', label=r'$\tilde{C}_{diff}(k)$', color='black')
    
    ax[1].errorbar(k6, xs_mean6 / xs_sigma6, xs_sigma6/xs_sigma6, fmt='o', label=r'CO6', color='teal', zorder=3)
-   ax[1].errorbar(k7, xs_mean7 / xs_sigma7, xs_sigma7/xs_sigma7, fmt='o', label=r'CO7', color='purple', zorder=2)
-   ax[1].errorbar(k, xs_mean2 / xs_sigma2, xs_sigma2/xs_sigma2, fmt='o', label=r'CO2', color='indianred', zorder=4)
+   #ax[1].errorbar(k7, xs_mean7 / xs_sigma7, xs_sigma7/xs_sigma7, fmt='o', label=r'CO7', color='purple', zorder=2)
+   #ax[1].errorbar(k, xs_mean2 / xs_sigma2, xs_sigma2/xs_sigma2, fmt='o', label=r'CO2', color='indianred', zorder=4)
    #ax2.errorbar(k_combo, mean_combo / sigma_combo, sigma_combo/sigma_combo, fmt='o', label=r'combo', color='black', zorder=5)
    #ax2.errorbar(k, sum_mean / error, error /error, fmt='o', label=r'$\tilde{C}_{sum}(k)$', color='mediumorchid')
    ax[1].plot(k, 0 * xs_mean2, 'k', alpha=0.4, zorder=1)
@@ -566,8 +566,8 @@ def xs_1D_3fields(figure_name, scan_strategy, index):
 
 
 
-xs_1D_3fields('liss_1d.png', 'liss', 0)
-xs_1D_3fields('ces_1d.png', 'ces', 1)
+xs_1D_3fields('liss_1d_onlyCO6.png', 'liss', 0)
+xs_1D_3fields('ces_1d_onlyCO6.png', 'ces', 1)
 
 def read_co2_ces():
    k2, xs_mean2, xs_sigma2 = read_h5_arrays('co2_map_signal_1D_arrays.h5')
