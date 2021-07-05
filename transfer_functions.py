@@ -605,8 +605,8 @@ def total_2D_plot_whole(figure_name,liss, ces,mix,k_perp, k_par):
       
     
       img1 = ax[0].imshow(liss(k_perp, k_par), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm_tf)
-      #fig.colorbar(img1, orientation='horizontal', ax=ax[0],fraction=0.046, pad=0.13).set_label(r'$\tilde{T}^{\mathrm{total}}_{k_{\bot}, k_{\parallel}}$, Lissajous', size=18)
-      fig.colorbar(img1, orientation='horizontal', ax=ax[0],fraction=0.046, pad=0.13).set_label(r'$\tilde{T}^{\mathrm{total}}_{k_{\bot}, k_{\parallel}}$', size=18)
+      fig.colorbar(img1, orientation='horizontal', ax=ax[0],fraction=0.046, pad=0.13).set_label(r'$\tilde{T}^{\mathrm{total}}_{k_{\bot}, k_{\parallel}}$, Lissajous', size=18)
+      #fig.colorbar(img1, orientation='horizontal', ax=ax[0],fraction=0.046, pad=0.13).set_label(r'$\tilde{T}^{\mathrm{total}}_{k_{\bot}, k_{\parallel}}$', size=18)
 
       img2 = ax[1].imshow(ces(k_perp, k_par), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='magma', norm=norm_tf)
       fig.colorbar(img2,orientation='horizontal', ax=ax[1], fraction=0.046, pad=0.13).set_label(r'$\tilde{T}^{\mathrm{total}}_{k_{\bot}, k_{\parallel}}$, CES', size=18)
@@ -651,7 +651,7 @@ def total_2D_plot_whole(figure_name,liss, ces,mix,k_perp, k_par):
       plt.show()
       plt.savefig(figure_name, bbox_inches='tight',pad_inches = 0) 
 
-total_2D_plot_whole('total2.png',TF_beam_mix_2D, TF_beam_freq_CES_2D,TF_beam_freq_mix_2D,mix_k_perp, mix_k_par)
+#total_2D_plot_whole('total2.png',TF_beam_mix_2D, TF_beam_freq_CES_2D,TF_beam_freq_mix_2D,mix_k_perp, mix_k_par)
 
-#total_2D_plot_whole('for_total.png',TF_beam_freq_liss_2D, TF_beam_freq_CES_2D,TF_beam_freq_mix_2D,mix_k_perp, mix_k_par)
+total_2D_plot_whole('for_total.png',TF_beam_freq_liss_2D, TF_beam_freq_CES_2D,TF_beam_freq_mix_2D,mix_k_perp, mix_k_par)
 
