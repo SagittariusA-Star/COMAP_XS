@@ -53,9 +53,11 @@ def read_jk(filename):
  
    return control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control
 
-def read_map(mappath,field, control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control):
+def read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control):
    print ('STAGE 2/4: Splitting the map into subsets with different split combinations.')
    input_map = h5py.File(mappath, 'r')
+   
+   outdir = mappath.split("/")[-1].split(".")[0]
 
    x = np.array(input_map['x'][:]) #common part for all maps
    y = np.array(input_map['y'][:]) #common part for all maps
@@ -112,7 +114,8 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
                maps_created.append(name) #add the name of the current map to the list
                print ('Creating HDF5 file for the map ' + name + '.')
                tools.ensure_dir_exists('split_maps')
-               outname = 'split_maps/' + name
+               outname = 'split_maps/' outdir + '/' + name
+               #outname = 'split_maps/' + name
 
                f = h5py.File(outname, 'w') #create HDF5 file with the sliced map
                f.create_dataset('x', data=x)
@@ -120,6 +123,7 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
                f.create_dataset('/jackknives/map_' + test_variable, data=my_map)
                f.create_dataset('/jackknives/rms_' + test_variable, data=my_rms)
                f.close()
+
    if len(feed_and_control) != 0: #if some feed-feed variables are control variables
       for ff_variable in feed_and_control:
          for test_variable in test_variables:
@@ -171,7 +175,8 @@ def read_map(mappath,field, control_variables, test_variables, feed_feed_variabl
                maps_created.append(name) #add the name of the current map to the list
                print ('Creating HDF5 file for the map ' + name + '.')
                tools.ensure_dir_exists('split_maps')
-               outname = 'split_maps/' + name
+               #outname = 'split_maps/' + name
+               outname = 'split_maps/' outdir + '/' + name
 
                f = h5py.File(outname, 'w') #create HDF5 file with the sliced map
                f.create_dataset('x', data=x)
@@ -189,13 +194,16 @@ def read_map_created(mapfile):
    return map_old, rms_old
      
 def write_map_created(mapfile1, new_map, new_rms, test_variable, cesc, field):
+   outdir = mappath.split("/")[-1].split(".")[0]
+
    with h5py.File(mapfile1, mode="r") as my_file1:
          x = np.array(my_file1['x'][:])
          y = np.array(my_file1['y'][:])
 
    outname1 = field + '_map_elev_' + test_variable + '_subtr_cesc_' + cesc +'.h5'
    print ('Creating the file ' + outname1)
-   outname = 'split_maps/' + outname1
+   outname = 'split_maps/' outdir + '/' + outname1
+   #outname = 'split_maps/' + outname1
 
    f = h5py.File(outname, 'w') #create HDF5 file with the sliced map
    f.create_dataset('x', data=x)

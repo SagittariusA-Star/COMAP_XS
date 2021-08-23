@@ -223,7 +223,7 @@ class CrossSpectrum_nmaps():
         return self.rms_xs_mean_2D, self.rms_xs_std_2D
     
     #MAKE SEPARATE H5 FILE FOR EACH XS
-    def make_h5(self, outname=None):
+    def make_h5(self, outdir, outname=None):
        
         for index in range(self.how_many_combinations):
            i = index*2
@@ -231,7 +231,8 @@ class CrossSpectrum_nmaps():
 
            if outname is None:
                tools.ensure_dir_exists('spectra')
-               outname = 'spectra/xs_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.h5'          
+               outname = 'spectra/' + outdir + '/xs_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.h5'          
+               #outname = 'spectra/xs_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.h5'          
 
            f1 = h5py.File(outname, 'w')
            try:
@@ -253,7 +254,7 @@ class CrossSpectrum_nmaps():
            f1.close()
 
   #MAKE SEPARATE H5 FILE FOR EACH 2D XS
-    def make_h5_2d(self, outname=None):
+    def make_h5_2d(self, outdir, outname=None):
        
         for index in range(self.how_many_combinations):
            i = index*2
@@ -261,7 +262,8 @@ class CrossSpectrum_nmaps():
 
            if outname is None:
                tools.ensure_dir_exists('spectra_2D')
-               outname = 'spectra_2D/xs_2D_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.h5'          
+               outname = 'spectra_2D/' + outdir + '/xs_2D_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.h5'          
+               #outname = 'spectra_2D/xs_2D_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.h5'          
 
            f1 = h5py.File(outname, 'w')
            try:

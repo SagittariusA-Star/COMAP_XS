@@ -25,12 +25,12 @@ def run_all_methods(feed1,feed2, n_of_splits, two_dimensions):
      
       #plot all cross-spectra that have been calculated
       my_xs.plot_xs(k, xs, rms_sig, rms_mean, save=True)
-      my_xs.make_h5()
+      my_xs.make_h5(outdir)
 
    if two_dimensions == True:
       xs, k, nmodes = my_xs.calculate_xs_2d()
       rms_mean, rms_sig = my_xs.run_noise_sims_2d(50)
-      my_xs.make_h5_2d()
+      my_xs.make_h5_2d(outdir)
 
 def all_feed_combo_xs(p):
    i = p // 19 + 1 #floor division, divides and returns the integer value of the quotient (it dumps the digits after the decimal)
@@ -86,6 +86,8 @@ if two_dimensions == False:
 
 field, jk_list, main_map_name = read_field_jklist(mappath)
 
+outdir = main_map_name
+
 #this jk list was an exeption from the naming convention!
 #jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_' + 'science' + '.txt'
 control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control = read_multisplit.read_jk(jk_list)
@@ -125,11 +127,11 @@ k_edges_par = []
 figure_names = []
 for mn in range(number_of_maps):
    if two_dimensions == True:
-      k, k_bin_edges_par, k_bin_edges_perp,xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_2D(map_files[mn])
+      k, k_bin_edges_par, k_bin_edges_perp,xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_2D(map_files[mn], outdir)
       k_edges_perp.append(k_bin_edges_perp)
       k_edges_par.append(k_bin_edges_par)
    if two_dimensions == False:
-      k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_grid(map_files[mn]) #saves the chi2 grid for each split-combo
+      k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_grid(map_files[mn], outdir) #saves the chi2 grid for each split-combo
    
    k_arr.append(k)
    xs_mean_arr.append(xs_mean)
@@ -174,7 +176,7 @@ for mn in range(number_of_maps):
       figure_name = 'xs_mean_2D_' + field_arr[mn] + '_map_' + ff_jk_arr[mn] + last_name_part + '.pdf'
       figure_names.append(figure_name)
       print ('Saving the figure ' + figure_name)
-      mean_multisplit.xs_2D_plot(figure_name, k_arr[mn],k_edges_par[mn], k_edges_perp[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title)
+      mean_multisplit.xs_2D_plot(figure_name, k_arr[mn],k_edges_par[mn], k_edges_perp[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title, outdir)
 
 #save arrays as a file
 if two_dimensions == True:
