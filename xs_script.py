@@ -55,7 +55,10 @@ def read_field_jklist(mappath):
    map_name = map_name.rpartition('.')[0] #get rid of the ".h5" part
    field_name = map_name.split('_')[0]
    last_part = map_name.split('_')[-1]
-   jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_' + last_part + '.txt'
+   
+   #jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_' + last_part + '.txt'
+   jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_science.txt'
+   
    print ('Field:', field_name)
    print ('List of split-variables:', jk_list)
    return field_name, jk_list, map_name
