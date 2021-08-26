@@ -4,6 +4,7 @@ import numpy.fft as fft
 import corner
 import h5py
 import sys
+import re
 
 import tools
 import map_cosmo
@@ -11,6 +12,33 @@ import xs_class
 import multiprocessing
 import read_multisplit
 import mean_multisplit
+
+def process_params(param_file):
+   """Function reading the parameter file provided by the command line
+   argument or passed to class in __init__.
+   """
+   param_file  = open(param_file, "r")    
+   params      = param_file.read()
+
+   targetname = re.search(r"\nTARGET_NAME\s*=\s*'([0-9A-Za-z\_]*)'", params)   # Defining regex pattern to search for name of output map file.
+   target_name = str(targetname.group(1))                    
+
+   map_path = re.search(r"\nMAP_DIR\s*=\s*'(\/.*?)'", params) # Regex pattern to search for directory where to put the maps.
+   map_path = str(map_path.group(1))                          
+
+   mapname = re.search(r"\nMAP_NAME\s*=\s*'([0-9A-Za-z\_]*)'", params)   # Defining regex pattern to search for name of output map file.
+   map_name = map_path + target_name + "_" + str(mapname.group(1)) + ".h5"                    
+
+   # jk_list file from parameter file
+   split_def = re.search(r"\nJK_DEF_FILE\s*=\s*'(\/.*?)'", params)   # Defining regex pattern to search for complete path to split definition file.
+   split_def = str(split_def.group(1))                                
+        
+   param_file.close()
+
+   print ('Field:', target_name)
+   print ('List of split-variables:', split_def)
+
+   return map_name, target_name, split_def
 
 def run_all_methods(feed1,feed2, n_of_splits, two_dimensions):
    my_xs = xs_class.CrossSpectrum_nmaps(mapfile,jk,feed1, feed2, n_of_splits)
@@ -56,8 +84,7 @@ def read_field_jklist(mappath):
    field_name = map_name.split('_')[0]
    last_part = map_name.split('_')[-1]
    
-   #jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_' + last_part + '.txt'
-   jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_science.txt'
+   jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_' + last_part + '.txt'
    
    print ('Field:', field_name)
    print ('List of split-variables:', jk_list)
@@ -68,8 +95,11 @@ def read_jk(single_map_name):
    return jk_name
 
 #read from the command:
-mappath_last_part = sys.argv[-1]
-mappath = '/mn/stornext/d16/cmbco/comap/protodir/maps/' + mappath_last_part 
+mappath, field, jk_list = process_params(sys.argv[-1])
+
+#mappath_last_part = sys.argv[-1]
+#mappath = '/mn/stornext/d16/cmbco/comap/protodir/maps/' + mappath_last_part 
+
 
 xs_2D = input("Cross-spectra in two dimensions? (yes/no) ")
 if xs_2D == 'yes':
@@ -87,8 +117,10 @@ if two_dimensions == False:
    print ('- chi2_grids - chi2 grids for all split-split combinations')
    print ('- xs_mean_figures - figures of mean cross-spectra for each combination of variables')
 
-field, jk_list, main_map_name = read_field_jklist(mappath)
-
+#field, jk_list, main_map_name = read_field_jklist(mappath)
+main_map_name = mappath.split('/')[-1] #get rid of the path, leave only the name of the map
+main_map_name = main_map_name.split('.')[0] #get rid of the ".h5" part
+   
 outdir = main_map_name
 
 #this jk list was an exeption from the naming convention!
