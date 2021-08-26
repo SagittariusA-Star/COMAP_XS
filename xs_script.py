@@ -24,7 +24,7 @@ def run_all_methods(feed1,feed2, n_of_splits, two_dimensions):
       rms_mean, rms_sig = my_xs.run_noise_sims(50) #these rms's are arrays of 14 elements, that give error bars (number of bin edges minus 1)
      
       #plot all cross-spectra that have been calculated
-      my_xs.plot_xs(k, xs, rms_sig, rms_mean, save=True)
+      my_xs.plot_xs(k, xs, rms_sig, rms_mean, save=True, outdir = "")
       my_xs.make_h5(outdir)
 
    if two_dimensions == True:
@@ -55,7 +55,10 @@ def read_field_jklist(mappath):
    map_name = map_name.rpartition('.')[0] #get rid of the ".h5" part
    field_name = map_name.split('_')[0]
    last_part = map_name.split('_')[-1]
-   jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_' + last_part + '.txt'
+   
+   #jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_' + last_part + '.txt'
+   jk_list = '/mn/stornext/d16/cmbco/comap/protodir/auxiliary/jk_list_science.txt'
+   
    print ('Field:', field_name)
    print ('List of split-variables:', jk_list)
    return field_name, jk_list, map_name
@@ -108,7 +111,7 @@ for g in range(number_of_maps):
    mapname = map_files[g]
    jk = read_jk(mapname)
    print ('Split for FPXS: ' + jk + '. Map: ' + mapname + '.')
-   mapfile = 'split_maps/' + mapname
+   mapfile = 'split_maps/' + outdir + '/' + mapname
    n_of_splits = read_number_of_splits(mapfile, jk)
    #make xs for all feed-combinations
    pool = multiprocessing.Pool(8) #here number of cores
@@ -127,7 +130,7 @@ k_edges_par = []
 figure_names = []
 for mn in range(number_of_maps):
    if two_dimensions == True:
-      k, k_bin_edges_par, k_bin_edges_perp,xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_2D(map_files[mn], outdir)
+      k, k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_2D(map_files[mn], outdir)
       k_edges_perp.append(k_bin_edges_perp)
       k_edges_par.append(k_bin_edges_par)
    if two_dimensions == False:
@@ -171,7 +174,7 @@ for mn in range(number_of_maps):
       figure_name = 'xs_mean_' + field_arr[mn] + '_map_' + ff_jk_arr[mn] + last_name_part + '.pdf'
       figure_names.append(figure_name)
       print ('Saving the figure ' + figure_name) #Saving the figure xs_mean_co6_map_snup_elev0_cesc0.pdf
-      mean_multisplit.xs_with_model(figure_name, k_arr[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title, scan_strategy)
+      mean_multisplit.xs_with_model(figure_name, k_arr[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title, scan_strategy, outdir)
    if two_dimensions == True:
       figure_name = 'xs_mean_2D_' + field_arr[mn] + '_map_' + ff_jk_arr[mn] + last_name_part + '.pdf'
       figure_names.append(figure_name)

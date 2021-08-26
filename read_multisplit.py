@@ -113,8 +113,8 @@ def read_map(mappath, field, control_variables, test_variables, feed_feed_variab
                name += '.h5'
                maps_created.append(name) #add the name of the current map to the list
                print ('Creating HDF5 file for the map ' + name + '.')
-               tools.ensure_dir_exists('split_maps')
-               outname = 'split_maps/' outdir + '/' + name
+               tools.ensure_dir_exists('split_maps/' + outdir)
+               outname = 'split_maps/' + outdir + '/' + name
                #outname = 'split_maps/' + name
 
                f = h5py.File(outname, 'w') #create HDF5 file with the sliced map
@@ -174,9 +174,9 @@ def read_map(mappath, field, control_variables, test_variables, feed_feed_variab
                name += '.h5'
                maps_created.append(name) #add the name of the current map to the list
                print ('Creating HDF5 file for the map ' + name + '.')
-               tools.ensure_dir_exists('split_maps')
+               tools.ensure_dir_exists('split_maps/' + outdir)
                #outname = 'split_maps/' + name
-               outname = 'split_maps/' outdir + '/' + name
+               outname = 'split_maps/' + outdir + '/' + name
 
                f = h5py.File(outname, 'w') #create HDF5 file with the sliced map
                f.create_dataset('x', data=x)
@@ -202,7 +202,9 @@ def write_map_created(mapfile1, new_map, new_rms, test_variable, cesc, field):
 
    outname1 = field + '_map_elev_' + test_variable + '_subtr_cesc_' + cesc +'.h5'
    print ('Creating the file ' + outname1)
-   outname = 'split_maps/' outdir + '/' + outname1
+   tools.ensure_dir_exists('split_maps/' + outdir)
+
+   outname = 'split_maps/' + outdir + '/' + outname1
    #outname = 'split_maps/' + outname1
 
    f = h5py.File(outname, 'w') #create HDF5 file with the sliced map
