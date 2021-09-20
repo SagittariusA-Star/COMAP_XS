@@ -88,9 +88,11 @@ class CrossSpectrum_nmaps():
            wh_j = np.where(np.log10(wj) < -0.5)
            wi[wh_i] = 0.0
            wj[wh_j] = 0.0
+           full_weight = np.sqrt(wi*wj) / np.sqrt(np.mean((wi*wj).flatten()))
+           
               
            my_xs, my_k, my_nmodes = tools.compute_cross_spec3d(
-           (self.maps[i].map * np.sqrt(wi*wj), self.maps[j].map * np.sqrt(wi*wj)),
+           (self.maps[i].map * full_weight, self.maps[j].map * full_weight),
            self.k_bin_edges, dx=self.maps[i].dx, dy=self.maps[i].dy, dz=self.maps[i].dz)
 
            self.reverse_normalization(i,j) #go back to the previous state to normalize again with a different map-pair
@@ -128,9 +130,10 @@ class CrossSpectrum_nmaps():
            wh_j = np.where(np.log10(wj) < -0.5)
            wi[wh_i] = 0.0
            wj[wh_j] = 0.0
+           full_weight = np.sqrt(wi*wj) / np.sqrt(np.mean((wi*wj).flatten()))
               
            my_xs, my_k, my_nmodes = tools.compute_cross_spec_perp_vs_par(
-           (self.maps[i].map * np.sqrt(wi*wj), self.maps[j].map * np.sqrt(wi*wj)),
+           (self.maps[i].map * full_weight, self.maps[j].map * full_weight),
            (self.k_bin_edges_perp, self.k_bin_edges_par), dx=self.maps[i].dx, dy=self.maps[i].dy, dz=self.maps[i].dz)
 
            self.reverse_normalization(i,j) #go back to the previous state to normalize again with a different map-pair
@@ -158,6 +161,7 @@ class CrossSpectrum_nmaps():
            wh_j = np.where(np.log10(wj) < -0.5)
            wi[wh_i] = 0.0
            wj[wh_j] = 0.0
+           full_weight = np.sqrt(wi*wj) / np.sqrt(np.mean((wi*wj).flatten()))  
 
            if seed is not None:
                if self.maps[i].feed is not None:
@@ -174,7 +178,7 @@ class CrossSpectrum_nmaps():
                    randmap[l] = np.random.randn(*self.maps[l].rms.shape) * self.maps[l].rms
 
                rms_xs[:, g] = tools.compute_cross_spec3d(
-                   (randmap[0] * np.sqrt(wi*wj), randmap[1] * np.sqrt(wi*wj)),
+                   (randmap[0] * full_weight, randmap[1] * full_weight),
                    self.k_bin_edges, dx=self.maps[i].dx, dy=self.maps[i].dy, dz=self.maps[i].dz)[0]
                  
            self.reverse_normalization(i,j) #go back to the previous state to normalize again with a different map-pair
@@ -196,6 +200,7 @@ class CrossSpectrum_nmaps():
            wh_j = np.where(np.log10(wj) < -0.5)
            wi[wh_i] = 0.0
            wj[wh_j] = 0.0
+           full_weight = np.sqrt(wi*wj) / np.sqrt(np.mean((wi*wj).flatten()))  
 
            if seed is not None:
                if self.maps[i].feed is not None:
@@ -212,7 +217,7 @@ class CrossSpectrum_nmaps():
                    randmap[l] = np.random.randn(*self.maps[l].rms.shape) * self.maps[l].rms
 
                rms_xs[:,:,g] = tools.compute_cross_spec_perp_vs_par(
-           (randmap[0] * np.sqrt(wi*wj), randmap[1] * np.sqrt(wi*wj)),
+           (randmap[0] * full_weight, randmap[1] * full_weight),
            (self.k_bin_edges_perp, self.k_bin_edges_par), dx=self.maps[i].dx, dy=self.maps[i].dy, dz=self.maps[i].dz)[0]
 
                  
