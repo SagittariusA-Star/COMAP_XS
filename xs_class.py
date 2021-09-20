@@ -98,6 +98,7 @@ class CrossSpectrum_nmaps():
            self.xs.append(my_xs)
            self.k.append(my_k)
            self.nmodes.append(my_nmodes)
+           
         self.xs = np.array(self.xs)
         self.k = np.array(self.k)
         self.nmodes = np.array(self.nmodes)
@@ -223,15 +224,16 @@ class CrossSpectrum_nmaps():
         return self.rms_xs_mean_2D, self.rms_xs_std_2D
     
     #MAKE SEPARATE H5 FILE FOR EACH XS
-    def make_h5(self, outname=None):
+    def make_h5(self, outdir, outname=None):
        
         for index in range(self.how_many_combinations):
            i = index*2
            j = i+1
 
            if outname is None:
-               tools.ensure_dir_exists('spectra')
-               outname = 'spectra/xs_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.h5'          
+               tools.ensure_dir_exists('spectra/' + outdir)
+               outname = 'spectra/' + outdir + '/xs_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.h5'          
+               #outname = 'spectra/xs_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.h5'          
 
            f1 = h5py.File(outname, 'w')
            try:
@@ -253,15 +255,16 @@ class CrossSpectrum_nmaps():
            f1.close()
 
   #MAKE SEPARATE H5 FILE FOR EACH 2D XS
-    def make_h5_2d(self, outname=None):
+    def make_h5_2d(self, outdir, outname=None):
        
         for index in range(self.how_many_combinations):
            i = index*2
            j = i+1
 
            if outname is None:
-               tools.ensure_dir_exists('spectra_2D')
-               outname = 'spectra_2D/xs_2D_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.h5'          
+               tools.ensure_dir_exists('spectra_2D/' + outdir)
+               outname = 'spectra_2D/' + outdir + '/xs_2D_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.h5'          
+               #outname = 'spectra_2D/xs_2D_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.h5'          
 
            f1 = h5py.File(outname, 'w')
            try:
@@ -284,7 +287,7 @@ class CrossSpectrum_nmaps():
            f1.close()
 
     #PLOT XS
-    def plot_xs(self, k_array, xs_array, rms_sig_array, rms_mean_array, save=False):
+    def plot_xs(self, k_array, xs_array, rms_sig_array, rms_mean_array, save=False, outdir = ""):
        for index in range(self.how_many_combinations):
           k = k_array[index]
           xs = xs_array[index]
@@ -318,8 +321,8 @@ class CrossSpectrum_nmaps():
           ax2.grid()
           plt.legend()
           if save==True:
-             tools.ensure_dir_exists('xs_figures')
-             name_for_figure = 'xs_figures/xs_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.pdf'
+             tools.ensure_dir_exists('xs_figures/' + outdir)
+             name_for_figure = 'xs_figures/' + outdir + 'xs_' + self.get_information()[index][1] + '_and_'+ self.get_information()[index][2] + '.pdf'
              plt.savefig(name_for_figure, bbox_inches='tight')
              #print ('Figure saved as', name_for_figure)
           plt.close(fig)

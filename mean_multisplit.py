@@ -74,7 +74,7 @@ def read_number_of_splits(mapfile, jk):
        number_of_splits = sh[0]   
    return number_of_splits
 
-def xs_feed_feed_grid(map_file):
+def xs_feed_feed_grid(map_file, outdir):
    went_through_first_cut = 0
    went_through_sigma_cut = 0
    #n_sim = 100
@@ -84,7 +84,12 @@ def xs_feed_feed_grid(map_file):
    xs_sum = np.zeros(n_k)
    #rms_xs_sum = np.zeros((n_k, n_sim))
    xs_div = np.zeros(n_k)
-   map_file = 'split_maps/' + map_file
+   #map_file = 'split_maps/' + map_file
+
+
+   tools.ensure_dir_exists('split_maps/' + outdir)
+   map_file = 'split_maps/' + outdir + '/' + map_file
+
    name_of_map = map_file.split('/')[-1] #get rid of the path, leave only the name of the map
    name_of_map = name_of_map.split('.')[0] #get rid of the ".h5" part
    name_of_map_list = name_of_map.split('_') #co6_map_snup_elev_0_cesc_0'
@@ -104,7 +109,9 @@ def xs_feed_feed_grid(map_file):
       current_combo = all_different_possibilities[u]    
       split1 = str(current_combo[0])
       split2 = str(current_combo[1])
-      path_to_xs = 'spectra/xs_' + name_of_map + '_split' + split1 + '_feed%01i_and_' + name_of_map + '_split' + split2 + '_feed%01i.h5'
+      #path_to_xs = 'spectra/xs_' + name_of_map + '_split' + split1 + '_feed%01i_and_' + name_of_map + '_split' + split2 + '_feed%01i.h5'
+      tools.ensure_dir_exists('spectra/' + outdir)
+      path_to_xs = 'spectra/' + outdir + '/xs_' + name_of_map + '_split' + split1 + '_feed%01i_and_' + name_of_map + '_split' + split2 + '_feed%01i.h5'
       
       xs = np.zeros((n_feed, n_feed, n_k))
       rms_xs_std = np.zeros_like(xs)
@@ -144,8 +151,8 @@ def xs_feed_feed_grid(map_file):
                      xs_div += 1 / rms_xs_std[i,j] ** 2
                      n_sum += 1
 
-      tools.ensure_dir_exists('chi2_grids')
-      figure_name = 'chi2_grids/xs_grid_' + name_of_map + '_splits' + split1 + split2 + '.pdf'
+      tools.ensure_dir_exists('chi2_grids/' + outdir)
+      figure_name = 'chi2_grids/' + outdir + '/' + 'xs_grid_' + name_of_map + '_splits' + split1 + split2 + '.pdf'
       plt.figure()
       vmax = 15
       plt.imshow(chi2, interpolation='none', vmin=-vmax, vmax=vmax, extent=(0.5, n_feed + 0.5, n_feed + 0.5, 0.5))
@@ -164,8 +171,12 @@ def xs_feed_feed_grid(map_file):
 
 
 
-def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy):
-  
+def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy, outdir, signal_path):
+   if signal_path != None:
+      with h5py.File(signal_path, "r") as infile:
+         inputPS = infile["ps_1D"][()]
+         inputk = infile["k_1D"][()]
+
    if scan_strategy == 'ces':
       plotcolor = 'indianred'
    if scan_strategy == 'liss':
@@ -176,10 +187,11 @@ def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy):
    fig.tight_layout()
    #fig.set_figwidth(8)
    ax1 = fig.add_subplot(211)
-  
    ax1.errorbar(k, k * xs_mean / (transfer(k)*transfer_filt(k)), k * xs_sigma / (transfer(k)*transfer_filt(k)), fmt='o', color=plotcolor)
    #ax1.errorbar(k, k * xs_mean, k * xs_sigma, fmt='o', label=r'$k\tilde{C}_{data}(k)$')
    ax1.plot(k, 0 * xs_mean, 'k', alpha=0.4)
+   if signal_path != None:
+       ax1.plot(inputk, k * inputPS / transfer(k), 'r', alpha=0.5, label = r"$\tilde{P}_\mathrm{signal}(k)$")
    #ax1.plot(k, k*PS_function.PS_f(k)/ transfer(k), label='k*PS of the input signal') #for simulated map
    #ax1.plot(k, k*PS_function.PS_f(k), label='k*PS of the input signal')
    #ax1.plot(k_th, k_th * ps_th_nobeam * 10, '--', label=r'$10 \times kP_{Theory}(k)$', color='dodgerblue')
@@ -187,13 +199,15 @@ def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy):
    ax1.set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=14)
    if not np.isnan(lim):
       if scan_strategy == 'ces':
-         ax1.set_ylim(-lim*3, lim*3)              # ax1.set_ylim(0, 0.1)
+         ax1.set_ylim(-lim*10, lim*10)              # ax1.set_ylim(0, 0.1)
       if scan_strategy == 'liss':
-         ax1.set_ylim(-lim*2, lim*2)              # ax1.set_ylim(0, 0.1)
+         ax1.set_ylim(-lim*4, lim*4)              # ax1.set_ylim(0, 0.1)
    ax1.set_xlim(0.04,1.)
    ax1.set_xscale('log')
    ax1.set_title(titlename)
    ax1.grid()
+   #ax1.set_yscale("symlog", linthresh = 1e4)
+
    #ax1.set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=14)
    labnums = [0.05,0.1, 0.2, 0.5,1.]
    ax1.set_xticks(labnums)
@@ -204,11 +218,19 @@ def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy):
    ax2 = fig.add_subplot(212)
    #ax2.plot(k, diff_mean / error, fmt='o', label=r'$\tilde{C}_{diff}(k)$', color='black')
   
-   ax2.errorbar(k, xs_mean / xs_sigma, xs_sigma/xs_sigma, fmt='o', color=plotcolor)
+   if signal_path != None:
+      ax2.errorbar(k, (xs_mean / (transfer(k)*transfer_filt(k)) - inputPS / transfer(k)) / (xs_sigma / (transfer(k)*transfer_filt(k))), xs_sigma/xs_sigma, fmt='o', color=plotcolor)
+   else:
+      ax2.errorbar(k, xs_mean / xs_sigma, xs_sigma/xs_sigma, fmt='o', color=plotcolor)
+
    #ax2.errorbar(k, sum_mean / error, error /error, fmt='o', label=r'$\tilde{C}_{sum}(k)$', color='mediumorchid')
    ax2.plot(k, 0 * xs_mean, 'k', alpha=0.4)
    #ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$')
-   ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$', fontsize=14)
+   if signal_path != None:
+      ax2.set_ylabel(r'$(\tilde{C}(k) - \tilde{P}_\mathrm{signal}(k)) / \sigma_\tilde{C}$', fontsize=14)
+   else:
+      ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$', fontsize=14)
+   
    ax2.set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=14)
    ax2.set_ylim(-5, 5)
    ax2.set_xlim(0.04,1.)
@@ -220,8 +242,8 @@ def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy):
    
    plt.tight_layout()
    #plt.legend()
-   tools.ensure_dir_exists('xs_mean_figures')
-   plt.savefig('xs_mean_figures/' + figure_name, bbox_inches='tight')
+   tools.ensure_dir_exists('xs_mean_figures/' + outdir)
+   plt.savefig('xs_mean_figures/' + outdir + "/" + figure_name, bbox_inches='tight')
    plt.close(fig)
    #plt.show()
 
@@ -231,15 +253,17 @@ def log2lin(x, k_edges):
     logx = np.log10(x) - np.log10(k_edges[0])
     return logx / loglen
 
-def xs_feed_feed_2D(map_file):
-  
+def xs_feed_feed_2D(map_file, outdir):
    n_k = 14
    n_feed = 19
    n_sum = 0
    xs_sum = np.zeros((n_k,n_k))
 
    xs_div = np.zeros((n_k,n_k))
-   map_file = 'split_maps/' + map_file
+   #map_file = 'split_maps/' + map_file
+   tools.ensure_dir_exists('split_maps/' + outdir)
+
+   map_file = 'split_maps/' + outdir + '/' + map_file
    name_of_map = map_file.split('/')[-1] #get rid of the path, leave only the name of the map
    name_of_map = name_of_map.split('.')[0] #get rid of the ".h5" part
    name_of_map_list = name_of_map.split('_') #co6_map_snup_elev_0_cesc_0'
@@ -259,8 +283,10 @@ def xs_feed_feed_2D(map_file):
       current_combo = all_different_possibilities[u]    
       split1 = str(current_combo[0])
       split2 = str(current_combo[1])
-      path_to_xs = 'spectra_2D/xs_2D_' + name_of_map + '_split' + split1 + '_feed%01i_and_' + name_of_map + '_split' + split2 + '_feed%01i.h5'
+      #path_to_xs = 'spectra_2D/xs_2D_' + name_of_map + '_split' + split1 + '_feed%01i_and_' + name_of_map + '_split' + split2 + '_feed%01i.h5'
+      tools.ensure_dir_exists('spectra/' + outdir)
       
+      path_to_xs = 'spectra_2D/' + outdir + '/xs_2D_' + name_of_map + '_split' + split1 + '_feed%01i_and_' + name_of_map + '_split' + split2 + '_feed%01i.h5'
       k_bin_edges_par = np.zeros(n_k+1)
       k_bin_edges_perp = np.zeros(n_k+1)
       xs = np.zeros((n_feed, n_feed, n_k, n_k))
@@ -268,6 +294,7 @@ def xs_feed_feed_2D(map_file):
       chi2 = np.zeros((n_feed, n_feed))
       k = np.zeros((2,n_k))
       noise = np.zeros_like(chi2)
+
       for i in range(n_feed): #go through all the feed combinations
          for j in range(n_feed):
             #if i != 7 and j != 7:
@@ -313,7 +340,7 @@ def xs_feed_feed_2D(map_file):
    return k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers
 
 
-def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma, titlename):
+def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma, titlename, outdir):
       #k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma =  k[3:],k_bin_edges_par[3:], k_bin_edges_perp[3:], xs_mean[3:], xs_sigma[3:]
       fig, ax = plt.subplots(1,3,figsize=(16,5.6))
       fig.tight_layout()
@@ -327,8 +354,7 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sig
       fig.colorbar(img2, ax=ax[1], fraction=0.046, pad=0.04)
       img3 = ax[2].imshow(xs_mean/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
       fig.colorbar(img2, ax=ax[2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=16)
-      
-     
+            
       ticks = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,0.1,
               0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,1., 1.1, 1.2, 1.3]
 
@@ -365,9 +391,10 @@ def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sig
       
      
       
-      tools.ensure_dir_exists('xs_2D_mean_figures')
+      tools.ensure_dir_exists('xs_2D_mean_figures/' + outdir)
       plt.tight_layout()
-      plt.savefig('xs_2D_mean_figures/' +  figure_name) 
+
+      plt.savefig('xs_2D_mean_figures/' +  outdir + "/" + figure_name) 
     
     
 
