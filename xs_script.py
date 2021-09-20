@@ -32,13 +32,18 @@ def process_params(param_file):
    # jk_list file from parameter file
    split_def = re.search(r"\nJK_DEF_FILE\s*=\s*'(\/.*?)'", params)   # Defining regex pattern to search for complete path to split definition file.
    split_def = str(split_def.group(1))                                
-        
+      
+   signal_path = re.search(r"\nSIGNAL_PATH\s*=\s*'(\/.*?)'", params)   # Defining regex pattern to search for complete path to split definition file.
+   
+   if signal_path != None:
+      signal_path = str(signal_path.group(1))
+   
    param_file.close()
 
    print ('Field:', target_name)
    print ('List of split-variables:', split_def)
 
-   return map_name, target_name, split_def
+   return map_name, target_name, split_def, signal_path
 
 def run_all_methods(feed1,feed2, n_of_splits, two_dimensions):
    my_xs = xs_class.CrossSpectrum_nmaps(mapfile,jk,feed1, feed2, n_of_splits)
@@ -95,7 +100,7 @@ def read_jk(single_map_name):
    return jk_name
 
 #read from the command:
-mappath, field, jk_list = process_params(sys.argv[-1])
+mappath, field, jk_list, signal_path = process_params(sys.argv[-1])
 
 #mappath_last_part = sys.argv[-1]
 #mappath = '/mn/stornext/d16/cmbco/comap/protodir/maps/' + mappath_last_part 
@@ -146,8 +151,9 @@ for g in range(number_of_maps):
    mapfile = 'split_maps/' + outdir + '/' + mapname
    n_of_splits = read_number_of_splits(mapfile, jk)
    #make xs for all feed-combinations
-   pool = multiprocessing.Pool(8) #here number of cores
+   pool = multiprocessing.Pool(15) #here number of cores
    np.array(pool.map(all_feed_combo_xs, feed_combos))
+
 
 print ('STAGE 4/4: Calculating the mean of cross-spectra from all combinations.')
 k_arr = []
@@ -206,7 +212,7 @@ for mn in range(number_of_maps):
       figure_name = 'xs_mean_' + field_arr[mn] + '_map_' + ff_jk_arr[mn] + last_name_part + '.pdf'
       figure_names.append(figure_name)
       print ('Saving the figure ' + figure_name) #Saving the figure xs_mean_co6_map_snup_elev0_cesc0.pdf
-      mean_multisplit.xs_with_model(figure_name, k_arr[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title, scan_strategy, outdir)
+      mean_multisplit.xs_with_model(figure_name, k_arr[mn], xs_mean_arr[mn], xs_sigma_arr[mn], figure_title, scan_strategy, outdir, signal_path)
    if two_dimensions == True:
       figure_name = 'xs_mean_2D_' + field_arr[mn] + '_map_' + ff_jk_arr[mn] + last_name_part + '.pdf'
       figure_names.append(figure_name)

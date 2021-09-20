@@ -98,6 +98,7 @@ class CrossSpectrum_nmaps():
            self.xs.append(my_xs)
            self.k.append(my_k)
            self.nmodes.append(my_nmodes)
+           
         self.xs = np.array(self.xs)
         self.k = np.array(self.k)
         self.nmodes = np.array(self.nmodes)

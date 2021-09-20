@@ -167,13 +167,16 @@ def xs_feed_feed_grid(map_file, outdir):
       
       #plt.show()
       #print ("xs_div:", xs_div)
-      print("hei", k)
    return k, xs_sum / xs_div, 1. / np.sqrt(xs_div), field, ff_jk, split_names, split_numbers
 
 
 
-def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy, outdir):
-  
+def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy, outdir, signal_path):
+   if signal_path != None:
+      with h5py.File(signal_path, "r") as infile:
+         inputPS = infile["ps_1D"][()]
+         inputk = infile["k_1D"][()]
+
    if scan_strategy == 'ces':
       plotcolor = 'indianred'
    if scan_strategy == 'liss':
@@ -184,10 +187,11 @@ def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy, o
    fig.tight_layout()
    #fig.set_figwidth(8)
    ax1 = fig.add_subplot(211)
-   
    ax1.errorbar(k, k * xs_mean / (transfer(k)*transfer_filt(k)), k * xs_sigma / (transfer(k)*transfer_filt(k)), fmt='o', color=plotcolor)
    #ax1.errorbar(k, k * xs_mean, k * xs_sigma, fmt='o', label=r'$k\tilde{C}_{data}(k)$')
    ax1.plot(k, 0 * xs_mean, 'k', alpha=0.4)
+   if signal_path != None:
+       ax1.plot(inputk, k * inputPS / transfer(k), 'r', alpha=0.5, label = r"$\tilde{P}_\mathrm{signal}(k)$")
    #ax1.plot(k, k*PS_function.PS_f(k)/ transfer(k), label='k*PS of the input signal') #for simulated map
    #ax1.plot(k, k*PS_function.PS_f(k), label='k*PS of the input signal')
    #ax1.plot(k_th, k_th * ps_th_nobeam * 10, '--', label=r'$10 \times kP_{Theory}(k)$', color='dodgerblue')
@@ -195,13 +199,15 @@ def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy, o
    ax1.set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=14)
    if not np.isnan(lim):
       if scan_strategy == 'ces':
-         ax1.set_ylim(-lim*3, lim*3)              # ax1.set_ylim(0, 0.1)
+         ax1.set_ylim(-lim*10, lim*10)              # ax1.set_ylim(0, 0.1)
       if scan_strategy == 'liss':
-         ax1.set_ylim(-lim*2, lim*2)              # ax1.set_ylim(0, 0.1)
+         ax1.set_ylim(-lim*4, lim*4)              # ax1.set_ylim(0, 0.1)
    ax1.set_xlim(0.04,1.)
    ax1.set_xscale('log')
    ax1.set_title(titlename)
    ax1.grid()
+   #ax1.set_yscale("symlog", linthresh = 1e4)
+
    #ax1.set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=14)
    labnums = [0.05,0.1, 0.2, 0.5,1.]
    ax1.set_xticks(labnums)
@@ -212,11 +218,19 @@ def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy, o
    ax2 = fig.add_subplot(212)
    #ax2.plot(k, diff_mean / error, fmt='o', label=r'$\tilde{C}_{diff}(k)$', color='black')
   
-   ax2.errorbar(k, xs_mean / xs_sigma, xs_sigma/xs_sigma, fmt='o', color=plotcolor)
+   if signal_path != None:
+      ax2.errorbar(k, (xs_mean / (transfer(k)*transfer_filt(k)) - inputPS / transfer(k)) / (xs_sigma / (transfer(k)*transfer_filt(k))), xs_sigma/xs_sigma, fmt='o', color=plotcolor)
+   else:
+      ax2.errorbar(k, xs_mean / xs_sigma, xs_sigma/xs_sigma, fmt='o', color=plotcolor)
+
    #ax2.errorbar(k, sum_mean / error, error /error, fmt='o', label=r'$\tilde{C}_{sum}(k)$', color='mediumorchid')
    ax2.plot(k, 0 * xs_mean, 'k', alpha=0.4)
    #ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$')
-   ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$', fontsize=14)
+   if signal_path != None:
+      ax2.set_ylabel(r'$(\tilde{C}(k) - \tilde{P}_\mathrm{signal}(k)) / \sigma_\tilde{C}$', fontsize=14)
+   else:
+      ax2.set_ylabel(r'$\tilde{C}(k) / \sigma_\tilde{C}$', fontsize=14)
+   
    ax2.set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=14)
    ax2.set_ylim(-5, 5)
    ax2.set_xlim(0.04,1.)
