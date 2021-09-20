@@ -115,19 +115,6 @@ def compute_power_spec3d(x, k_bin_edges, dx=1, dy=1, dz=1):
   
     return Pk, k, nmodes
 
-def compute_power_spec3d_with_tf(x, sigma, k_bin_edges, weights, tf_filt, tf_beam, dx=1, dy=1, dz=1):
-    print("hei")
-
-
-    Pk, k, nmodes = self.compute_power_spec_perp_vs_par(x, k_bin_edges, dx, dy, dz)
-
-    print("_______________________")
-    print(Pk.shape, k.shape, nmodes.shape)
-    print("_______________________")
-    sys.exit()
-
-    return Pk, k, nmodes
-
 def compute_power_spec_perp_vs_par(x, k_bin_edges, dx=1, dy=1, dz=1): #for each k-vec get absolute value in parallel (redshift) and perp (angle) direction
     n_x, n_y, n_z = x.shape
     Pk_3D = np.abs(fft.fftn(x)) ** 2 * dx * dy * dz / (n_x * n_y * n_z)
@@ -169,6 +156,38 @@ def compute_cross_spec3d(x, k_bin_edges, dx=1, dy=1, dz=1):
     Ck[np.where(nmodes > 0)] = Ck_nmodes[np.where(nmodes > 0)] / nmodes[np.where(nmodes > 0)]
     return Ck, k, nmodes
 
+def compute_cross_spec3d_with_tf(x, k_bin_edges_2D, k_bin_edges, xs_sigma_mean, xs_sigma, tf_filt, tf_beam, dx=1, dy=1, dz=1):
+
+    Ck_2D, k, nmodes = compute_cross_spec_perp_vs_par(x, k_bin_edges_2D, dx, dy, dz)
+    kx, ky = k 
+
+    weights = 1 / (xs_sigma / (tf_beam(kx, ky) * tf_filt(kx, ky))) ** 2
+
+    Ck_2D /= (tf_beam(kx, ky) * tf_filt(kx, ky))
+    Ck_2D *= weights
+
+    xs_sigma_mean /= (tf_beam(kx, ky) * tf_filt(kx, ky))
+    xs_sigma_mean *= weights
+
+    
+    kgrid = np.sqrt(sum(ki ** 2 for ki in np.meshgrid(kx, ky, indexing='ij')))
+
+    Ck_nmodes = np.histogram(kgrid[kgrid > 0], bins=k_bin_edges, weights=Ck_2D[kgrid > 0])[0]
+    rms_mean_nmodes = np.histogram(kgrid[kgrid > 0], bins=k_bin_edges, weights=xs_sigma_mean[kgrid > 0])[0]
+    rms_nmodes = np.histogram(kgrid[kgrid > 0], bins=k_bin_edges, weights=weights[kgrid > 0])[0]
+    nmodes = np.histogram(kgrid[kgrid > 0], bins=k_bin_edges)[0]
+
+    # Ck = Ck_nmodes / nmodes
+    # k = (k_bin_edges[1:] + k_bin_edges[:-1]) / 2.0
+    k = (k_bin_edges[1:] + k_bin_edges[:-1]) / 2.0
+    Ck = np.zeros_like(k)
+    rms_mean = np.zeros_like(k)
+    rms = np.zeros_like(k)
+    Ck[np.where(nmodes > 0)] = Ck_nmodes[np.where(nmodes > 0)] / rms_nmodes[np.where(nmodes > 0)]
+    rms_mean[np.where(nmodes > 0)] = rms_mean_nmodes[np.where(nmodes > 0)] / rms_nmodes[np.where(nmodes > 0)]
+    rms[np.where(nmodes > 0)] = np.sqrt(1 / rms_nmodes[np.where(nmodes > 0)]) 
+
+    return Ck, k, nmodes, rms_mean, rms 
 
 def compute_cross_spec_perp_vs_par(x, k_bin_edges, dx=1, dy=1, dz=1): #for each k-vec get absolute value in parallel (redshift) and perp (angle) direction
     n_x, n_y, n_z = x[0].shape

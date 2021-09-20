@@ -8,6 +8,8 @@ import itertools as itr
 import matplotlib.pyplot as plt
 plt.ioff() #turn of the interactive plotting
 import PS_function #P(k) = k**-3
+import scipy.interpolate
+
 import warnings
 warnings.filterwarnings("ignore", category=RuntimeWarning) #ignore warnings caused by weights cut-off
 
@@ -111,17 +113,21 @@ class CrossSpectrum_nmaps():
 
         n_k = no_of_k_bins
         self.k_bin_edges = np.logspace(-2.0, np.log10(1.5), n_k)
+        self.k_bin_edges_par = np.logspace(-2.0, np.log10(1.0), n_k)
+        self.k_bin_edges_perp = np.logspace(-2.0 + np.log10(2), np.log10(1.5), n_k)
         calculated_xs = self.get_information()        
 
         #store each cross-spectrum and corresponding k and nmodes by appending to these lists:
         self.xs = []
         self.k = []
         self.nmodes = []
+        self.rms_mean = []
+        self.rms_std = []
         index = -1
         for i in range(0,len(self.maps)-1, 2):
            j = i + 1
            index += 1
-           print ('Computing xs between ' + calculated_xs[index][1] + ' and ' + calculated_xs[index][2] + '.')
+           print ('Computing 2D xs between ' + calculated_xs[index][1] + ' and ' + calculated_xs[index][2] + '.')
            self.normalize_weights(i,j) #normalize weights for given xs pair of maps
 
            wi = self.maps[i].w
@@ -130,24 +136,24 @@ class CrossSpectrum_nmaps():
            wh_j = np.where(np.log10(wj) < -0.5)
            wi[wh_i] = 0.0
            wj[wh_j] = 0.0
-            
-           spectrum_weights = 1 / self.rms_xs_std_2D[i] ** 2
-
-           my_xs, my_k, my_nmodes = tools.compute_cross_spec3d_with_tf(
+              
+           my_xs, my_k, my_nmodes, my_rms_mean, my_rms_std = tools.compute_cross_spec3d_with_tf(
            (self.maps[i].map * np.sqrt(wi*wj), self.maps[j].map * np.sqrt(wi*wj)),
-           self.k_bin_edges, spectrum_weights, self.transfer_filt_2D, self.transfer_sim_2D, 
-           dx=self.maps[i].dx, dy=self.maps[i].dy, dz=self.maps[i].dz)
+           (self.k_bin_edges_perp, self.k_bin_edges_par), self.k_bin_edges, self.rms_xs_mean_2D[i], self.rms_xs_std_2D[i], self.transfer_filt_2D, self.transfer_sim_2D, dx=self.maps[i].dx, dy=self.maps[i].dy, dz=self.maps[i].dz)
 
            self.reverse_normalization(i,j) #go back to the previous state to normalize again with a different map-pair
 
            self.xs.append(my_xs)
            self.k.append(my_k)
+           self.rms_mean.append(my_rms_mean)
+           self.rms_std.append(my_rms_std)
            self.nmodes.append(my_nmodes)
-           
         self.xs = np.array(self.xs)
         self.k = np.array(self.k)
         self.nmodes = np.array(self.nmodes)
-        return self.xs, self.k, self.nmodes
+        self.rms_mean = np.array(self.rms_mean)
+        self.rms_std = np.array(self.rms_std)
+        return self.xs, self.k, self.nmodes, self.rms_mean, self.rms_std
    
           
     #COMPUTE ALL THE XS IN 2D
@@ -229,7 +235,12 @@ class CrossSpectrum_nmaps():
            self.rms_xs_std.append(np.std(rms_xs, axis=1))
         return self.rms_xs_mean, self.rms_xs_std
 
-    def run_noise_sims_2d(self, n_sims, seed=None):
+    def run_noise_sims_2d(self, n_sims, seed=None, no_of_k_bins = 15):
+        n_k = no_of_k_bins
+
+        self.k_bin_edges_par = np.logspace(-2.0, np.log10(1.0), n_k)
+        self.k_bin_edges_perp = np.logspace(-2.0 + np.log10(2), np.log10(1.5), n_k)
+
         self.rms_xs_mean_2D = []
         self.rms_xs_std_2D = []
         for i in range(0,len(self.maps)-1, 2):

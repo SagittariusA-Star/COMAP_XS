@@ -52,15 +52,15 @@ def run_all_methods(feed1,feed2, n_of_splits, two_dimensions):
 
    if two_dimensions == False:
       #rms_mean, rms_sig = my_xs.run_noise_sims(50) #these rms's are arrays of 14 elements, that give error bars (number of bin edges minus 1)
-      rms_mean_2D, rms_sig_2D = my_xs.run_noise_sims_2D(50) #these rms's are arrays of 14 elements, that give error bars (number of bin edges minus 1)
+      rms_mean_2D, rms_sig_2D = my_xs.run_noise_sims_2d(50) #these rms's are arrays of 14 elements, that give error bars (number of bin edges minus 1)
       #xs, k, nmodes = my_xs.calculate_xs()
-      xs, k, nmodes = my_xs.calculate_xs_with_tf()
+      xs, k, nmodes, rms_mean, rms_sig = my_xs.calculate_xs_with_tf()
       np.save('knmodes.npy',np.array(k))
       np.save('nmodes.npy',np.array(nmodes))
      
       #plot all cross-spectra that have been calculated
       my_xs.plot_xs(k, xs, rms_sig, rms_mean, save=True, outdir = "")
-      my_xs.make_h5(outdir)
+      my_xs.make_h5(outdir)  
 
    if two_dimensions == True:
       xs, k, nmodes = my_xs.calculate_xs_2d()
@@ -155,7 +155,9 @@ for g in range(number_of_maps):
    #make xs for all feed-combinations
    pool = multiprocessing.Pool(15) #here number of cores
    np.array(pool.map(all_feed_combo_xs, feed_combos))
-
+   print("Finished XS")
+   
+print("Finished loop")
 
 print ('STAGE 4/4: Calculating the mean of cross-spectra from all combinations.')
 k_arr = []
