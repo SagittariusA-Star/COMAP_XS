@@ -112,6 +112,20 @@ def compute_power_spec3d(x, k_bin_edges, dx=1, dy=1, dz=1):
     k = (k_bin_edges[1:] + k_bin_edges[:-1]) / 2.0
     Pk = np.zeros_like(k)
     Pk[np.where(nmodes > 0)] = Pk_nmodes[np.where(nmodes > 0)] / nmodes[np.where(nmodes > 0)]
+  
+    return Pk, k, nmodes
+
+def compute_power_spec3d_with_tf(x, sigma, k_bin_edges, weights, tf_filt, tf_beam, dx=1, dy=1, dz=1):
+    print("hei")
+
+
+    Pk, k, nmodes = self.compute_power_spec_perp_vs_par(x, k_bin_edges, dx, dy, dz)
+
+    print("_______________________")
+    print(Pk.shape, k.shape, nmodes.shape)
+    print("_______________________")
+    sys.exit()
+
     return Pk, k, nmodes
 
 def compute_power_spec_perp_vs_par(x, k_bin_edges, dx=1, dy=1, dz=1): #for each k-vec get absolute value in parallel (redshift) and perp (angle) direction

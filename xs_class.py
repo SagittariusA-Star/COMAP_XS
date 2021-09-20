@@ -104,6 +104,51 @@ class CrossSpectrum_nmaps():
         self.nmodes = np.array(self.nmodes)
         return self.xs, self.k, self.nmodes
    
+   #COMPUTE ALL THE XS 
+    def calculate_xs_with_tf(self, no_of_k_bins=15): #here take the number of k-bins as an argument 
+        
+        self.get_tf()
+
+        n_k = no_of_k_bins
+        self.k_bin_edges = np.logspace(-2.0, np.log10(1.5), n_k)
+        calculated_xs = self.get_information()        
+
+        #store each cross-spectrum and corresponding k and nmodes by appending to these lists:
+        self.xs = []
+        self.k = []
+        self.nmodes = []
+        index = -1
+        for i in range(0,len(self.maps)-1, 2):
+           j = i + 1
+           index += 1
+           print ('Computing xs between ' + calculated_xs[index][1] + ' and ' + calculated_xs[index][2] + '.')
+           self.normalize_weights(i,j) #normalize weights for given xs pair of maps
+
+           wi = self.maps[i].w
+           wj = self.maps[j].w
+           wh_i = np.where(np.log10(wi) < -0.5)
+           wh_j = np.where(np.log10(wj) < -0.5)
+           wi[wh_i] = 0.0
+           wj[wh_j] = 0.0
+            
+           spectrum_weights = 1 / self.rms_xs_std_2D[i] ** 2
+
+           my_xs, my_k, my_nmodes = tools.compute_cross_spec3d_with_tf(
+           (self.maps[i].map * np.sqrt(wi*wj), self.maps[j].map * np.sqrt(wi*wj)),
+           self.k_bin_edges, spectrum_weights, self.transfer_filt_2D, self.transfer_sim_2D, 
+           dx=self.maps[i].dx, dy=self.maps[i].dy, dz=self.maps[i].dz)
+
+           self.reverse_normalization(i,j) #go back to the previous state to normalize again with a different map-pair
+
+           self.xs.append(my_xs)
+           self.k.append(my_k)
+           self.nmodes.append(my_nmodes)
+           
+        self.xs = np.array(self.xs)
+        self.k = np.array(self.k)
+        self.nmodes = np.array(self.nmodes)
+        return self.xs, self.k, self.nmodes
+   
           
     #COMPUTE ALL THE XS IN 2D
     def calculate_xs_2d(self, no_of_k_bins=15): #here take the number of k-bins as an argument 
@@ -329,3 +374,52 @@ class CrossSpectrum_nmaps():
           #plt.show()
 
 
+    def get_tf(self):
+        #theory spectrum
+        k_th = np.load('k.npy')
+        ps_th = np.load('ps.npy')
+        ps_th_nobeam = np.load('psn.npy') #instrumental beam, less sensitive to small scales line broadening, error bars go up at high k, something with the intrinsic resolution of the telescope (?)
+
+        #in 2D
+        ps_2d_smooth = np.load('ps_2d_smooth.npy')
+        ps_2d_notsmooth = np.load('ps_2d_notsmooth.npy')
+        #ps_2d_smooth = np.load('smooth_mean.npy')
+        #ps_2d_notsmooth = np.load('notsmooth_mean.npy')
+        #ps_2d_smooth = np.load('ps_smooth_single.npy') #'ps_2dfrom3d.npy'
+        #ps_2d_notsmooth = np.load('ps_notsmooth_single.npy')
+
+        k_smooth = np.load('k_smooth.npy')
+        #k_notsmooth = np.load('k_notsmooth.npy')
+
+        #print (ps_2d_smooth/ps_2d_notsmooth)
+
+        k_perp_sim = k_smooth[0]
+        k_par_sim = k_smooth[1]
+
+        self.transfer_sim_2D = scipy.interpolate.interp2d(k_perp_sim, k_par_sim, ps_2d_smooth/ps_2d_notsmooth)
+        #values from COPPS
+        ps_copps = 8.746e3 * ps_th / ps_th_nobeam #shot noise level
+        ps_copps_nobeam = 8.7e3
+
+        self.transfer = scipy.interpolate.interp1d(k_th, ps_th / ps_th_nobeam) #transfer(k) always < 1, values at high k are even larger and std as well
+        P_theory = scipy.interpolate.interp1d(k_th,ps_th_nobeam)
+
+        #Read the transfer function associated with effects of filtering
+        def filtering_TF(filename, dim):
+            if dim == 1:
+                with h5py.File(filename, mode="r") as my_file:
+                    k = np.array(my_file['k'][:]) 
+                    TF_1D = np.array(my_file['TF'][:]) 
+                return k, TF_1D
+            if dim == 2:
+                with h5py.File(filename, mode="r") as my_file:
+                    k_perp = np.array(my_file['k'][0]) 
+                    k_par = np.array(my_file['k'][1]) 
+                    TF_2D = np.array(my_file['TF'][:]) 
+                return k_perp, k_par, TF_2D
+
+        k_filtering_1D, TF_filtering_1D = filtering_TF('TF_1d.h5', 1)
+        self.transfer_filt = scipy.interpolate.interp1d(k_filtering_1D, TF_filtering_1D) 
+
+        k_perp_filt, k_par_filt, TF_filtering_2D = filtering_TF('TF_2d.h5', 2)
+        self.transfer_filt_2D = scipy.interpolate.interp2d(k_perp_filt, k_par_filt, TF_filtering_2D)
