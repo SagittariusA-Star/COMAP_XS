@@ -198,7 +198,7 @@ number_of_maps = len(map_files)
 number_of_ff_variables = len(feed_feed_variables)
 maps_per_jk = int(number_of_maps/number_of_ff_variables)
 feed_combos = list(range(19*19)) #number of combinations between feeds
-"""
+
 print ('STAGE 3/4: Calculating cross-spectra for all split-split feed-feed combinations.')
 for g in range(number_of_maps):
    mapname = map_files[g]
@@ -209,7 +209,7 @@ for g in range(number_of_maps):
    #make xs for all feed-combinations
    pool = multiprocessing.Pool(15) #here number of cores
    np.array(pool.map(all_feed_combo_xs, feed_combos))
-"""
+
 print ('STAGE 4/4: Calculating the mean of cross-spectra from all combinations.')
 k_arr = []
 xs_mean_arr = []
@@ -234,6 +234,8 @@ for mn in range(number_of_maps):
       
       kx, ky = k
       k_bin_edges = np.logspace(-2.0, np.log10(1.5), len(kx) + 1)
+      #k_bin_edges = k[1:] - k[:-1]
+      #print(k_bin_edges)
       weights = 1 / (xs_sigma / (tf_beam2d(kx, ky) * tf_filt2d(kx, ky))) ** 2
 
       xs_mean /= (tf_beam2d(kx, ky) * tf_filt2d(kx, ky))
@@ -242,16 +244,15 @@ for mn in range(number_of_maps):
       kgrid = np.sqrt(sum(ki ** 2 for ki in np.meshgrid(kx, ky, indexing='ij')))
 
       Ck_nmodes         = np.histogram(kgrid[kgrid > 0], bins=k_bin_edges, weights=xs_mean[kgrid > 0])[0]
-      rms_mean_nmodes   = np.histogram(kgrid[kgrid > 0], bins=k_bin_edges, weights=xs_sigma[kgrid > 0])[0]
-      rms_nmodes        = np.histogram(kgrid[kgrid > 0], bins=k_bin_edges, weights=weights[kgrid > 0])[0]
+      inv_var_nmodes    = np.histogram(kgrid[kgrid > 0], bins=k_bin_edges, weights=weights[kgrid > 0])[0]
       nmodes            = np.histogram(kgrid[kgrid > 0], bins=k_bin_edges)[0]
 
       # Ck = Ck_nmodes / nmodes
       k = (k_bin_edges[1:] + k_bin_edges[:-1]) / 2.0
       Ck = np.zeros_like(k)
       rms = np.zeros_like(k)
-      Ck[np.where(nmodes > 0)] = Ck_nmodes[np.where(nmodes > 0)] / rms_nmodes[np.where(nmodes > 0)]
-      rms[np.where(nmodes > 0)] = np.sqrt(1 / rms_nmodes[np.where(nmodes > 0)]) 
+      Ck[np.where(nmodes > 0)] = Ck_nmodes[np.where(nmodes > 0)] / inv_var_nmodes[np.where(nmodes > 0)]
+      rms[np.where(nmodes > 0)] = np.sqrt(1 / inv_var_nmodes[np.where(nmodes > 0)]) 
 
 
    k_arr.append(k)
