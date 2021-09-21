@@ -109,14 +109,14 @@ def get_tf():
    ps_th_nobeam = np.load('psn.npy') #instrumental beam, less sensitive to small scales line broadening, error bars go up at high k, something with the intrinsic resolution of the telescope (?)
 
    #in 2D
-   ps_2d_smooth = np.load('ps_2d_smooth.npy')
-   ps_2d_notsmooth = np.load('ps_2d_notsmooth.npy')
+   #ps_2d_smooth = np.load('ps_2d_smooth.npy')
+   #ps_2d_notsmooth = np.load('ps_2d_notsmooth.npy')
    #ps_2d_smooth = np.load('smooth_mean.npy')
    #ps_2d_notsmooth = np.load('notsmooth_mean.npy')
    #ps_2d_smooth = np.load('ps_smooth_single.npy') #'ps_2dfrom3d.npy'
    #ps_2d_notsmooth = np.load('ps_notsmooth_single.npy')
 
-   #tf_2d_beam = np.load("transfer_functions/beam_transfer_func_2D.npy")
+   tf_2d_beam = np.load("transfer_functions/beam_transfer_func_2D.npy")
 
    k_smooth = np.load('k_smooth.npy')
    #k_notsmooth = np.load('k_notsmooth.npy')
@@ -126,8 +126,8 @@ def get_tf():
    k_perp_sim = k_smooth[0]
    k_par_sim = k_smooth[1]
 
-   #transfer_sim_2D = scipy.interpolate.interp2d(k_perp_sim, k_par_sim, tf_2d_beam)
-   transfer_sim_2D = scipy.interpolate.interp2d(k_perp_sim, k_par_sim, ps_2d_smooth / ps_2d_notsmooth)
+   transfer_sim_2D = scipy.interpolate.interp2d(k_perp_sim, k_par_sim, tf_2d_beam)
+   #transfer_sim_2D = scipy.interpolate.interp2d(k_perp_sim, k_par_sim, ps_2d_smooth / ps_2d_notsmooth)
    #values from COPPS
    ps_copps = 8.746e3 * ps_th / ps_th_nobeam #shot noise level
    ps_copps_nobeam = 8.7e3
