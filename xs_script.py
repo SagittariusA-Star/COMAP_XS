@@ -5,6 +5,7 @@ import corner
 import h5py
 import sys
 import re
+import scipy.interpolate
 
 import tools
 import map_cosmo
@@ -50,7 +51,7 @@ def run_all_methods(feed1,feed2, n_of_splits, two_dimensions):
 
    calculated_xs = my_xs.get_information() #gives the xs, k, rms_sig, rms_mean index with corresponding map-pair
 
-   if two_dimensions == False:
+   """if two_dimensions == False:
       #rms_mean, rms_sig = my_xs.run_noise_sims(50) #these rms's are arrays of 14 elements, that give error bars (number of bin edges minus 1)
       rms_mean_2D, rms_sig_2D = my_xs.run_noise_sims_2d(50) #these rms's are arrays of 14 elements, that give error bars (number of bin edges minus 1)
       #xs, k, nmodes = my_xs.calculate_xs()
@@ -61,11 +62,11 @@ def run_all_methods(feed1,feed2, n_of_splits, two_dimensions):
       #plot all cross-spectra that have been calculated
       my_xs.plot_xs(k, xs, rms_sig, rms_mean, save=True, outdir = "")
       my_xs.make_h5(outdir)  
-
-   if two_dimensions == True:
-      xs, k, nmodes = my_xs.calculate_xs_2d()
-      rms_mean, rms_sig = my_xs.run_noise_sims_2d(50)
-      my_xs.make_h5_2d(outdir)
+   """
+   #if two_dimensions == True:
+   xs, k, nmodes = my_xs.calculate_xs_2d()
+   rms_mean, rms_sig = my_xs.run_noise_sims_2d(50)
+   my_xs.make_h5_2d(outdir)
 
 def all_feed_combo_xs(p):
    i = p // 19 + 1 #floor division, divides and returns the integer value of the quotient (it dumps the digits after the decimal)
@@ -83,7 +84,7 @@ def read_number_of_splits(mapfile, jk):
        my_map = np.array(my_file['/jackknives/map_' + jk])
        sh = my_map.shape   
        number_of_splits = sh[0]   
-   return number_of_splits
+   return number_of_splitscalculate_xs
 
 def read_field_jklist(mappath):
    map_name = mappath.rpartition('/')[-1] #get rid of the path, leave only the name of the map
@@ -100,6 +101,59 @@ def read_field_jklist(mappath):
 def read_jk(single_map_name):
    jk_name = single_map_name.split('_')[2]
    return jk_name
+
+def get_tf():
+   #theory spectrum
+   k_th = np.load('k.npy')
+   ps_th = np.load('ps.npy')
+   ps_th_nobeam = np.load('psn.npy') #instrumental beam, less sensitive to small scales line broadening, error bars go up at high k, something with the intrinsic resolution of the telescope (?)
+
+   #in 2D
+   ps_2d_smooth = np.load('ps_2d_smooth.npy')
+   ps_2d_notsmooth = np.load('ps_2d_notsmooth.npy')
+   #ps_2d_smooth = np.load('smooth_mean.npy')
+   #ps_2d_notsmooth = np.load('notsmooth_mean.npy')
+   #ps_2d_smooth = np.load('ps_smooth_single.npy') #'ps_2dfrom3d.npy'
+   #ps_2d_notsmooth = np.load('ps_notsmooth_single.npy')
+
+   k_smooth = np.load('k_smooth.npy')
+   #k_notsmooth = np.load('k_notsmooth.npy')
+
+   #print (ps_2d_smooth/ps_2d_notsmooth)
+
+   k_perp_sim = k_smooth[0]
+   k_par_sim = k_smooth[1]
+
+   transfer_sim_2D = scipy.interpolate.interp2d(k_perp_sim, k_par_sim, ps_2d_smooth/ps_2d_notsmooth)
+   #values from COPPS
+   ps_copps = 8.746e3 * ps_th / ps_th_nobeam #shot noise level
+   ps_copps_nobeam = 8.7e3
+
+   transfer = scipy.interpolate.interp1d(k_th, ps_th / ps_th_nobeam) #transfer(k) always < 1, values at high k are even larger and std as well
+   P_theory = scipy.interpolate.interp1d(k_th,ps_th_nobeam)
+
+   #Read the transfer function associated with effects of filtering
+   def filtering_TF(filename, dim):
+      if dim == 1:
+            with h5py.File(filename, mode="r") as my_file:
+               k = np.array(my_file['k'][:]) 
+               TF_1D = np.array(my_file['TF'][:]) 
+            return k, TF_1D
+      if dim == 2:
+            with h5py.File(filename, mode="r") as my_file:
+               k_perp = np.array(my_file['k'][0]) 
+               k_par = np.array(my_file['k'][1]) 
+               TF_2D = np.array(my_file['TF'][:]) 
+            return k_perp, k_par, TF_2D
+
+   k_filtering_1D, TF_filtering_1D = filtering_TF('TF_1d.h5', 1)
+   transfer_filt = scipy.interpolate.interp1d(k_filtering_1D, TF_filtering_1D) 
+
+   k_perp_filt, k_par_filt, TF_filtering_2D = filtering_TF('TF_2d.h5', 2)
+   transfer_filt_2D = scipy.interpolate.interp2d(k_perp_filt, k_par_filt, TF_filtering_2D)
+
+   return transfer, transfer_filt, transfer_sim_2D, transfer_filt_2D
+
 
 #read from the command:
 mappath, field, jk_list, signal_path = process_params(sys.argv[-1])
@@ -144,7 +198,7 @@ number_of_maps = len(map_files)
 number_of_ff_variables = len(feed_feed_variables)
 maps_per_jk = int(number_of_maps/number_of_ff_variables)
 feed_combos = list(range(19*19)) #number of combinations between feeds
-
+"""
 print ('STAGE 3/4: Calculating cross-spectra for all split-split feed-feed combinations.')
 for g in range(number_of_maps):
    mapname = map_files[g]
@@ -155,10 +209,7 @@ for g in range(number_of_maps):
    #make xs for all feed-combinations
    pool = multiprocessing.Pool(15) #here number of cores
    np.array(pool.map(all_feed_combo_xs, feed_combos))
-   print("Finished XS")
-   
-print("Finished loop")
-
+"""
 print ('STAGE 4/4: Calculating the mean of cross-spectra from all combinations.')
 k_arr = []
 xs_mean_arr = []
@@ -176,11 +227,36 @@ for mn in range(number_of_maps):
       k_edges_perp.append(k_bin_edges_perp)
       k_edges_par.append(k_bin_edges_par)
    if two_dimensions == False:
-      k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_grid(map_files[mn], outdir) #saves the chi2 grid for each split-combo
-   
+      #k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_grid(map_files[mn], outdir) #saves the chi2 grid for each split-combo
+      k, k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_2D(map_files[mn], outdir)
+      
+      tf_beam2d, tf_filt2d = get_tf()[2:]
+      
+      kx, ky = k
+      k_bin_edges = np.logspace(-2.0, np.log10(1.5), len(kx) + 1)
+      weights = 1 / (xs_sigma / (tf_beam2d(kx, ky) * tf_filt2d(kx, ky))) ** 2
+
+      xs_mean /= (tf_beam2d(kx, ky) * tf_filt2d(kx, ky))
+      xs_mean *= weights
+      
+      kgrid = np.sqrt(sum(ki ** 2 for ki in np.meshgrid(kx, ky, indexing='ij')))
+
+      Ck_nmodes         = np.histogram(kgrid[kgrid > 0], bins=k_bin_edges, weights=xs_mean[kgrid > 0])[0]
+      rms_mean_nmodes   = np.histogram(kgrid[kgrid > 0], bins=k_bin_edges, weights=xs_sigma[kgrid > 0])[0]
+      rms_nmodes        = np.histogram(kgrid[kgrid > 0], bins=k_bin_edges, weights=weights[kgrid > 0])[0]
+      nmodes            = np.histogram(kgrid[kgrid > 0], bins=k_bin_edges)[0]
+
+      # Ck = Ck_nmodes / nmodes
+      k = (k_bin_edges[1:] + k_bin_edges[:-1]) / 2.0
+      Ck = np.zeros_like(k)
+      rms = np.zeros_like(k)
+      Ck[np.where(nmodes > 0)] = Ck_nmodes[np.where(nmodes > 0)] / rms_nmodes[np.where(nmodes > 0)]
+      rms[np.where(nmodes > 0)] = np.sqrt(1 / rms_nmodes[np.where(nmodes > 0)]) 
+
+
    k_arr.append(k)
-   xs_mean_arr.append(xs_mean)
-   xs_sigma_arr.append(xs_sigma)
+   xs_mean_arr.append(Ck)
+   xs_sigma_arr.append(rms)
    field_arr.append(field)
    ff_jk_arr.append(ff_jk)
    split_names_arr.append(split_names)
