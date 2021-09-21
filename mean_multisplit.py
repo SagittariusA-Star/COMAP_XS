@@ -187,8 +187,8 @@ def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy, o
    fig.tight_layout()
    #fig.set_figwidth(8)
    ax1 = fig.add_subplot(211)
-   ax1.errorbar(k, k * xs_mean / (transfer(k)*transfer_filt(k)), k * xs_sigma / (transfer(k)*transfer_filt(k)), fmt='o', color=plotcolor)
-   #ax1.errorbar(k, k * xs_mean, k * xs_sigma, fmt='o', label=r'$k\tilde{C}_{data}(k)$')
+   #ax1.errorbar(k, k * xs_mean / (transfer(k)*transfer_filt(k)), k * xs_sigma / (transfer(k)*transfer_filt(k)), fmt='o', color=plotcolor)
+   ax1.errorbar(k, k * xs_mean, k * xs_sigma, fmt='o', label=r'$k\tilde{C}_{data}(k)$')
    ax1.plot(k, 0 * xs_mean, 'k', alpha=0.4)
    if signal_path != None:
        ax1.plot(inputk, k * inputPS / transfer(k), 'r', alpha=0.5, label = r"$\tilde{P}_\mathrm{signal}(k)$")
@@ -199,15 +199,17 @@ def xs_with_model(figure_name, k, xs_mean, xs_sigma, titlename, scan_strategy, o
    ax1.set_ylabel(r'$k\tilde{C}(k)$ [$\mu$K${}^2$ Mpc${}^2$]', fontsize=14)
    if not np.isnan(lim):
       if scan_strategy == 'ces':
-         ax1.set_ylim(-lim*10, lim*10)              # ax1.set_ylim(0, 0.1)
+         #ax1.set_ylim(-lim*3, lim*3)              # ax1.set_ylim(0, 0.1)
+         ax1.set_ylim(-1e5, 1e5)
       if scan_strategy == 'liss':
-         ax1.set_ylim(-lim*4, lim*4)              # ax1.set_ylim(0, 0.1)
+         ax1.set_ylim(-2e5, 2e5)
+         #ax1.set_ylim(-lim*4, lim*4)              # ax1.set_ylim(0, 0.1)
    ax1.set_xlim(0.04,1.)
    ax1.set_xscale('log')
    ax1.set_title(titlename)
    ax1.grid()
    #ax1.set_yscale("symlog", linthresh = 1e4)
-
+   #ax1.set_ylim(-0.5e6, 0.5e6)
    #ax1.set_xlabel(r'$k$ [Mpc${}^{-1}$]', fontsize=14)
    labnums = [0.05,0.1, 0.2, 0.5,1.]
    ax1.set_xticks(labnums)

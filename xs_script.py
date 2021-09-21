@@ -116,6 +116,8 @@ def get_tf():
    #ps_2d_smooth = np.load('ps_smooth_single.npy') #'ps_2dfrom3d.npy'
    #ps_2d_notsmooth = np.load('ps_notsmooth_single.npy')
 
+   #tf_2d_beam = np.load("transfer_functions/beam_transfer_func_2D.npy")
+
    k_smooth = np.load('k_smooth.npy')
    #k_notsmooth = np.load('k_notsmooth.npy')
 
@@ -124,7 +126,8 @@ def get_tf():
    k_perp_sim = k_smooth[0]
    k_par_sim = k_smooth[1]
 
-   transfer_sim_2D = scipy.interpolate.interp2d(k_perp_sim, k_par_sim, ps_2d_smooth/ps_2d_notsmooth)
+   #transfer_sim_2D = scipy.interpolate.interp2d(k_perp_sim, k_par_sim, tf_2d_beam)
+   transfer_sim_2D = scipy.interpolate.interp2d(k_perp_sim, k_par_sim, ps_2d_smooth / ps_2d_notsmooth)
    #values from COPPS
    ps_copps = 8.746e3 * ps_th / ps_th_nobeam #shot noise level
    ps_copps_nobeam = 8.7e3
@@ -198,7 +201,7 @@ number_of_maps = len(map_files)
 number_of_ff_variables = len(feed_feed_variables)
 maps_per_jk = int(number_of_maps/number_of_ff_variables)
 feed_combos = list(range(19*19)) #number of combinations between feeds
-
+"""
 print ('STAGE 3/4: Calculating cross-spectra for all split-split feed-feed combinations.')
 for g in range(number_of_maps):
    mapname = map_files[g]
@@ -209,7 +212,7 @@ for g in range(number_of_maps):
    #make xs for all feed-combinations
    pool = multiprocessing.Pool(15) #here number of cores
    np.array(pool.map(all_feed_combo_xs, feed_combos))
-
+"""
 print ('STAGE 4/4: Calculating the mean of cross-spectra from all combinations.')
 k_arr = []
 xs_mean_arr = []
