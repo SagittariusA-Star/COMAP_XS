@@ -4,7 +4,7 @@ import h5py
 import numpy as np
 import itertools as itr
 import tools
-
+import sys
 
 # --- READ jk_list ---
 
@@ -103,7 +103,7 @@ def read_map(mappath, field, control_variables, test_variables, feed_feed_variab
                   slc[axis_index] = all_different_possibilities[i][j] #choose 0 or 1 for this split
                   for_naming.append(split_names[axis_index])
                   for_naming.append(all_different_possibilities[i][j])
-                 
+
                my_map = map_split[tuple(slc)] #slice the map for the current combination of splits
                my_rms = rms_split[tuple(slc)] #slice the rms-map for the current combination of splits
                name = field + '_' + 'map' + '_' + test_variable
@@ -130,6 +130,7 @@ def read_map(mappath, field, control_variables, test_variables, feed_feed_variab
             map_split = np.array(multisplits['map_' + test_variable][:])
             rms_split = np.array(multisplits['rms_' + test_variable][:])
             shp = map_split.shape
+
             how_many_twos = len(all_variables) - len(test_variables) + 1 #how to reshape the map with respect to splits
             new_shape = []
             for i in range(how_many_twos):
@@ -164,7 +165,9 @@ def read_map(mappath, field, control_variables, test_variables, feed_feed_variab
                   slc[axis_index] = all_different_possibilities[i][j] #choose 0 or 1 for this split
                   for_naming.append(split_names[axis_index])
                   for_naming.append(all_different_possibilities[i][j])
-                 
+               
+               #print("slice:", tuple(slc), for_naming, map_split[tuple(slc)].shape, map_split.shape, all_different_possibilities, all_axes_to_combine, split_names.index(ff_variable), ff_variable, split_names)
+               
                my_map = map_split[tuple(slc)] #slice the map for the current combination of splits
                my_rms = rms_split[tuple(slc)] #slice the rms-map for the current combination of splits
                name = field + '_' + 'map' + '_' + ff_variable
@@ -193,15 +196,14 @@ def read_map_created(mapfile):
          rms_old = np.array(my_file['/jackknives/rms_elev'][:])
    return map_old, rms_old
      
-def write_map_created(mapfile1, new_map, new_rms, test_variable, cesc, field):
-   outdir = mappath.split("/")[-1].split(".")[0]
+def write_map_created(mapfile1, new_map, new_rms, test_variable, cesc, field, outdir):
 
    with h5py.File(mapfile1, mode="r") as my_file1:
          x = np.array(my_file1['x'][:])
          y = np.array(my_file1['y'][:])
 
    outname1 = field + '_map_elev_' + test_variable + '_subtr_cesc_' + cesc +'.h5'
-   print ('Creating the file ' + outname1)
+   #print ('Creating the file ' + outname1)
    tools.ensure_dir_exists('split_maps/' + outdir)
 
    outname = 'split_maps/' + outdir + '/' + outname1
@@ -215,7 +217,7 @@ def write_map_created(mapfile1, new_map, new_rms, test_variable, cesc, field):
    f.close()
    return outname1
 
-def null_test_subtract(maps_created, test_variables, field):
+def null_test_subtract(maps_created, test_variables, field, outdir):
    print ('Subtracting test-variable maps for the null-tests.')
    '''
    We want to subract split-maps (split according to test variables) for both cesc = 0 and cesc = 1 and then create new map-files for the FPXS.
@@ -223,30 +225,61 @@ def null_test_subtract(maps_created, test_variables, field):
    'co6_map_elev_ambt_1_cesc_1.h5'] is repeating for different test variables.
    We want: 'co6_map_elev_ambt_1_cesc_0.h5 - co6_map_elev_ambt_0_cesc_0.h5' and call it 'co6_map_elev_ambt_subtr_cesc_0.h5'.
    '''
+   #outdir_subtr = outdir + "_subtr"
    number_of_maps = len(maps_created) 
    mapfiles = []
    new_subtracted_maps = []
    for i in range(number_of_maps):
-      mapfiles.append('split_maps/' + maps_created[i])
+      mapfiles.append('split_maps/' + outdir + "/" + maps_created[i])
    for i in range(len(test_variables)):
       test_variable = test_variables[i]
       mapfile1 = mapfiles[i*4] #test_variable = 0, cesc = 0
       mapfile2 = mapfiles[i*4+2] #test_variable = 1, cesc = 0
       mapfile3 = mapfiles[i*4+1] #test_variable = 0, cesc = 1
       mapfile4 = mapfiles[i*4+3] #test_variable = 1, cesc = 1
+      
+      
       map1, rms1 = read_map_created(mapfile1)
       map2, rms2 = read_map_created(mapfile2)
       map3, rms3 = read_map_created(mapfile3)
       map4, rms4 = read_map_created(mapfile4)
-      map12 = map1-map2
-      rms12 = np.sqrt(rms1**2 + rms2**2)
-      map34 = map3-map4
-      rms34 = np.sqrt(rms3**2 + rms4**2)
-      new_map12 = write_map_created(mapfile1, map12, rms12, test_variable,'0',field)
-      new_map34 = write_map_created(mapfile1, map34, rms34, test_variable,'1',field)
+      
+      where12 = np.where(rms1 * rms2 != 0)
+      map12 = np.zeros_like(map1)
+      rms12 = np.zeros_like(rms1)
+      
+      map12[where12] = map1[where12] - map2[where12] 
+      rms12[where12] = np.sqrt(rms1[where12]**2 + rms2[where12]**2)
+      
+      where34 = np.where(rms3 * rms4 != 0)
+      map34 = np.zeros_like(map3)
+      rms34 = np.zeros_like(rms3)
+
+      map34[where34] = map3[where34] - map4[where34]
+      rms34[where34] = np.sqrt(rms3[where34]**2 + rms4[where34]**2)
+      
+      new_map12 = write_map_created(mapfile1, map12, rms12, test_variable,'0',field, outdir)
+      new_map34 = write_map_created(mapfile1, map34, rms34, test_variable,'1',field, outdir)
+
       new_subtracted_maps.append(new_map12)
       new_subtracted_maps.append(new_map34)
-   print (new_subtracted_maps)
+
+      """
+      print("---------------------------------------------------------------")
+      print("---------------------------------------------------------------")
+      print("All zero map12:", np.allclose(map12, np.zeros_like(map12)))
+      print("All zero map1:", np.allclose(map1, np.zeros_like(map1)))
+      print("All zero map2:", np.allclose(map2, np.zeros_like(map2)))
+      print("All close map1 and map2:", np.allclose(map1, map2))
+
+      print("All zero map34:", np.allclose(map34, np.zeros_like(map34)))
+      print("All zero map3:", np.allclose(map3, np.zeros_like(map3)))
+      print("All zero map4:", np.allclose(map4, np.zeros_like(map4)))
+      print("All close map3 and map4:", np.allclose(map3, map4))
+      print("---------------------------------------------------------------")
+   """
+   print("Null test map name:",  new_subtracted_maps)
+   
    return new_subtracted_maps
 
 def read_field_jklist(mappath):

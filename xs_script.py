@@ -48,7 +48,7 @@ def process_params(param_file):
 
 def run_all_methods(feed1,feed2, n_of_splits, two_dimensions):
    my_xs = xs_class.CrossSpectrum_nmaps(mapfile,jk,feed1, feed2, n_of_splits)
-
+   
    calculated_xs = my_xs.get_information() #gives the xs, k, rms_sig, rms_mean index with corresponding map-pair
 
    """if two_dimensions == False:
@@ -64,6 +64,7 @@ def run_all_methods(feed1,feed2, n_of_splits, two_dimensions):
       my_xs.make_h5(outdir)  
    """
    #if two_dimensions == True:
+   print(mapfile)
    xs, k, nmodes = my_xs.calculate_xs_2d()
    rms_mean, rms_sig = my_xs.run_noise_sims_2d(50)
    my_xs.make_h5_2d(outdir)
@@ -84,7 +85,7 @@ def read_number_of_splits(mapfile, jk):
        my_map = np.array(my_file['/jackknives/map_' + jk])
        sh = my_map.shape   
        number_of_splits = sh[0]   
-   return number_of_splitscalculate_xs
+   return number_of_splits
 
 def read_field_jklist(mappath):
    map_name = mappath.rpartition('/')[-1] #get rid of the path, leave only the name of the map
@@ -118,15 +119,23 @@ def get_tf():
 
    tf_2d_beam = np.load("transfer_functions/beam_transfer_func_2D.npy")
 
+   tf_2d_pix_win    = np.load("transfer_functions/pixel_window_v4.npy")
+   tf_1d_pix_win    = np.load("transfer_functions/pixel_window_1D_v4.npy")
+   k_1d_pix_win     = np.load('transfer_functions/k_arr_1D_v4.npy')[0, ...]
    k_smooth = np.load('k_smooth.npy')
    #k_notsmooth = np.load('k_notsmooth.npy')
-
+   
    #print (ps_2d_smooth/ps_2d_notsmooth)
 
    k_perp_sim = k_smooth[0]
    k_par_sim = k_smooth[1]
 
    transfer_sim_2D = scipy.interpolate.interp2d(k_perp_sim, k_par_sim, tf_2d_beam)
+   transfer_pix_2D = scipy.interpolate.interp2d(k_perp_sim, k_par_sim, tf_2d_pix_win)
+   
+   transfer_pix_1D = scipy.interpolate.interp1d(k_1d_pix_win, tf_1d_pix_win)
+
+   
    #transfer_sim_2D = scipy.interpolate.interp2d(k_perp_sim, k_par_sim, ps_2d_smooth / ps_2d_notsmooth)
    #values from COPPS
    ps_copps = 8.746e3 * ps_th / ps_th_nobeam #shot noise level
@@ -155,7 +164,13 @@ def get_tf():
    k_perp_filt, k_par_filt, TF_filtering_2D = filtering_TF('TF_2d.h5', 2)
    transfer_filt_2D = scipy.interpolate.interp2d(k_perp_filt, k_par_filt, TF_filtering_2D)
 
-   return transfer, transfer_filt, transfer_sim_2D, transfer_filt_2D
+   k_perp_filt, k_par_filt, TF_filtering_2D_ces = filtering_TF('transfer_functions/2D_TF_CES.h5', 2)
+   transfer_filt_2D_ces = scipy.interpolate.interp2d(k_perp_filt, k_par_filt, TF_filtering_2D_ces)
+
+   k_perp_filt, k_par_filt, TF_filtering_2D_liss = filtering_TF('transfer_functions/2D_TF_Liss.h5', 2)
+   transfer_filt_2D_liss = scipy.interpolate.interp2d(k_perp_filt, k_par_filt, TF_filtering_2D_liss)
+
+   return transfer, transfer_filt, transfer_pix_1D, transfer_sim_2D, transfer_filt_2D, transfer_filt_2D_ces, transfer_filt_2D_liss, transfer_pix_2D 
 
 
 #read from the command:
@@ -194,14 +209,16 @@ control_variables, test_variables, feed_feed_variables, all_variables, feed_and_
 map_files = read_multisplit.read_map(mappath, field, control_variables, test_variables, feed_feed_variables, all_variables, feed_and_test, feed_and_control)
 
 #Perform null-test
-#new_subtracted_maps = read_multisplit.null_test_subtract(map_files, test_variables, field)
-#map_files = new_subtracted_maps
+new_subtracted_maps = read_multisplit.null_test_subtract(map_files, test_variables, field, outdir)
+map_files = new_subtracted_maps
+#outdir += "_subtr"
+
 
 number_of_maps = len(map_files)
 number_of_ff_variables = len(feed_feed_variables)
 maps_per_jk = int(number_of_maps/number_of_ff_variables)
 feed_combos = list(range(19*19)) #number of combinations between feeds
-"""
+
 print ('STAGE 3/4: Calculating cross-spectra for all split-split feed-feed combinations.')
 for g in range(number_of_maps):
    mapname = map_files[g]
@@ -210,9 +227,11 @@ for g in range(number_of_maps):
    mapfile = 'split_maps/' + outdir + '/' + mapname
    n_of_splits = read_number_of_splits(mapfile, jk)
    #make xs for all feed-combinations
+   
    pool = multiprocessing.Pool(15) #here number of cores
+   
    np.array(pool.map(all_feed_combo_xs, feed_combos))
-"""
+
 print ('STAGE 4/4: Calculating the mean of cross-spectra from all combinations.')
 k_arr = []
 xs_mean_arr = []
@@ -229,19 +248,25 @@ for mn in range(number_of_maps):
       k, k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_2D(map_files[mn], outdir)
       k_edges_perp.append(k_bin_edges_perp)
       k_edges_par.append(k_bin_edges_par)
+      
    if two_dimensions == False:
       #k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_grid(map_files[mn], outdir) #saves the chi2 grid for each split-combo
       k, k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = mean_multisplit.xs_feed_feed_2D(map_files[mn], outdir)
       
-      tf_beam2d, tf_filt2d = get_tf()[2:]
+      tfs = get_tf()
+
+      if "0" in split_numbers[0]:
+         tf_beam2d, tf_filt2d, tf_pix_win2d = tfs[3], tfs[6], tfs[7]
+      else:
+         tf_beam2d, tf_filt2d, tf_pix_win2d = tfs[3], tfs[5], tfs[7]
       
       kx, ky = k
       k_bin_edges = np.logspace(-2.0, np.log10(1.5), len(kx) + 1)
       #k_bin_edges = k[1:] - k[:-1]
       #print(k_bin_edges)
-      weights = 1 / (xs_sigma / (tf_beam2d(kx, ky) * tf_filt2d(kx, ky))) ** 2
+      weights = 1 / (xs_sigma / (tf_beam2d(kx, ky) * tf_filt2d(kx, ky) * tf_pix_win2d(kx, ky))) ** 2
 
-      xs_mean /= (tf_beam2d(kx, ky) * tf_filt2d(kx, ky))
+      xs_mean /= (tf_beam2d(kx, ky) * tf_filt2d(kx, ky) * tf_pix_win2d(kx, ky))
       xs_mean *= weights
       
       kgrid = np.sqrt(sum(ki ** 2 for ki in np.meshgrid(kx, ky, indexing='ij')))
@@ -257,10 +282,12 @@ for mn in range(number_of_maps):
       Ck[np.where(nmodes > 0)] = Ck_nmodes[np.where(nmodes > 0)] / inv_var_nmodes[np.where(nmodes > 0)]
       rms[np.where(nmodes > 0)] = np.sqrt(1 / inv_var_nmodes[np.where(nmodes > 0)]) 
 
+      xs_mean = Ck 
+      xs_sigma = rms
 
    k_arr.append(k)
-   xs_mean_arr.append(Ck)
-   xs_sigma_arr.append(rms)
+   xs_mean_arr.append(xs_mean)
+   xs_sigma_arr.append(xs_sigma)
    field_arr.append(field)
    ff_jk_arr.append(ff_jk)
    split_names_arr.append(split_names)
@@ -310,6 +337,10 @@ if two_dimensions == True:
 if two_dimensions == False:
    outname = main_map_name + '_1D_arrays.h5'
    npyname = main_map_name + '_1D_names.npy'
+outname = outdir + "/" + outname
+npyname = outdir + "/" + npyname
+tools.ensure_dir_exists(outdir)
+
 print ('Saving data in ' + outname + '.')
 f = h5py.File(outname, 'w') #create HDF5 file with the sliced map
 f.create_dataset('k', data=k_arr)

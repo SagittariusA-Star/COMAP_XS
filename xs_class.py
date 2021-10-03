@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 plt.ioff() #turn of the interactive plotting
 import PS_function #P(k) = k**-3
 import scipy.interpolate
+import sys 
 
 import warnings
 warnings.filterwarnings("ignore", category=RuntimeWarning) #ignore warnings caused by weights cut-off
@@ -39,12 +40,12 @@ class CrossSpectrum_nmaps():
 
         for u in range(self.how_many_combinations):
            current_combo = all_different_possibilities[u] #there are two splits from mapmaker so far, can be more from simulations
+
            my_map_split_1 = map_cosmo.MapCosmo(name_of_my_map, feed1, jk, current_combo[0])
            my_map_split_2 = map_cosmo.MapCosmo(name_of_my_map, feed2, jk, current_combo[1])
            self.maps.append(my_map_split_1)
            self.maps.append(my_map_split_2)    
-         
-   
+        
     #NORMALIZE WEIGHTS FOR A GIVEN PAIR OF MAPS
     def normalize_weights(self, i, j):
         norm = np.sqrt(np.mean((self.maps[i].w * self.maps[j].w).flatten()))
@@ -90,9 +91,11 @@ class CrossSpectrum_nmaps():
            wh_j = np.where(np.log10(wj) < -0.5)
            wi[wh_i] = 0.0
            wj[wh_j] = 0.0
+           full_weight = np.sqrt(wi*wj) / np.sqrt(np.mean((wi*wj).flatten()))
+           
               
            my_xs, my_k, my_nmodes = tools.compute_cross_spec3d(
-           (self.maps[i].map * np.sqrt(wi*wj), self.maps[j].map * np.sqrt(wi*wj)),
+           (self.maps[i].map * full_weight, self.maps[j].map * full_weight),
            self.k_bin_edges, dx=self.maps[i].dx, dy=self.maps[i].dy, dz=self.maps[i].dz)
 
            self.reverse_normalization(i,j) #go back to the previous state to normalize again with a different map-pair
@@ -176,13 +179,32 @@ class CrossSpectrum_nmaps():
 
            wi = self.maps[i].w
            wj = self.maps[j].w
-           wh_i = np.where(np.log10(wi) < -0.5)
-           wh_j = np.where(np.log10(wj) < -0.5)
+           wh_i = np.where((np.log10(wi) < -0.5) )
+           wh_j = np.where((np.log10(wj) < -0.5) )
            wi[wh_i] = 0.0
            wj[wh_j] = 0.0
-              
+
+           #wi[np.isnan(wi)] = 0.0
+           #wj[np.isnan(wj)] = 0.0
+
+           full_weight = np.sqrt(wi*wj) / np.sqrt(np.mean((wi*wj).flatten()))
+           #full_weight[wi * wj == 0] = 0.0
+           full_weight[np.isnan(full_weight)] = 0.0
+           """
+           print("------------------------------------------------")
+           print(wi[(np.isnan(wi) == False) & (np.isinf(wi) == False)])
+           print(wj[(np.isnan(wj) == False) & (np.isinf(wi) == False)])
+           print(np.all(np.log10(wi) < -0.5), np.any(np.log10(wi) < -0.5))
+           print(np.all(np.log10(wj) < -0.5), np.any(np.log10(wj) < -0.5))
+           print(np.allclose(self.maps[i].map, np.zeros_like(self.maps[i].map)))
+           print(np.allclose(self.maps[j].map, np.zeros_like(self.maps[j].map)))
+           print(np.any(np.isnan(wi)), np.any(np.isnan(wj)), np.sum(np.isnan(wi)), np.sum(np.isnan(wi) == False), np.prod(wi.shape), np.sum(np.isnan(wi)), np.sum(np.isnan(wi) == False), np.prod(wi.shape))
+           
+           print("isnan maps and weights", np.any(np.isnan(self.maps[i].map* full_weight)), np.any(np.isnan(self.maps[j].map* full_weight)), np.any(np.isnan(full_weight)), np.sum(np.isnan(full_weight)), np.sum(np.isnan(full_weight) == False), np.prod(full_weight.shape))
+           print(np.allclose(wi, np.zeros_like(wi)), np.allclose(wj, np.zeros_like(wj)), np.all(np.isnan(wi)), np.all(np.isnan(wj)), np.any(np.isnan(wi)), np.any(np.isnan(wj)))
+           """
            my_xs, my_k, my_nmodes = tools.compute_cross_spec_perp_vs_par(
-           (self.maps[i].map * np.sqrt(wi*wj), self.maps[j].map * np.sqrt(wi*wj)),
+           (self.maps[i].map * full_weight, self.maps[j].map * full_weight),
            (self.k_bin_edges_perp, self.k_bin_edges_par), dx=self.maps[i].dx, dy=self.maps[i].dy, dz=self.maps[i].dz)
 
            self.reverse_normalization(i,j) #go back to the previous state to normalize again with a different map-pair
@@ -190,9 +212,18 @@ class CrossSpectrum_nmaps():
            self.xs.append(my_xs)
            self.k.append(my_k)
            self.nmodes.append(my_nmodes)
+           
+           #print(np.allclose(my_xs, np.zeros_like(my_xs)))
+           #print(np.any(np.isnan(my_xs)))
+
+           #print("------------------------------------------------") 
+
         self.xs = np.array(self.xs)
         self.k = np.array(self.k)
         self.nmodes = np.array(self.nmodes)
+        
+        #print("all close to zero", np.allclose(self.xs, np.zeros_like(self.xs)))
+        
         return self.xs, self.k, self.nmodes
 
 
@@ -210,6 +241,7 @@ class CrossSpectrum_nmaps():
            wh_j = np.where(np.log10(wj) < -0.5)
            wi[wh_i] = 0.0
            wj[wh_j] = 0.0
+           full_weight = np.sqrt(wi*wj) / np.sqrt(np.mean((wi*wj).flatten()))  
 
            if seed is not None:
                if self.maps[i].feed is not None:
@@ -226,7 +258,7 @@ class CrossSpectrum_nmaps():
                    randmap[l] = np.random.randn(*self.maps[l].rms.shape) * self.maps[l].rms
 
                rms_xs[:, g] = tools.compute_cross_spec3d(
-                   (randmap[0] * np.sqrt(wi*wj), randmap[1] * np.sqrt(wi*wj)),
+                   (randmap[0] * full_weight, randmap[1] * full_weight),
                    self.k_bin_edges, dx=self.maps[i].dx, dy=self.maps[i].dy, dz=self.maps[i].dz)[0]
                  
            self.reverse_normalization(i,j) #go back to the previous state to normalize again with a different map-pair
@@ -253,6 +285,10 @@ class CrossSpectrum_nmaps():
            wh_j = np.where(np.log10(wj) < -0.5)
            wi[wh_i] = 0.0
            wj[wh_j] = 0.0
+           full_weight = np.sqrt(wi*wj) / np.sqrt(np.mean((wi*wj).flatten()))  
+
+           full_weight[wi * wj == 0] = 0.0
+           full_weight[np.isnan(full_weight)] = 0.0
 
            if seed is not None:
                if self.maps[i].feed is not None:
@@ -269,7 +305,7 @@ class CrossSpectrum_nmaps():
                    randmap[l] = np.random.randn(*self.maps[l].rms.shape) * self.maps[l].rms
 
                rms_xs[:,:,g] = tools.compute_cross_spec_perp_vs_par(
-           (randmap[0] * np.sqrt(wi*wj), randmap[1] * np.sqrt(wi*wj)),
+           (randmap[0] * full_weight, randmap[1] * full_weight),
            (self.k_bin_edges_perp, self.k_bin_edges_par), dx=self.maps[i].dx, dy=self.maps[i].dy, dz=self.maps[i].dz)[0]
 
                  

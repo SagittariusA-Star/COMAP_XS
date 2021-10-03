@@ -303,6 +303,7 @@ def xs_feed_feed_2D(map_file, outdir):
               try:
                   filepath = path_to_xs %(i+1, j+1)
                   with h5py.File(filepath, mode="r") as my_file:
+                      
                       #print ("finds file", i, j)
                       xs[i, j] = np.array(my_file['xs_2D'][:])
                       #print (xs[i,j])
@@ -312,6 +313,7 @@ def xs_feed_feed_2D(map_file, outdir):
                       k_bin_edges_par[:] = np.array(my_file['k_bin_edges_par'][:])
                       k_bin_edges_perp[:] = np.array(my_file['k_bin_edges_perp'][:])
               except:
+                  #print("Filled with nan!")
                   xs[i, j] = np.nan
                   rms_xs_std[i, j] = np.nan
             
@@ -321,9 +323,10 @@ def xs_feed_feed_2D(map_file, outdir):
 
               chi2[i, j] = np.sign(chi3) * abs((np.sum((xs[i,j] / rms_xs_std[i,j]) ** 2) - n_k*n_k) / np.sqrt(2 * n_k*n_k)) #magnitude (how far from white noise)
              
-              if abs(chi2[i,j]) < 5. and not np.isnan(chi2[i,j]) and i != j:  #if excess power is smaller than 5 sigma, chi2 is not nan, not on diagonal
-              
+              #if abs(chi2[i,j]) < 5. and not np.isnan(chi2[i,j]) and i != j:  #if excess power is smaller than 5 sigma, chi2 is not nan, not on diagonal
+              if not np.isnan(chi2[i,j]) and i != j:  #if excess power is smaller than 5 sigma, chi2 is not nan, not on diagonal
               #if not np.isnan(xs[i,j,0,0]) and i != j:
+                  #print("all zero:", np.all(xs[i,j] == 0), np.all(rms_xs_std[i,j] == 0) )
                   xs_sum += xs[i,j] / rms_xs_std[i,j] ** 2
                   #xs_sum += xs[i,j]
                   #print rms_xs_std[i,j]
@@ -333,7 +336,6 @@ def xs_feed_feed_2D(map_file, outdir):
                   #print ("if test worked")
                   xs_div += 1 / rms_xs_std[i,j] ** 2
                   n_sum += 1
-
       xs_mean = xs_sum / xs_div
       #xs_mean = xs_sum/n_sum
       #print xs_mean

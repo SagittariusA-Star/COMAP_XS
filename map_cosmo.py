@@ -13,6 +13,7 @@ class MapCosmo():
         with h5py.File(mappath, mode="r") as my_file:
             self.x = np.array(my_file['x'][:]) #these x, y are are bin centers from mapmaker
             self.y = np.array(my_file['y'][:])
+                        
             self.map = np.array(my_file['/jackknives/map_' + jk][split_no,feed-1])
             self.rms = np.array(my_file['/jackknives/rms_' + jk][split_no,feed-1])
                
