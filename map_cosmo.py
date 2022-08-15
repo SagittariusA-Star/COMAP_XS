@@ -6,15 +6,16 @@ import sys
 
 #CONVERTS TO RECTANGULAR GRID IN COMOVING COORDINATES, get units right, store info about the map, pointings to 3D grid, build around one voxel in the middle
 class MapCosmo(): 
-    def __init__(self, mappath, feed, jk, split_no):
+    def __init__(self, mappath, feed, jk, splitname, split_no):
         self.feed = feed
         self.interpret_mapname(mappath)
-        
         with h5py.File(mappath, mode="r") as my_file:
             self.x = np.array(my_file['x'][:]) #these x, y are are bin centers from mapmaker
             self.y = np.array(my_file['y'][:])
-            self.map = np.array(my_file['/jackknives/map_' + jk][split_no,feed-1])
-            self.rms = np.array(my_file['/jackknives/rms_' + jk][split_no,feed-1])
+                        
+            self.map = np.array(my_file[f'/multisplits/{jk}/map_{jk}{split_no}{splitname}'][feed-1])
+            self.rms = np.array(my_file[f'/multisplits/{jk}/rms_{jk}{split_no}{splitname}'][feed-1])
+
                
         h = 0.7
         deg2mpc = 76.22 / h  # at redshift 2.9
@@ -54,9 +55,9 @@ class MapCosmo():
         self.dz = self.z[1] - self.z[0]
         
         self.voxel_volume = self.dx * self.dy * self.dz  # voxel volume in Mpc^3
-        print ('voxel volume:', self.voxel_volume)
+        #print ('voxel volume:', self.voxel_volume)
 
-    def coadd_feed_maps(self,map_file, which_split,jk): 
+    def coadd_feed_maps(self, map_file, which_split,jk): 
         map_single_feed = np.array(map_file['/jackknives/map_' + jk][which_split,0])
         my_map = np.zeros_like(map_single_feed)
         my_rms = np.zeros_like(map_single_feed)
