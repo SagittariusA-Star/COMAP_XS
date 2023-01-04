@@ -233,14 +233,14 @@ def read_map(mappath, field, control_variables, test_variables, feed_feed_variab
 
             # for i in range(len(all_different_possibilities)): #this many maps will be created
             # sys.exit()
-            new_shape = [2, 19, 4, 64, 120, 120]
-            slc = [slice(None)]*len(new_shape) #includes all elements
+            #new_shape = [2, 19, 4, 64, 120, 120]
+            #slc = [slice(None)]*len(new_shape) #includes all elements
             for i in range(len(all_different_possibilities)): #this many maps will be created
                for_naming = [] #identify which combination of splits the current map is using
                 
                for j in range(how_many_to_combine):
                   axis_index = all_axes_to_combine[j]
-                  slc[axis_index] = all_different_possibilities[i][j] #choose 0 or 1 for this split
+                  #slc[axis_index] = all_different_possibilities[i][j] #choose 0 or 1 for this split
                   for_naming.append(split_names[axis_index])
                   for_naming.append(all_different_possibilities[i][j])
                #my_map = map_split[tuple(slc)] #slice the map for the current combination of splits
@@ -328,6 +328,7 @@ def read_map(mappath, field, control_variables, test_variables, feed_feed_variab
                f.create_dataset('/jackknives/rms_' + ff_variable, data=my_rms)
                f.close()
                """
+               
    return maps_created
 
 

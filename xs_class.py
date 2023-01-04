@@ -18,7 +18,6 @@ class CrossSpectrum_nmaps():
     def __init__(self, name_of_my_map, jk=False, feed1=None, feed2=None, n_of_splits=2):
         self.feed_name1 = '_feed' + str(feed1)
         self.feed_name2 = '_feed' + str(feed2)
-        
         self.name_of_map = name_of_my_map #the names schould indicate which map and feed we take
         self.names = []
         self.maps = []        
@@ -37,8 +36,9 @@ class CrossSpectrum_nmaps():
            name1 += self.feed_name1
            
            name2 = jk[0] + str(current_combo[1]) + jk[1]
-           my_map_split_2 = map_cosmo.MapCosmo(name_of_my_map, feed1, jk[0], jk[1], current_combo[1])
+           my_map_split_2 = map_cosmo.MapCosmo(name_of_my_map, feed2, jk[0], jk[1], current_combo[1])
            name2 += self.feed_name2
+           print("XS_code:", name1, name2)
            
            self.names.append(name1)  
            self.names.append(name2)
