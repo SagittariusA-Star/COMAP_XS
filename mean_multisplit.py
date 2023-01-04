@@ -783,6 +783,157 @@ def xs_2D_plot(
 # k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = xs_feed_feed_2D('co6_map_snup_elev_0_cesc_0.h5')
 # print k[0], k[1]
 """
+def xs_feed_feed_2D(map_file, outdir):
+   n_k = 14
+   n_feed = 19
+   n_sum = 0
+   xs_sum = np.zeros((n_k,n_k))
+
+   xs_div = np.zeros((n_k,n_k))
+   #map_file = 'split_maps/' + map_file
+   tools.ensure_dir_exists('split_maps/' + outdir)
+
+   map_file = 'split_maps/' + outdir + '/' + map_file
+   name_of_map = map_file.split('/')[-1] #get rid of the path, leave only the name of the map
+   name_of_map = name_of_map.split('.')[0] #get rid of the ".h5" part
+   name_of_map_list = name_of_map.split('_') #co6_map_snup_elev_0_cesc_0'
+   field = name_of_map_list[0]
+   ff_jk = name_of_map_list[2]
+   split_names = []
+   split_numbers = []
+   for m in range(3, len(name_of_map_list)-1,2):
+      split_names.append(name_of_map_list[m])
+   for n in range(4, len(name_of_map_list),2):
+      split_numbers.append(name_of_map_list[n])
+   n_of_splits = read_number_of_splits(map_file, ff_jk)
+   n_list = list(range(n_of_splits))
+   all_different_possibilities = list(itr.combinations(n_list, 2)) #for n_of_splits = 3, it gives [(0, 1), (0, 2), (1, 2)]
+   how_many_combinations = len(all_different_possibilities)
+   for u in range(how_many_combinations): #go through all the split combinations
+      current_combo = all_different_possibilities[u]    
+      split1 = str(current_combo[0])
+      split2 = str(current_combo[1])
+      #path_to_xs = 'spectra_2D/xs_2D_' + name_of_map + '_split' + split1 + '_feed%01i_and_' + name_of_map + '_split' + split2 + '_feed%01i.h5'
+      tools.ensure_dir_exists('spectra/' + outdir)
+      
+      path_to_xs = 'spectra_2D/' + outdir + '/xs_2D_' + name_of_map + '_split' + split1 + '_feed%01i_and_' + name_of_map + '_split' + split2 + '_feed%01i.h5'
+      k_bin_edges_par = np.zeros(n_k+1)
+      k_bin_edges_perp = np.zeros(n_k+1)
+      xs = np.zeros((n_feed, n_feed, n_k, n_k))
+      rms_xs_std = np.zeros_like(xs)
+      chi2 = np.zeros((n_feed, n_feed))
+      k = np.zeros((2,n_k))
+      noise = np.zeros_like(chi2)
+
+      for i in range(n_feed): #go through all the feed combinations
+         for j in range(n_feed):
+            #if i != 7 and j != 7:
+              try:
+                  filepath = path_to_xs %(i+1, j+1)
+                  with h5py.File(filepath, mode="r") as my_file:
+                      
+                      #print ("finds file", i, j)
+                      xs[i, j] = np.array(my_file['xs_2D'][:])
+                      #print (xs[i,j])
+                      rms_xs_std[i, j] = np.array(my_file['rms_xs_std_2D'][:])
+                      #print (rms_xs_std[i,j])
+                      k[:] = np.array(my_file['k'][:])
+                      k_bin_edges_par[:] = np.array(my_file['k_bin_edges_par'][:])
+                      k_bin_edges_perp[:] = np.array(my_file['k_bin_edges_perp'][:])
+              except:
+                  #print("Filled with nan!")
+                  xs[i, j] = np.nan
+                  rms_xs_std[i, j] = np.nan
+            
+              #w = np.sum(1 / rms_xs_std[i,j])
+              #noise[i,j] = 1 / np.sqrt(w)
+              chi3 = np.sum((xs[i,j] / rms_xs_std[i,j]) ** 3) #we need chi3 to take the sign into account - positive or negative correlation
+
+              chi2[i, j] = np.sign(chi3) * abs((np.sum((xs[i,j] / rms_xs_std[i,j]) ** 2) - n_k*n_k) / np.sqrt(2 * n_k*n_k)) #magnitude (how far from white noise)
+             
+              #if abs(chi2[i,j]) < 5. and not np.isnan(chi2[i,j]) and i != j:  #if excess power is smaller than 5 sigma, chi2 is not nan, not on diagonal
+              if not np.isnan(chi2[i,j]) and i != j:  #if excess power is smaller than 5 sigma, chi2 is not nan, not on diagonal
+              #if not np.isnan(xs[i,j,0,0]) and i != j:
+                  #print("all zero:", np.all(xs[i,j] == 0), np.all(rms_xs_std[i,j] == 0) )
+                  xs_sum += xs[i,j] / rms_xs_std[i,j] ** 2
+                  #xs_sum += xs[i,j]
+                  #print rms_xs_std[i,j]
+                  #print xs[i,j] / rms_xs_std[i,j] ** 2
+                 # print 'xs', xs[i,j]
+                  #print 'rms', rms_xs_std[i,j]
+                  #print ("if test worked")
+                  xs_div += 1 / rms_xs_std[i,j] ** 2
+                  n_sum += 1
+      xs_mean = xs_sum / xs_div
+      #xs_mean = xs_sum/n_sum
+      #print xs_mean
+      xs_sigma =  1. / np.sqrt(xs_div)
+     
+   return k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers
+
+
+def xs_2D_plot(figure_name, k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma, titlename, outdir):
+      #k,k_bin_edges_par, k_bin_edges_perp, xs_mean, xs_sigma =  k[3:],k_bin_edges_par[3:], k_bin_edges_perp[3:], xs_mean[3:], xs_sigma[3:]
+      fig, ax = plt.subplots(1,3,figsize=(16,5.6))
+      fig.tight_layout()
+      fig.suptitle(titlename, fontsize=16)
+      norm = mpl.colors.Normalize(vmin=1.3*np.amin(xs_mean), vmax=-1.3*np.amin(xs_mean))  
+      
+      img1 = ax[0].imshow(xs_mean, interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      fig.colorbar(img1, ax=ax[0],fraction=0.046, pad=0.04)
+  
+      img2 = ax[1].imshow(xs_mean/transfer_filt_2D(k[0],k[1]), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      fig.colorbar(img2, ax=ax[1], fraction=0.046, pad=0.04)
+      img3 = ax[2].imshow(xs_mean/(transfer_filt_2D(k[0],k[1])*transfer_sim_2D(k[0],k[1])), interpolation='none', origin='lower',extent=[0,1,0,1], cmap='RdBu', norm=norm)
+      fig.colorbar(img2, ax=ax[2], fraction=0.046, pad=0.04).set_label(r'$\tilde{C}\left(k_{\bot},k_{\parallel}\right)$ [$\mu$K${}^2$ (Mpc)${}^3$]', size=16)
+            
+      ticks = [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09,0.1,
+              0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,1., 1.1, 1.2, 1.3]
+
+      majorticks = [ 0.03,0.1, 0.3,1]
+      majorlabels = [ '0.03','0.1', '0.3','1']
+
+      xbins = k_bin_edges_par
+
+
+      ticklist_x = log2lin(ticks[:-3], xbins)
+      majorlist_x = log2lin(majorticks, xbins)
+
+      ybins = k_bin_edges_perp
+
+      ticklist_y = log2lin(ticks, ybins)
+      majorlist_y = log2lin(majorticks, ybins)
+
+      ax[0].set_title(r'$\tilde{C}^{\mathrm{FPXS}}$ ', fontsize=16)
+      ax[1].set_title(r'$\tilde{C}^{\mathrm{FPXS}}/T^{pipeline}$', fontsize=16)
+      ax[2].set_title(r'$\tilde{C}^{\mathrm{FPXS}}/\left(T^{pipeline}T^{beam}\right)$ ', fontsize=16)
+
+      for i in range(3):
+         ax[i].set_xticks(ticklist_x, minor=True)
+         ax[i].set_xticks(majorlist_x, minor=False)
+         ax[i].set_xticklabels(majorlabels, minor=False, fontsize=16)
+         ax[i].set_yticks(ticklist_y, minor=True)
+         ax[i].set_yticks(majorlist_y, minor=False)
+         ax[i].set_yticklabels(majorlabels, minor=False, fontsize=16)
+      
+      ax[0].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]',fontsize=16)
+      ax[0].set_ylabel(r'$k_{\bot}$ [Mpc${}^{-1}$]',fontsize=16)
+      ax[1].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=16)
+      ax[2].set_xlabel(r'$k_{\parallel}$ [Mpc${}^{-1}$]', fontsize=16)
+      
+     
+      
+      tools.ensure_dir_exists('xs_2D_mean_figures/' + outdir)
+      plt.tight_layout()
+
+      plt.savefig('xs_2D_mean_figures/' +  outdir + "/" + figure_name) 
+    
+    
+
+
+#k, xs_mean, xs_sigma, field, ff_jk, split_names, split_numbers = xs_feed_feed_2D('co6_map_snup_elev_0_cesc_0.h5')
+#print k[0], k[1]
+'''
 [0.02361234 0.03214194 0.04375272 0.05955771 0.081072   0.11035801
  0.15022313 0.20448891 0.27835735 0.37890963 0.51578486 0.70210415
  0.95572839 1.30097046] [0.01194748 0.01660097 0.02306697 0.03205145 0.04453534 0.06188166
